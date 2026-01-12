@@ -2090,18 +2090,26 @@ window.onload = function() {
     sendHeightToParent();
 };
 
-// WordPress iframe height (NEW!)
-function sendHeightToParent() {
+// Auto-resize iframe for WordPress parent
+(function() {
     const sendHeight = () => {
         const height = document.body.scrollHeight;
         window.parent.postMessage({ iframeHeight: height }, "*");
     };
+
+    // Initial send
     sendHeight();
+
+    // Update on window resize
     window.addEventListener('resize', sendHeight);
-    // Send on any content change
+
+    // Update on content changes
     const observer = new MutationObserver(sendHeight);
     observer.observe(document.body, { childList: true, subtree: true });
-}
+
+    // Optional: if your tool has dynamic elements that load later
+    window.addEventListener('load', sendHeight);
+})();
 
 // ==================== COUNTDOWN TIMER ====================
 function startCountdown() {
