@@ -2091,23 +2091,31 @@ window.onload = function() {
 };
 
 <script>
-  function updateIframeHeight() {
-    var height = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight
-    ) + 80;  // extra space footer/scrollbar এর জন্য
-    console.log("Sending new height: " + height + "px");
-    window.parent.postMessage({ iframeHeight: height }, "*");
-  }
+function sendHeightToParent() {
+    // সবচেয়ে reliable height
+    var fullHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+    ) + 80;  // extra padding যাতে কাটা না যায়
 
-  // লোড হওয়ার সাথে সাথে
-  window.addEventListener("load", updateIframeHeight);
+    console.log("Sending height:", fullHeight);
 
-  // রিসাইজ বা কনটেন্ট চেঞ্জ হলে
-  window.addEventListener("resize", updateIframeHeight);
+    // Parent-কে জানানো
+    window.parent.postMessage({
+        iframeHeight: fullHeight
+    }, "*");  // "*" টেস্টের জন্য; পরে আপনার WordPress domain দিতে পারেন
+}
 
-  // প্রতি ৩ সেকেন্ডে চেক (যাতে form submit বা dynamic চেঞ্জ ধরা পড়ে)
-  setInterval(updateIframeHeight, 3000);
+// প্রথম লোডে
+window.addEventListener("load", sendHeightToParent);
+
+// রিসাইজ হলে
+window.addEventListener("resize", sendHeightToParent);
+
+// প্রতি ২ সেকেন্ডে চেক (form submit / dynamic content change ধরার জন্য)
+setInterval(sendHeightToParent, 2000);
 </script>
 
 // ==================== COUNTDOWN TIMER ====================
