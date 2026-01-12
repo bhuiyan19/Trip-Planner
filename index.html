@@ -1275,45 +1275,52 @@ input.error { border-color: var(--danger) !important; }
     z-index: 1000;
 }
 
-/* Custom Scrollbar Styling - goFLY Trip Planner */
+/* Custom Scrollbar Styling - goFLY Trip Planner (Full & Forced) */
 html, body {
-    scrollbar-width: thin;          /* Firefox-এ thin scrollbar */
-    scrollbar-color: #777 #e9ecef;  /* thumb | track */
+    scrollbar-width: thin !important;          /* Firefox */
+    scrollbar-color: #6b7280 #f3f4f6 !important; /* thumb | track - modern gray */
 }
 
-/* Chrome, Edge, Safari (WebKit) */
+/* Chrome, Edge, Safari, Opera */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-    width: 12px;                    /* scrollbar-এর প্রস্থ */
-    height: 12px;
+    width: 12px !important;
+    height: 12px !important;
 }
 
 html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
-    background: #e9ecef;            /* track color */
-    border-radius: 12px;
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.08);
+    background: #f3f4f6 !important;           /* হালকা ধূসর track */
+    border-radius: 12px !important;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.05) !important;
 }
 
 html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-    background: #777;               /* thumb color */
-    border-radius: 12px;
-    border: 3px solid #e9ecef;     /* thumb-এর চারপাশে border */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    transition: all 0.25s ease;
+    background: #6b7280 !important;           /* গাঢ় ধূসর thumb */
+    border-radius: 12px !important;
+    border: 3px solid #f3f4f6 !important;     /* track-এর সাথে মিল */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
+    transition: all 0.25s ease !important;
 }
 
 html::-webkit-scrollbar-thumb:hover,
 body::-webkit-scrollbar-thumb:hover {
-    background: #555;               /* hover-এ গাঢ় */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    background: #4b5563 !important;           /* hover-এ আরও গাঢ় */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18) !important;
 }
 
-/* Active click state (optional) */
 html::-webkit-scrollbar-thumb:active,
 body::-webkit-scrollbar-thumb:active {
-    background: #444;
+    background: #374151 !important;
+}
+
+/* Optional: যদি খুব লম্বা কন্টেন্ট হয় তাহলে আরও visible করতে */
+@media (min-height: 2000px) {
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        width: 14px !important;
+    }
 }
   
 
@@ -3620,4 +3627,5 @@ console.log(`
 </script>
 </body>
 </html>
+
 
