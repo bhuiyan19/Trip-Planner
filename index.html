@@ -2090,31 +2090,46 @@ window.onload = function() {
     sendHeightToParent();
 };
 
-<script>
 (function() {
     function sendHeight() {
-        const height = document.body.scrollHeight;
+        // সবচেয়ে নির্ভরযোগ্য উপায় (html এর পরিবর্তে document.documentElement ব্যবহার করা ভালো)
+        const height = Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.offsetHeight
+        );
+
+        // অথবা সবচেয়ে সহজ: 
+        // const height = document.documentElement.scrollHeight;
+
+        console.log('Sending height:', height); // ডিবাগ
+
         window.parent.postMessage({ iframeHeight: height }, "*");
+        // অথবা আরও নিরাপদ: window.parent.postMessage({ iframeHeight: height }, "https://your-wordpress-site.com");
     }
 
-    // Initial send
-    sendHeight();
+    // প্রথমবার
+    window.addEventListener('load', sendHeight);
 
-    // Send on resize
+    // রিসাইজ
     window.addEventListener('resize', sendHeight);
 
-    // Send on DOM changes
+    // DOM পরিবর্তন হলে (React/Vue/অনেক কনটেন্ট লোড হলে)
     const observer = new MutationObserver(sendHeight);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 
-    // Listen for parent's request
+    // Parent থেকে রিকোয়েস্ট এলে
     window.addEventListener('message', (event) => {
-        if(event.data && event.data.requestHeight){
+        if (event.data && event.data.requestHeight) {
             sendHeight();
         }
     });
+
+    // কিছু অ্যাপে ডাটা লোড হওয়ার পর আবার কল করতে হয় — setTimeout দিয়ে
+    setTimeout(sendHeight, 1000);
+    setTimeout(sendHeight, 3000);
 })();
-</script>
 
 // ==================== COUNTDOWN TIMER ====================
 function startCountdown() {
