@@ -2090,36 +2090,31 @@ window.onload = function() {
     sendHeightToParent();
 };
 
-// Auto-resize iframe for WordPress parent (improved)
+<script>
 (function() {
-    const sendHeight = () => {
-        // Change this selector to your tool's main container
-        const container = document.querySelector('#app'); // #app or .main-wrapper
-        if(container){
-            let height = container.scrollHeight;
-
-            // Optional: limit min/max height
-            const maxHeight = 3000; // adjust based on design
-            const minHeight = 600;
-            height = Math.min(Math.max(height, minHeight), maxHeight);
-
-            window.parent.postMessage({ iframeHeight: height }, "*");
-        }
-    };
+    function sendHeight() {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ iframeHeight: height }, "*");
+    }
 
     // Initial send
     sendHeight();
 
-    // Update on window resize
+    // Send on resize
     window.addEventListener('resize', sendHeight);
 
-    // Update on content changes
+    // Send on DOM changes
     const observer = new MutationObserver(sendHeight);
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Update after full load (images, dynamic content)
-    window.addEventListener('load', sendHeight);
+    // Listen for parent's request
+    window.addEventListener('message', (event) => {
+        if(event.data && event.data.requestHeight){
+            sendHeight();
+        }
+    });
 })();
+</script>
 
 // ==================== COUNTDOWN TIMER ====================
 function startCountdown() {
