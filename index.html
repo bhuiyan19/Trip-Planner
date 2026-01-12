@@ -2090,11 +2090,21 @@ window.onload = function() {
     sendHeightToParent();
 };
 
-// Auto-resize iframe for WordPress parent
+// Auto-resize iframe for WordPress parent (improved)
 (function() {
     const sendHeight = () => {
-        const height = document.body.scrollHeight;
-        window.parent.postMessage({ iframeHeight: height }, "*");
+        // Change this selector to your tool's main container
+        const container = document.querySelector('#app'); // #app or .main-wrapper
+        if(container){
+            let height = container.scrollHeight;
+
+            // Optional: limit min/max height
+            const maxHeight = 3000; // adjust based on design
+            const minHeight = 600;
+            height = Math.min(Math.max(height, minHeight), maxHeight);
+
+            window.parent.postMessage({ iframeHeight: height }, "*");
+        }
     };
 
     // Initial send
@@ -2107,7 +2117,7 @@ window.onload = function() {
     const observer = new MutationObserver(sendHeight);
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Optional: if your tool has dynamic elements that load later
+    // Update after full load (images, dynamic content)
     window.addEventListener('load', sendHeight);
 })();
 
