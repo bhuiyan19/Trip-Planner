@@ -2090,46 +2090,25 @@ window.onload = function() {
     sendHeightToParent();
 };
 
-(function() {
-    function sendHeight() {
-        // সবচেয়ে নির্ভরযোগ্য উপায় (html এর পরিবর্তে document.documentElement ব্যবহার করা ভালো)
-        const height = Math.max(
-            document.body.scrollHeight,
-            document.documentElement.scrollHeight,
-            document.body.offsetHeight,
-            document.documentElement.offsetHeight
-        );
+<script>
+  function updateIframeHeight() {
+    var height = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight
+    ) + 80;  // extra space footer/scrollbar এর জন্য
+    console.log("Sending new height: " + height + "px");
+    window.parent.postMessage({ iframeHeight: height }, "*");
+  }
 
-        // অথবা সবচেয়ে সহজ: 
-        // const height = document.documentElement.scrollHeight;
+  // লোড হওয়ার সাথে সাথে
+  window.addEventListener("load", updateIframeHeight);
 
-        console.log('Sending height:', height); // ডিবাগ
+  // রিসাইজ বা কনটেন্ট চেঞ্জ হলে
+  window.addEventListener("resize", updateIframeHeight);
 
-        window.parent.postMessage({ iframeHeight: height }, "*");
-        // অথবা আরও নিরাপদ: window.parent.postMessage({ iframeHeight: height }, "https://your-wordpress-site.com");
-    }
-
-    // প্রথমবার
-    window.addEventListener('load', sendHeight);
-
-    // রিসাইজ
-    window.addEventListener('resize', sendHeight);
-
-    // DOM পরিবর্তন হলে (React/Vue/অনেক কনটেন্ট লোড হলে)
-    const observer = new MutationObserver(sendHeight);
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    // Parent থেকে রিকোয়েস্ট এলে
-    window.addEventListener('message', (event) => {
-        if (event.data && event.data.requestHeight) {
-            sendHeight();
-        }
-    });
-
-    // কিছু অ্যাপে ডাটা লোড হওয়ার পর আবার কল করতে হয় — setTimeout দিয়ে
-    setTimeout(sendHeight, 1000);
-    setTimeout(sendHeight, 3000);
-})();
+  // প্রতি ৩ সেকেন্ডে চেক (যাতে form submit বা dynamic চেঞ্জ ধরা পড়ে)
+  setInterval(updateIframeHeight, 3000);
+</script>
 
 // ==================== COUNTDOWN TIMER ====================
 function startCountdown() {
