@@ -2092,21 +2092,32 @@ window.onload = function() {
 
 <script>
 function sendHeightToParent() {
-    // সবচেয়ে reliable height
+    // সবচেয়ে reliable height calculation
     var fullHeight = Math.max(
         document.body.scrollHeight,
         document.documentElement.scrollHeight,
         document.body.offsetHeight,
         document.documentElement.offsetHeight
-    ) + 80;  // extra padding যাতে কাটা না যায়
+    ) + 100;  // extra 100px safety margin (shadow, padding, scrollbar)
 
-    console.log("Sending height:", fullHeight);
+    console.log("Sending height to parent:", fullHeight);
 
-    // Parent-কে জানানো
+    // এই লাইনটা অবশ্যই আছে কি না চেক করুন — এটা না থাকলে কিছুই পাঠাবে না!
     window.parent.postMessage({
-        iframeHeight: fullHeight
-    }, "*");  // "*" টেস্টের জন্য; পরে আপনার WordPress domain দিতে পারেন
+        iframeHeight: fullHeight   // অথবা { type: 'height', height: fullHeight } যদি চান
+    }, "*");  // "*" টেস্টের জন্য safe
 }
+
+// এই function-কে call করা হয়েছে বিভিন্ন জায়গায় (যেমন nextStep, displayItinerary ইত্যাদি)
+// যাতে step change বা itinerary generate হলে auto height update হয়
+
+// Extra triggers যোগ করুন যাতে initial + periodic update হয়
+window.addEventListener('load', sendHeightToParent);
+window.addEventListener('resize', sendHeightToParent);
+
+// যদি dynamic change ধরতে চান (যেমন timer, map load)
+setInterval(sendHeightToParent, 2500);  // প্রতি ২.৫ সেকেন্ডে চেক
+</script>
 
 // প্রথম লোডে
 window.addEventListener("load", sendHeightToParent);
