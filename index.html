@@ -3807,6 +3807,24 @@ function downloadPDF() {
                 📞 09639-203090 | 💬 01713-289171, 01713-289178 | ✉️ support@goflybd.com | 🌐 goflybd.com<br>
                 📍 1 Shukrabad Road Motiur Nibash, Beside New Model Degree College, Opposite of Metro Shopping Mall, Dhaka 1207
             </div>
+
+<script>
+  // postMessage from Vercel tool to parent
+  function sendHeight() {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ iframeHeight: height }, "*");
+  }
+
+  // Initial send
+  sendHeight();
+
+  // Update on resize or content changes
+  window.addEventListener('resize', sendHeight);
+
+  // Optional: if dynamic content changes, you can call sendHeight() after update
+</script>
+
+            
         </body>
         </html>
     `);
@@ -3893,3 +3911,4 @@ console.log(`
 </script>
 </body>
 </html>
+
