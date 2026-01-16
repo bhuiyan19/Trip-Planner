@@ -1231,6 +1231,40 @@ input.error { border-color: var(--danger) !important; }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
 
+/* ==================== LANGUAGE SELECTOR ==================== */
+.language-selector {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+}
+
+.lang-btn {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    color: var(--gray-600);
+}
+
+.lang-btn:hover {
+    background: var(--gray-50);
+}
+
+.lang-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+}
+
 /* ==================== FORM ROW ==================== */
 .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
 
@@ -1264,8 +1298,14 @@ input.error { border-color: var(--danger) !important; }
 </head>
 <body>
 <div class="container">
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <button class="lang-btn active" onclick="switchLanguage('en')" id="langEn">English</button>
+        <button class="lang-btn" onclick="switchLanguage('bn')" id="langBn">বাংলা</button>
+    </div>
+
     <!-- NO LOGO IN HEADER -->
-    
+
     <!-- Offer Banner -->
     <div class="offer-banner" id="offerBanner">
         <h3>🎁 Limited Time Offer - Book Now & Save!</h3>
@@ -3478,6 +3518,134 @@ function selectPopularPackage(dests, days) {
     
     document.querySelector('.planner-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// ==================== LANGUAGE TRANSLATION SYSTEM ====================
+let currentLang = localStorage.getItem('preferredLanguage') || 'en';
+
+const translations = {
+    en: {
+        offerTitle: '🎁 Limited Time Offer - Book Now & Save!',
+        offerText: 'Get <strong>5% OFF</strong> on all land packages for Jan-Feb 2026 travel',
+        offerEnds: '⏰ Offer ends in:',
+        mainTitle: '✈️ Plan Your Perfect Trip 2026',
+        mainSubtitle: 'Create your dream itinerary - <strong style="color: var(--primary);">AI-Powered Smart Suggestions!</strong>',
+        mainDesc: '🌍 Real prices • Smart warnings • Interest-based recommendations',
+        reviews: 'reviews',
+        travelers: 'Happy travelers',
+        visaSuccess: 'Visa success',
+        emiAvailable: 'EMI Available',
+        currencyTitle: '💱 Live Exchange Rates (BDT) - Jan 2026:',
+        mapTitle: '🗺️ Your Trip Route',
+        interestTitle: '🎯 What type of experience are you looking for?',
+        beachRelaxation: 'Beach & Relaxation',
+        adventure: 'Adventure',
+        cultureHeritage: 'Culture & Heritage',
+        shoppingCity: 'Shopping & City',
+        romantic: 'Romantic / Honeymoon',
+        familyFun: 'Family Fun',
+        recommendedCombos: '💡 Recommended Combos',
+        popularPackages: '🔥 Best-Selling Packages 2026 (Land Only)',
+        updatedPrices: 'Updated prices for 2026 •',
+        earlyBird: '5% Early Bird Discount!',
+        perPerson: 'per person',
+        days: 'Days',
+        nights: 'Nights',
+        countries: 'Countries'
+    },
+    bn: {
+        offerTitle: '🎁 সীমিত সময়ের অফার - এখনই বুক করুন এবং সাশ্রয় করুন!',
+        offerText: 'জানুয়ারি-ফেব্রুয়ারি ২০২৬ ট্র্যাভেলের জন্য সব ল্যান্ড প্যাকেজে <strong>৫% ছাড়</strong> পান',
+        offerEnds: '⏰ অফার শেষ হবে:',
+        mainTitle: '✈️ আপনার নিখুঁত ট্রিপ পরিকল্পনা করুন ২০২৬',
+        mainSubtitle: 'আপনার স্বপ্নের ভ্রমণ পরিকল্পনা তৈরি করুন - <strong style="color: var(--primary);">AI-চালিত স্মার্ট পরামর্শ!</strong>',
+        mainDesc: '🌍 সঠিক দাম • স্মার্ট সতর্কতা • আগ্রহ-ভিত্তিক সুপারিশ',
+        reviews: 'রিভিউ',
+        travelers: 'খুশি ভ্রমণকারী',
+        visaSuccess: 'ভিসা সফলতা',
+        emiAvailable: 'EMI সুবিধা আছে',
+        currencyTitle: '💱 লাইভ এক্সচেঞ্জ রেট (BDT) - জানুয়ারি ২০২৬:',
+        mapTitle: '🗺️ আপনার ট্রিপ রুট',
+        interestTitle: '🎯 আপনি কোন ধরনের অভিজ্ঞতা খুঁজছেন?',
+        beachRelaxation: 'বিচ ও বিশ্রাম',
+        adventure: 'অ্যাডভেঞ্চার',
+        cultureHeritage: 'সংস্কৃতি ও ঐতিহ্য',
+        shoppingCity: 'শপিং ও শহর',
+        romantic: 'রোমান্টিক / হানিমুন',
+        familyFun: 'পারিবারিক মজা',
+        recommendedCombos: '💡 প্রস্তাবিত কম্বো',
+        popularPackages: '🔥 সেরা বিক্রয় প্যাকেজ ২০২৬ (শুধু ল্যান্ড)',
+        updatedPrices: '২০২৬ এর আপডেট দাম •',
+        earlyBird: '৫% আর্লি বার্ড ছাড়!',
+        perPerson: 'প্রতি ব্যক্তি',
+        days: 'দিন',
+        nights: 'রাত',
+        countries: 'দেশ'
+    }
+};
+
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('preferredLanguage', lang);
+
+    // Update button states
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    document.getElementById('langBn').classList.toggle('active', lang === 'bn');
+
+    const t = translations[lang];
+
+    // Update offer banner
+    document.querySelector('.offer-banner h3').innerHTML = t.offerTitle;
+    document.querySelector('.offer-banner p').innerHTML = t.offerText;
+    document.querySelector('.offer-countdown').innerHTML = t.offerEnds + ' <span id="countdown">23:59:59</span>';
+
+    // Update header
+    document.querySelector('.header h1').innerHTML = t.mainTitle;
+    document.querySelector('.header p:nth-of-type(1)').innerHTML = t.mainSubtitle;
+    document.querySelector('.header p:nth-of-type(2)').innerHTML = t.mainDesc;
+
+    // Update trust badges
+    const trustBadges = document.querySelectorAll('.trust-badge');
+    if (trustBadges[0]) trustBadges[0].innerHTML = `⭐ <strong>4.8/5</strong> (400+ ${t.reviews})`;
+    if (trustBadges[1]) trustBadges[1].innerHTML = `✅ <strong>10,000+</strong> ${t.travelers}`;
+    if (trustBadges[2]) trustBadges[2].innerHTML = `🎯 <strong>90-98%</strong> ${t.visaSuccess}`;
+    if (trustBadges[3]) trustBadges[3].innerHTML = `💳 <strong>0%</strong> ${t.emiAvailable}`;
+
+    // Update currency converter
+    document.querySelector('.currency-converter h4').textContent = t.currencyTitle;
+
+    // Update map title
+    const mapTitle = document.querySelector('.map-container h3');
+    if (mapTitle) mapTitle.textContent = t.mapTitle;
+
+    // Update interest selector
+    document.querySelector('.interest-selector h4').textContent = t.interestTitle;
+    const interestChips = document.querySelectorAll('.interest-chip');
+    if (interestChips[0]) interestChips[0].innerHTML = `<span class="icon">🏖️</span> ${t.beachRelaxation}`;
+    if (interestChips[1]) interestChips[1].innerHTML = `<span class="icon">🏔️</span> ${t.adventure}`;
+    if (interestChips[2]) interestChips[2].innerHTML = `<span class="icon">🏛️</span> ${t.cultureHeritage}`;
+    if (interestChips[3]) interestChips[3].innerHTML = `<span class="icon">🛍️</span> ${t.shoppingCity}`;
+    if (interestChips[4]) interestChips[4].innerHTML = `<span class="icon">💑</span> ${t.romantic}`;
+    if (interestChips[5]) interestChips[5].innerHTML = `<span class="icon">👨‍👩‍👧‍👦</span> ${t.familyFun}`;
+
+    // Update recommended combos
+    document.querySelector('.recommended-combos h4').textContent = t.recommendedCombos;
+
+    // Update popular packages
+    document.querySelector('.popular-packages h2').textContent = t.popularPackages;
+    document.querySelector('.popular-packages p').innerHTML = `${t.updatedPrices} <span style="color: var(--secondary); font-weight: 600;">${t.earlyBird}</span>`;
+
+    // Restart countdown
+    startCountdown();
+}
+
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', function() {
+    if (currentLang === 'bn') {
+        document.getElementById('langEn').classList.remove('active');
+        document.getElementById('langBn').classList.add('active');
+        switchLanguage('bn');
+    }
+});
 
 // ==================== CONSOLE ====================
 console.log(`
