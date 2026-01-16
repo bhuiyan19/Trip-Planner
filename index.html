@@ -1218,6 +1218,58 @@ input.error { border-color: var(--danger) !important; }
 
 .save-indicator.show { display: flex; animation: slideInUp 0.3s ease; }
 
+/* ==================== TOAST NOTIFICATION ==================== */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: white;
+    color: var(--gray-800);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 500px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.toast-notification.error {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 4px solid var(--danger);
+}
+
+.toast-notification.success {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid var(--primary);
+}
+
+.toast-notification.warning {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-left: 4px solid var(--warning);
+}
+
+.toast-notification .toast-icon {
+    font-size: 1.5rem;
+}
+
+.toast-notification .toast-message {
+    flex: 1;
+    font-weight: 500;
+}
+
 /* ==================== LOADING ==================== */
 .loading-spinner { text-align: center; padding: 60px; }
 .loading-spinner .spinner { font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; }
@@ -1246,19 +1298,24 @@ input.error { border-color: var(--danger) !important; }
     body { padding: 12px; }
     .header h1 { font-size: 1.8rem; }
     .planner-card { padding: 20px; }
-    .step-label { font-size: 0.7rem; }
-    .destination-grid { grid-template-columns: 1fr; }
-    .button-group { flex-direction: column; }
-    .btn { width: 100%; }
+    .step-label { font-size: 0.85rem; } /* Improved from 0.7rem for better readability */
+    .step-number { width: 36px; height: 36px; font-size: 0.9rem; } /* Better touch target */
+    .destination-grid { grid-template-columns: 1fr; gap: 12px; }
+    .destination-card { min-height: 180px; } /* Flexible height for mobile */
+    .destination-name { font-size: 1.3rem; } /* Larger text on mobile */
+    .button-group { flex-direction: column; gap: 12px; }
+    .btn { width: 100%; min-height: 48px; } /* Minimum 48px for touch targets */
+    .interest-chip, .combo-chip { min-height: 44px; padding: 12px 18px; } /* Better touch target */
     .trip-summary { grid-template-columns: repeat(2, 1fr); }
     .packages-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .download-buttons, .cta-section { flex-direction: column; }
-    .offer-banner { font-size: 0.9rem; }
+    .offer-banner { font-size: 0.9rem; padding: 14px 20px; }
     .currency-converter { flex-direction: column; }
     .price-body, .price-header { padding: 16px 20px; }
     .price-category, .price-row.discount, .price-row.subtotal { margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
     .price-total { margin: 20px -20px -16px; padding: 20px; }
     .price-note { margin-left: -20px; margin-right: -20px; }
+    .toast-notification { min-width: 280px; max-width: 90%; } /* Better mobile toast */
 }
 </style>
 </head>
@@ -1608,6 +1665,12 @@ input.error { border-color: var(--danger) !important; }
 
 <!-- Save Indicator -->
 <div class="save-indicator" id="saveIndicator">💾 Auto-saved</div>
+
+<!-- Toast Notification -->
+<div class="toast-notification" id="toastNotification">
+    <span class="toast-icon" id="toastIcon"></span>
+    <span class="toast-message" id="toastMessage"></span>
+</div>
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -2005,11 +2068,17 @@ window.onload = function() {
 };
 
 // ==================== COUNTDOWN TIMER ====================
+let countdownInterval = null;
 function startCountdown() {
     const countdownEl = document.getElementById('countdown');
+    if (!countdownEl) return;
+
+    // Clear existing interval
+    if (countdownInterval) clearInterval(countdownInterval);
+
     let hours = 23, mins = 59, secs = 59;
-    
-    setInterval(() => {
+
+    countdownInterval = setInterval(() => {
         secs--;
         if (secs < 0) { secs = 59; mins--; }
         if (mins < 0) { mins = 59; hours--; }
@@ -2017,6 +2086,11 @@ function startCountdown() {
         countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }, 1000);
 }
+
+// Cleanup countdown on page unload
+window.addEventListener('beforeunload', () => {
+    if (countdownInterval) clearInterval(countdownInterval);
+});
 
 // ==================== MAP ====================
 function initMap() {
@@ -2177,7 +2251,7 @@ function toggleDestination(name) {
         card.classList.remove('selected');
     } else {
         if (selectedDestinations.length >= 4) {
-            alert('সর্বোচ্চ ৪টি destination নির্বাচন করতে পারবেন!');
+            showToast('Maximum 4 destinations can be selected!', 'warning');
             return;
         }
         selectedDestinations.push(name);
@@ -2501,21 +2575,26 @@ function updateAddonsTotal() {
 // ==================== NAVIGATION ====================
 function nextStep() {
     if (currentStep === 1 && selectedDestinations.length === 0) {
-        alert('অনুগ্রহ করে অন্তত একটি destination নির্বাচন করুন');
+        showToast('Please select at least one destination', 'error');
         return;
     }
-    
+
     if (currentStep === 2) {
         if (!document.getElementById('duration').value) {
-            alert('Trip duration নির্বাচন করুন');
+            showToast('Please select trip duration', 'error');
             return;
         }
         if (parseInt(document.getElementById('adults').value) < 1) {
-            alert('কমপক্ষে ১ জন Adult থাকতে হবে');
+            showToast('At least 1 adult is required', 'error');
             return;
         }
-        if (!document.getElementById('travelDate').value) {
-            alert('Travel date নির্বাচন করুন');
+        const travelDate = document.getElementById('travelDate').value;
+        if (!travelDate) {
+            showToast('Please select travel date', 'error');
+            return;
+        }
+        if (!validateDate(travelDate)) {
+            showToast('Travel date must be between 14 days and 2 years from today', 'error');
             return;
         }
     }
@@ -3256,7 +3335,7 @@ function calculateEMI() {
     
     const loan = amount - down;
     if (loan <= 0) {
-        alert('Loan amount must be positive');
+        showToast('Loan amount must be positive', 'error');
         return;
     }
     
@@ -3477,6 +3556,85 @@ function selectPopularPackage(dests, days) {
     updateMap();
     
     document.querySelector('.planner-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ==================== UTILITY FUNCTIONS ====================
+
+// Toast Notification System (replaces alert())
+let toastTimeout = null;
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toastNotification');
+    const icon = document.getElementById('toastIcon');
+    const msg = document.getElementById('toastMessage');
+
+    // Clear existing timeout
+    if (toastTimeout) clearTimeout(toastTimeout);
+
+    // Set icon based on type
+    const icons = {
+        error: '❌',
+        success: '✅',
+        warning: '⚠️',
+        info: 'ℹ️'
+    };
+
+    icon.textContent = icons[type] || icons.info;
+    msg.textContent = message;
+
+    // Remove old classes and add new
+    toast.className = `toast-notification ${type} show`;
+
+    // Auto hide after 4 seconds
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 4000);
+}
+
+// Sanitize HTML to prevent XSS
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// Escape HTML for safe insertion
+function escapeHTML(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// Enhanced Validation Functions
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function validatePhone(phone) {
+    // Bangladesh phone: 01XXXXXXXXX (11 digits)
+    const re = /^01[3-9]\d{8}$/;
+    return re.test(phone);
+}
+
+function validateName(name) {
+    // 2-100 characters, letters, spaces, hyphens, apostrophes only
+    if (name.length < 2 || name.length > 100) return false;
+    const re = /^[a-zA-Z\s'-]+$/;
+    return re.test(name);
+}
+
+function validateDate(dateString) {
+    const selected = new Date(dateString);
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(minDate.getDate() + 14); // Minimum 14 days ahead
+    const maxDate = new Date(today);
+    maxDate.setFullYear(maxDate.getFullYear() + 2); // Maximum 2 years ahead
+
+    return selected >= minDate && selected <= maxDate;
 }
 
 // ==================== CONSOLE ====================
