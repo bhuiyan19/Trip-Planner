@@ -1237,28 +1237,6 @@ input.error { border-color: var(--danger) !important; }
     font-size: 0.85rem;
 }
 
-/* ==================== WHATSAPP FLOAT ==================== */
-.whatsapp-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 30px;
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-    z-index: 1000;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-.whatsapp-float:hover { transform: scale(1.1); }
-
 /* ==================== SAVE INDICATOR ==================== */
 .save-indicator {
     position: fixed;
@@ -1298,7 +1276,7 @@ input.error { border-color: var(--danger) !important; }
 @media print {
     body { background: white; padding: 0; }
     .planner-card { box-shadow: none; }
-    .cta-section, .emi-calculator, .download-buttons, .rating-section, .whatsapp-float, .save-indicator, .offer-banner { display: none !important; }
+    .cta-section, .emi-calculator, .download-buttons, .rating-section, .save-indicator, .offer-banner { display: none !important; }
 }
 
 /* ==================== RESPONSIVE ==================== */
@@ -1315,7 +1293,6 @@ input.error { border-color: var(--danger) !important; }
     .download-buttons, .cta-section { flex-direction: column; }
     .offer-banner { font-size: 0.9rem; }
     .currency-converter { flex-direction: column; }
-    .whatsapp-float { width: 50px; height: 50px; font-size: 24px; }
     .price-body, .price-header { padding: 16px 20px; }
     .price-category, .price-row.discount, .price-row.subtotal { margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
     .price-total { margin: 20px -20px -16px; padding: 20px; }
