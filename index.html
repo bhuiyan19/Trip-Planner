@@ -1218,58 +1218,6 @@ input.error { border-color: var(--danger) !important; }
 
 .save-indicator.show { display: flex; animation: slideInUp 0.3s ease; }
 
-/* ==================== TOAST NOTIFICATION ==================== */
-.toast-notification {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: white;
-    color: var(--gray-800);
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 300px;
-    max-width: 500px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.toast-notification.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.toast-notification.error {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border-left: 4px solid var(--danger);
-}
-
-.toast-notification.success {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border-left: 4px solid var(--primary);
-}
-
-.toast-notification.warning {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-    border-left: 4px solid var(--warning);
-}
-
-.toast-notification .toast-icon {
-    font-size: 1.5rem;
-}
-
-.toast-notification .toast-message {
-    flex: 1;
-    font-weight: 500;
-}
-
 /* ==================== LOADING ==================== */
 .loading-spinner { text-align: center; padding: 60px; }
 .loading-spinner .spinner { font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; }
@@ -1298,24 +1246,19 @@ input.error { border-color: var(--danger) !important; }
     body { padding: 12px; }
     .header h1 { font-size: 1.8rem; }
     .planner-card { padding: 20px; }
-    .step-label { font-size: 0.85rem; } /* Improved from 0.7rem for better readability */
-    .step-number { width: 36px; height: 36px; font-size: 0.9rem; } /* Better touch target */
-    .destination-grid { grid-template-columns: 1fr; gap: 12px; }
-    .destination-card { min-height: 180px; } /* Flexible height for mobile */
-    .destination-name { font-size: 1.3rem; } /* Larger text on mobile */
-    .button-group { flex-direction: column; gap: 12px; }
-    .btn { width: 100%; min-height: 48px; } /* Minimum 48px for touch targets */
-    .interest-chip, .combo-chip { min-height: 44px; padding: 12px 18px; } /* Better touch target */
+    .step-label { font-size: 0.7rem; }
+    .destination-grid { grid-template-columns: 1fr; }
+    .button-group { flex-direction: column; }
+    .btn { width: 100%; }
     .trip-summary { grid-template-columns: repeat(2, 1fr); }
     .packages-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .download-buttons, .cta-section { flex-direction: column; }
-    .offer-banner { font-size: 0.9rem; padding: 14px 20px; }
+    .offer-banner { font-size: 0.9rem; }
     .currency-converter { flex-direction: column; }
     .price-body, .price-header { padding: 16px 20px; }
     .price-category, .price-row.discount, .price-row.subtotal { margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
     .price-total { margin: 20px -20px -16px; padding: 20px; }
     .price-note { margin-left: -20px; margin-right: -20px; }
-    .toast-notification { min-width: 280px; max-width: 90%; } /* Better mobile toast */
 }
 </style>
 </head>
@@ -1361,15 +1304,15 @@ input.error { border-color: var(--danger) !important; }
     </div>
 
     <!-- Interest Selector -->
-    <div class="interest-selector" id="interestSelector" role="group" aria-labelledby="interestTitle">
-        <h4 id="interestTitle">🎯 What type of experience are you looking for?</h4>
+    <div class="interest-selector" id="interestSelector">
+        <h4>🎯 What type of experience are you looking for?</h4>
         <div class="interest-chips">
-            <div class="interest-chip" onclick="selectInterest('beach', this)" role="button" tabindex="0" aria-label="Select beach and relaxation experience"><span class="icon" aria-hidden="true">🏖️</span> Beach & Relaxation</div>
-            <div class="interest-chip" onclick="selectInterest('adventure', this)" role="button" tabindex="0" aria-label="Select adventure experience"><span class="icon" aria-hidden="true">🏔️</span> Adventure</div>
-            <div class="interest-chip" onclick="selectInterest('culture', this)" role="button" tabindex="0" aria-label="Select culture and heritage experience"><span class="icon" aria-hidden="true">🏛️</span> Culture & Heritage</div>
-            <div class="interest-chip" onclick="selectInterest('shopping', this)" role="button" tabindex="0" aria-label="Select shopping and city experience"><span class="icon" aria-hidden="true">🛍️</span> Shopping & City</div>
-            <div class="interest-chip" onclick="selectInterest('romantic', this)" role="button" tabindex="0" aria-label="Select romantic or honeymoon experience"><span class="icon" aria-hidden="true">💑</span> Romantic / Honeymoon</div>
-            <div class="interest-chip" onclick="selectInterest('family', this)" role="button" tabindex="0" aria-label="Select family fun experience"><span class="icon" aria-hidden="true">👨‍👩‍👧‍👦</span> Family Fun</div>
+            <div class="interest-chip" onclick="selectInterest('beach', this)"><span class="icon">🏖️</span> Beach & Relaxation</div>
+            <div class="interest-chip" onclick="selectInterest('adventure', this)"><span class="icon">🏔️</span> Adventure</div>
+            <div class="interest-chip" onclick="selectInterest('culture', this)"><span class="icon">🏛️</span> Culture & Heritage</div>
+            <div class="interest-chip" onclick="selectInterest('shopping', this)"><span class="icon">🛍️</span> Shopping & City</div>
+            <div class="interest-chip" onclick="selectInterest('romantic', this)"><span class="icon">💑</span> Romantic / Honeymoon</div>
+            <div class="interest-chip" onclick="selectInterest('family', this)"><span class="icon">👨‍👩‍👧‍👦</span> Family Fun</div>
         </div>
     </div>
 
@@ -1540,8 +1483,8 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 2: Trip Details -->
         <div class="form-section" data-section="2">
             <div class="form-group">
-                <label for="duration">📅 Trip Duration</label>
-                <select id="duration" required onchange="updateDurationNote()" aria-label="Select trip duration in days">
+                <label>📅 Trip Duration</label>
+                <select id="duration" required onchange="updateDurationNote()">
                     <option value="">Select duration</option>
                     <option value="3">3 Days / 2 Nights</option>
                     <option value="4">4 Days / 3 Nights</option>
@@ -1555,22 +1498,22 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label for="adults">👥 Number of Travelers</label>
+                <label>👥 Number of Travelers</label>
                 <div class="form-row">
                     <div>
-                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required aria-label="Number of adults">
+                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required>
                         <small style="color: var(--gray-500);">Full price</small>
                     </div>
                     <div>
-                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0" aria-label="Number of children">
+                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0">
                         <small style="color: var(--primary);">50% discount on hotels</small>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="travelDate">🗓️ Preferred Travel Date</label>
-                <input type="date" id="travelDate" required onchange="checkPeakSeason2026()" aria-label="Select travel date">
+                <label>🗓️ Preferred Travel Date</label>
+                <input type="date" id="travelDate" required onchange="checkPeakSeason2026()">
                 <div class="peak-season-2026" id="peakSeason2026" style="display: none;">
                     <h5>🔥 Peak Season Dates 2026 (+25% hotel rates)</h5>
                     <div class="peak-dates">
@@ -1665,12 +1608,6 @@ input.error { border-color: var(--danger) !important; }
 
 <!-- Save Indicator -->
 <div class="save-indicator" id="saveIndicator">💾 Auto-saved</div>
-
-<!-- Toast Notification -->
-<div class="toast-notification" id="toastNotification">
-    <span class="toast-icon" id="toastIcon"></span>
-    <span class="toast-message" id="toastMessage"></span>
-</div>
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -2065,44 +2002,14 @@ window.onload = function() {
     startCountdown();
     initMap();
     sendHeightToParent();
-    initKeyboardAccessibility();
 };
 
-// ==================== KEYBOARD ACCESSIBILITY ====================
-function initKeyboardAccessibility() {
-    // Add keyboard support for interest chips
-    document.querySelectorAll('.interest-chip[role="button"]').forEach(chip => {
-        chip.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                chip.click();
-            }
-        });
-    });
-
-    // Add keyboard support for combo chips
-    document.querySelectorAll('.combo-chip').forEach(chip => {
-        chip.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                chip.click();
-            }
-        });
-    });
-}
-
 // ==================== COUNTDOWN TIMER ====================
-let countdownInterval = null;
 function startCountdown() {
     const countdownEl = document.getElementById('countdown');
-    if (!countdownEl) return;
-
-    // Clear existing interval
-    if (countdownInterval) clearInterval(countdownInterval);
-
     let hours = 23, mins = 59, secs = 59;
-
-    countdownInterval = setInterval(() => {
+    
+    setInterval(() => {
         secs--;
         if (secs < 0) { secs = 59; mins--; }
         if (mins < 0) { mins = 59; hours--; }
@@ -2111,51 +2018,30 @@ function startCountdown() {
     }, 1000);
 }
 
-// Cleanup countdown on page unload
-window.addEventListener('beforeunload', () => {
-    if (countdownInterval) clearInterval(countdownInterval);
-});
-
 // ==================== MAP ====================
 function initMap() {
-    try {
-        if (!window.L) {
-            console.error('Leaflet library not loaded');
-            document.getElementById('mapContainer').style.display = 'none';
-            return;
-        }
-        map = L.map('tripMap').setView([15, 100], 3);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap',
-            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-        }).addTo(map);
-    } catch (error) {
-        console.error('Map initialization failed:', error);
-        document.getElementById('mapContainer').innerHTML = '<p style="text-align: center; padding: 20px; color: var(--gray-500);">Map unavailable</p>';
-    }
+    map = L.map('tripMap').setView([15, 100], 3);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
 }
 
 function updateMap() {
-    if (!map) return;
-
-    try {
-        markers.forEach(m => map.removeLayer(m));
-        markers = [];
-
-        if (selectedDestinations.length === 0) {
-            document.getElementById('mapContainer').classList.remove('show');
-            return;
-        }
-
-        document.getElementById('mapContainer').classList.add('show');
-
-        const coords = [];
-        selectedDestinations.forEach((destName, index) => {
-            const dest = destinations[destName];
-            if (!dest || !dest.coordinates) return;
-
-            const marker = L.marker(dest.coordinates)
-                .addTo(map)
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+    
+    if (selectedDestinations.length === 0) {
+        document.getElementById('mapContainer').classList.remove('show');
+        return;
+    }
+    
+    document.getElementById('mapContainer').classList.add('show');
+    
+    const coords = [];
+    selectedDestinations.forEach((destName, index) => {
+        const dest = destinations[destName];
+        const marker = L.marker(dest.coordinates)
+            .addTo(map)
             .bindPopup(`<b>${index + 1}. ${dest.flag} ${destName}</b><br>Min: ${dest.minDays} days`);
         markers.push(marker);
         coords.push(dest.coordinates);
@@ -2291,7 +2177,7 @@ function toggleDestination(name) {
         card.classList.remove('selected');
     } else {
         if (selectedDestinations.length >= 4) {
-            showToast('Maximum 4 destinations can be selected!', 'warning');
+            alert('সর্বোচ্চ ৪টি destination নির্বাচন করতে পারবেন!');
             return;
         }
         selectedDestinations.push(name);
@@ -2615,26 +2501,21 @@ function updateAddonsTotal() {
 // ==================== NAVIGATION ====================
 function nextStep() {
     if (currentStep === 1 && selectedDestinations.length === 0) {
-        showToast('Please select at least one destination', 'error');
+        alert('অনুগ্রহ করে অন্তত একটি destination নির্বাচন করুন');
         return;
     }
-
+    
     if (currentStep === 2) {
         if (!document.getElementById('duration').value) {
-            showToast('Please select trip duration', 'error');
+            alert('Trip duration নির্বাচন করুন');
             return;
         }
         if (parseInt(document.getElementById('adults').value) < 1) {
-            showToast('At least 1 adult is required', 'error');
+            alert('কমপক্ষে ১ জন Adult থাকতে হবে');
             return;
         }
-        const travelDate = document.getElementById('travelDate').value;
-        if (!travelDate) {
-            showToast('Please select travel date', 'error');
-            return;
-        }
-        if (!validateDate(travelDate)) {
-            showToast('Travel date must be between 14 days and 2 years from today', 'error');
+        if (!document.getElementById('travelDate').value) {
+            alert('Travel date নির্বাচন করুন');
             return;
         }
     }
@@ -3375,7 +3256,7 @@ function calculateEMI() {
     
     const loan = amount - down;
     if (loan <= 0) {
-        showToast('Loan amount must be positive', 'error');
+        alert('Loan amount must be positive');
         return;
     }
     
@@ -3580,88 +3461,22 @@ function shareViaEmail() {
 }
 
 // ==================== POPULAR PACKAGE SELECTION ====================
-// Reuse selectCombo to avoid code duplication
 function selectPopularPackage(dests, days) {
-    selectCombo(dests, days);
-}
-
-// ==================== UTILITY FUNCTIONS ====================
-
-// Toast Notification System (replaces alert())
-let toastTimeout = null;
-function showToast(message, type = 'info') {
-    const toast = document.getElementById('toastNotification');
-    const icon = document.getElementById('toastIcon');
-    const msg = document.getElementById('toastMessage');
-
-    // Clear existing timeout
-    if (toastTimeout) clearTimeout(toastTimeout);
-
-    // Set icon based on type
-    const icons = {
-        error: '❌',
-        success: '✅',
-        warning: '⚠️',
-        info: 'ℹ️'
-    };
-
-    icon.textContent = icons[type] || icons.info;
-    msg.textContent = message;
-
-    // Remove old classes and add new
-    toast.className = `toast-notification ${type} show`;
-
-    // Auto hide after 4 seconds
-    toastTimeout = setTimeout(() => {
-        toast.classList.remove('show');
-    }, 4000);
-}
-
-// Sanitize HTML to prevent XSS
-function sanitizeHTML(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
-
-// Escape HTML for safe insertion
-function escapeHTML(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-// Enhanced Validation Functions
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-function validatePhone(phone) {
-    // Bangladesh phone: 01XXXXXXXXX (11 digits)
-    const re = /^01[3-9]\d{8}$/;
-    return re.test(phone);
-}
-
-function validateName(name) {
-    // 2-100 characters, letters, spaces, hyphens, apostrophes only
-    if (name.length < 2 || name.length > 100) return false;
-    const re = /^[a-zA-Z\s'-]+$/;
-    return re.test(name);
-}
-
-function validateDate(dateString) {
-    const selected = new Date(dateString);
-    const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(minDate.getDate() + 14); // Minimum 14 days ahead
-    const maxDate = new Date(today);
-    maxDate.setFullYear(maxDate.getFullYear() + 2); // Maximum 2 years ahead
-
-    return selected >= minDate && selected <= maxDate;
+    selectedDestinations = [];
+    document.querySelectorAll('.destination-card').forEach(card => card.classList.remove('selected'));
+    
+    dests.forEach(dest => {
+        selectedDestinations.push(dest);
+        const card = document.querySelector(`[data-name="${dest}"]`);
+        if (card) card.classList.add('selected');
+    });
+    
+    updateSelectedDisplay();
+    document.getElementById('duration').value = days;
+    updateDurationNote();
+    updateMap();
+    
+    document.querySelector('.planner-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ==================== CONSOLE ====================
