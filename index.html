@@ -1218,6 +1218,57 @@ input.error { border-color: var(--danger) !important; }
 
 .save-indicator.show { display: flex; animation: slideInUp 0.3s ease; }
 
+/* ==================== TOAST NOTIFICATION ==================== */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: white;
+    padding: 16px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 500px;
+    z-index: 10000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.toast-notification.error {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 4px solid var(--danger);
+}
+
+.toast-notification.success {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid var(--primary);
+}
+
+.toast-notification.warning {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-left: 4px solid var(--warning);
+}
+
+.toast-notification .toast-icon {
+    font-size: 1.5rem;
+}
+
+.toast-notification .toast-message {
+    flex: 1;
+    font-weight: 500;
+}
+
 /* ==================== LOADING ==================== */
 .loading-spinner { text-align: center; padding: 60px; }
 .loading-spinner .spinner { font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; }
@@ -1247,6 +1298,12 @@ input.error { border-color: var(--danger) !important; }
     .header h1 { font-size: 1.8rem; }
     .planner-card { padding: 20px; }
 
+    /* Header text - natural 2-line wrap */
+    .header p {
+        max-width: 100%;
+        word-spacing: 0.15em;
+    }
+
     /* Trust badges - 4 lines vertically */
     .trust-badges {
         display: flex;
@@ -1261,10 +1318,28 @@ input.error { border-color: var(--danger) !important; }
         font-size: 0.9rem;
     }
 
-    .step-label { font-size: 0.7rem; }
-    .destination-grid { grid-template-columns: 1fr; }
-    .button-group { flex-direction: column; }
-    .btn { width: 100%; }
+    /* Interest section heading - keep 1 line */
+    .interest-selector h4 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Interest chips - all single line */
+    .interest-chip {
+        white-space: nowrap;
+        min-height: 44px;
+        padding: 12px 18px;
+    }
+
+    .step-label { font-size: 0.85rem; }
+    .step-number { width: 36px; height: 36px; font-size: 0.9rem; }
+    .destination-grid { grid-template-columns: 1fr; gap: 12px; }
+    .destination-card { min-height: 180px; }
+    .destination-name { font-size: 1.3rem; }
+    .button-group { flex-direction: column; gap: 12px; }
+    .btn { width: 100%; min-height: 48px; }
+    .combo-chip { min-height: 44px; padding: 12px 18px; }
     .trip-summary { grid-template-columns: repeat(2, 1fr); }
     .packages-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .download-buttons, .cta-section { flex-direction: column; }
@@ -1274,6 +1349,7 @@ input.error { border-color: var(--danger) !important; }
     .price-category, .price-row.discount, .price-row.subtotal { margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
     .price-total { margin: 20px -20px -16px; padding: 20px; }
     .price-note { margin-left: -20px; margin-right: -20px; }
+    .toast-notification { min-width: 280px; max-width: 90%; }
 }
 </style>
 </head>
@@ -1498,8 +1574,8 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 2: Trip Details -->
         <div class="form-section" data-section="2">
             <div class="form-group">
-                <label>📅 Trip Duration</label>
-                <select id="duration" required onchange="updateDurationNote()">
+                <label for="duration">📅 Trip Duration</label>
+                <select id="duration" required onchange="updateDurationNote()" aria-label="Select trip duration in days">
                     <option value="">Select duration</option>
                     <option value="3">3 Days / 2 Nights</option>
                     <option value="4">4 Days / 3 Nights</option>
@@ -1513,14 +1589,14 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label>👥 Number of Travelers</label>
+                <label for="adults">👥 Number of Travelers</label>
                 <div class="form-row">
                     <div>
-                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required>
+                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required aria-label="Number of adults">
                         <small style="color: var(--gray-500);">Full price</small>
                     </div>
                     <div>
-                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0">
+                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0" aria-label="Number of children">
                         <small style="color: var(--primary);">50% discount on hotels</small>
                     </div>
                 </div>
@@ -1588,20 +1664,20 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 4: Contact -->
         <div class="form-section" data-section="4">
             <div class="form-group">
-                <label>👤 Your Name *</label>
-                <input type="text" id="userName" placeholder="Enter your full name" required>
+                <label for="userName">👤 Your Name *</label>
+                <input type="text" id="userName" placeholder="Enter your full name" required aria-label="Your full name" aria-describedby="nameError">
                 <div class="error-message" id="nameError">Please enter your name</div>
             </div>
 
             <div class="form-group">
-                <label>📱 Mobile Number *</label>
-                <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" required>
+                <label for="userPhone">📱 Mobile Number *</label>
+                <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" required aria-label="Your mobile number" aria-describedby="phoneError">
                 <div class="error-message" id="phoneError">Please enter a valid 11-digit number starting with 01</div>
             </div>
 
             <div class="form-group">
-                <label>✉️ Email (Optional)</label>
-                <input type="email" id="userEmail" placeholder="your@email.com">
+                <label for="userEmail">✉️ Email (Optional)</label>
+                <input type="email" id="userEmail" placeholder="your@email.com" aria-label="Your email address (optional)" aria-describedby="emailError">
                 <div class="error-message" id="emailError">Please enter a valid email</div>
             </div>
 
@@ -1623,6 +1699,12 @@ input.error { border-color: var(--danger) !important; }
 
 <!-- Save Indicator -->
 <div class="save-indicator" id="saveIndicator">💾 Auto-saved</div>
+
+<!-- Toast Notification -->
+<div class="toast-notification" id="toastNotification">
+    <span class="toast-icon" id="toastIcon"></span>
+    <span class="toast-message" id="toastMessage"></span>
+</div>
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -2020,11 +2102,17 @@ window.onload = function() {
 };
 
 // ==================== COUNTDOWN TIMER ====================
+let countdownInterval = null;
 function startCountdown() {
     const countdownEl = document.getElementById('countdown');
+    if (!countdownEl) return;
+
+    // Clear existing interval to prevent memory leak
+    if (countdownInterval) clearInterval(countdownInterval);
+
     let hours = 23, mins = 59, secs = 59;
-    
-    setInterval(() => {
+
+    countdownInterval = setInterval(() => {
         secs--;
         if (secs < 0) { secs = 59; mins--; }
         if (mins < 0) { mins = 59; hours--; }
@@ -2033,12 +2121,33 @@ function startCountdown() {
     }, 1000);
 }
 
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (countdownInterval) clearInterval(countdownInterval);
+});
+
 // ==================== MAP ====================
 function initMap() {
-    map = L.map('tripMap').setView([15, 100], 3);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+    try {
+        // Check if Leaflet library loaded
+        if (typeof L === 'undefined') {
+            console.error('Leaflet library not loaded');
+            document.getElementById('mapContainer').style.display = 'none';
+            return;
+        }
+
+        map = L.map('tripMap').setView([15, 100], 3);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' // Transparent fallback
+        }).addTo(map);
+    } catch (error) {
+        console.error('Map initialization failed:', error);
+        const mapContainer = document.getElementById('mapContainer');
+        if (mapContainer) {
+            mapContainer.innerHTML = '<p style="text-align:center;color:#64748b;padding:20px;">Map temporarily unavailable</p>';
+        }
+    }
 }
 
 function updateMap() {
@@ -2192,7 +2301,7 @@ function toggleDestination(name) {
         card.classList.remove('selected');
     } else {
         if (selectedDestinations.length >= 4) {
-            alert('সর্বোচ্চ ৪টি destination নির্বাচন করতে পারবেন!');
+            showToast('Maximum 4 destinations can be selected!', 'warning');
             return;
         }
         selectedDestinations.push(name);
@@ -2516,21 +2625,21 @@ function updateAddonsTotal() {
 // ==================== NAVIGATION ====================
 function nextStep() {
     if (currentStep === 1 && selectedDestinations.length === 0) {
-        alert('অনুগ্রহ করে অন্তত একটি destination নির্বাচন করুন');
+        showToast('Please select at least one destination', 'error');
         return;
     }
     
     if (currentStep === 2) {
         if (!document.getElementById('duration').value) {
-            alert('Trip duration নির্বাচন করুন');
+            showToast('Please select trip duration', 'error');
             return;
         }
         if (parseInt(document.getElementById('adults').value) < 1) {
-            alert('কমপক্ষে ১ জন Adult থাকতে হবে');
+            showToast('At least 1 adult traveler required', 'error');
             return;
         }
         if (!document.getElementById('travelDate').value) {
-            alert('Travel date নির্বাচন করুন');
+            showToast('Please select travel date', 'error');
             return;
         }
     }
@@ -2666,11 +2775,37 @@ function generateItinerary() {
     clearError('userName', 'nameError');
     clearError('userPhone', 'phoneError');
     clearError('userEmail', 'emailError');
-    
+
     let hasError = false;
-    if (!userName) { showError('userName', 'nameError'); hasError = true; }
-    if (!validatePhone(userPhone)) { showError('userPhone', 'phoneError'); hasError = true; }
-    if (userEmail && !validateEmail(userEmail)) { showError('userEmail', 'emailError'); hasError = true; }
+
+    // Validate name
+    if (!userName) {
+        showError('userName', 'nameError');
+        showToast('Please enter your name', 'error');
+        hasError = true;
+    } else if (!validateName(userName)) {
+        showError('userName', 'nameError');
+        showToast('Name should contain only letters (2-100 characters)', 'error');
+        hasError = true;
+    }
+
+    // Validate phone
+    if (!userPhone) {
+        showError('userPhone', 'phoneError');
+        showToast('Please enter your phone number', 'error');
+        hasError = true;
+    } else if (!validatePhone(userPhone)) {
+        showError('userPhone', 'phoneError');
+        showToast('Invalid phone format. Use: 01XXXXXXXXX (11 digits)', 'error');
+        hasError = true;
+    }
+
+    // Validate email (optional but must be valid if provided)
+    if (userEmail && !validateEmail(userEmail)) {
+        showError('userEmail', 'emailError');
+        showToast('Invalid email format', 'error');
+        hasError = true;
+    }
     
     if (hasError) return;
     
@@ -3271,7 +3406,7 @@ function calculateEMI() {
     
     const loan = amount - down;
     if (loan <= 0) {
-        alert('Loan amount must be positive');
+        showToast('Loan amount must be positive', 'error');
         return;
     }
     
@@ -3476,22 +3611,78 @@ function shareViaEmail() {
 }
 
 // ==================== POPULAR PACKAGE SELECTION ====================
+// Refactored to reduce code duplication
 function selectPopularPackage(dests, days) {
-    selectedDestinations = [];
-    document.querySelectorAll('.destination-card').forEach(card => card.classList.remove('selected'));
-    
-    dests.forEach(dest => {
-        selectedDestinations.push(dest);
-        const card = document.querySelector(`[data-name="${dest}"]`);
-        if (card) card.classList.add('selected');
-    });
-    
-    updateSelectedDisplay();
-    document.getElementById('duration').value = days;
-    updateDurationNote();
-    updateMap();
-    
-    document.querySelector('.planner-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    selectCombo(dests, days);
+}
+
+// ==================== UTILITY FUNCTIONS ====================
+
+// Toast Notification System (replaces alert())
+let toastTimeout = null;
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toastNotification');
+    const icon = document.getElementById('toastIcon');
+    const msg = document.getElementById('toastMessage');
+
+    // Clear existing timeout
+    if (toastTimeout) clearTimeout(toastTimeout);
+
+    // Set icon based on type
+    const icons = {
+        error: '❌',
+        success: '✅',
+        warning: '⚠️',
+        info: 'ℹ️'
+    };
+
+    icon.textContent = icons[type] || icons.info;
+    msg.textContent = message;
+
+    // Remove old classes and add new
+    toast.className = `toast-notification ${type} show`;
+
+    // Auto hide after 4 seconds
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 4000);
+}
+
+// Enhanced Validation Functions
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function validatePhone(phone) {
+    // Bangladesh phone: 01XXXXXXXXX (11 digits)
+    const re = /^01[3-9]\d{8}$/;
+    return re.test(phone);
+}
+
+function validateName(name) {
+    // 2-100 characters, letters, spaces, hyphens, apostrophes only
+    if (name.length < 2 || name.length > 100) return false;
+    const re = /^[a-zA-Z\s'-]+$/;
+    return re.test(name);
+}
+
+function validateDate(dateString) {
+    const selected = new Date(dateString);
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(minDate.getDate() + 14); // Minimum 14 days ahead
+    const maxDate = new Date(today);
+    maxDate.setFullYear(maxDate.getFullYear() + 2); // Maximum 2 years ahead
+
+    return selected >= minDate && selected <= maxDate;
+}
+
+// Sanitize HTML to prevent XSS
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }
 
 // ==================== CONSOLE ====================
