@@ -1218,6 +1218,58 @@ input.error { border-color: var(--danger) !important; }
 
 .save-indicator.show { display: flex; animation: slideInUp 0.3s ease; }
 
+/* ==================== TOAST NOTIFICATION ==================== */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: white;
+    color: var(--gray-800);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 500px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.toast-notification.error {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 4px solid var(--danger);
+}
+
+.toast-notification.success {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid var(--primary);
+}
+
+.toast-notification.warning {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-left: 4px solid var(--warning);
+}
+
+.toast-notification .toast-icon {
+    font-size: 1.5rem;
+}
+
+.toast-notification .toast-message {
+    flex: 1;
+    font-weight: 500;
+}
+
 /* ==================== LOADING ==================== */
 .loading-spinner { text-align: center; padding: 60px; }
 .loading-spinner .spinner { font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; }
@@ -1230,40 +1282,6 @@ input.error { border-color: var(--danger) !important; }
 @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
-
-/* ==================== LANGUAGE SELECTOR ==================== */
-.language-selector {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    background: white;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    display: flex;
-    gap: 0;
-    overflow: hidden;
-}
-
-.lang-btn {
-    padding: 10px 20px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s;
-    color: var(--gray-600);
-}
-
-.lang-btn:hover {
-    background: var(--gray-50);
-}
-
-.lang-btn.active {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-}
 
 /* ==================== FORM ROW ==================== */
 .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
@@ -1280,32 +1298,31 @@ input.error { border-color: var(--danger) !important; }
     body { padding: 12px; }
     .header h1 { font-size: 1.8rem; }
     .planner-card { padding: 20px; }
-    .step-label { font-size: 0.7rem; }
-    .destination-grid { grid-template-columns: 1fr; }
-    .button-group { flex-direction: column; }
-    .btn { width: 100%; }
+    .step-label { font-size: 0.85rem; } /* Improved from 0.7rem for better readability */
+    .step-number { width: 36px; height: 36px; font-size: 0.9rem; } /* Better touch target */
+    .destination-grid { grid-template-columns: 1fr; gap: 12px; }
+    .destination-card { min-height: 180px; } /* Flexible height for mobile */
+    .destination-name { font-size: 1.3rem; } /* Larger text on mobile */
+    .button-group { flex-direction: column; gap: 12px; }
+    .btn { width: 100%; min-height: 48px; } /* Minimum 48px for touch targets */
+    .interest-chip, .combo-chip { min-height: 44px; padding: 12px 18px; } /* Better touch target */
     .trip-summary { grid-template-columns: repeat(2, 1fr); }
     .packages-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .download-buttons, .cta-section { flex-direction: column; }
-    .offer-banner { font-size: 0.9rem; }
+    .offer-banner { font-size: 0.9rem; padding: 14px 20px; }
     .currency-converter { flex-direction: column; }
     .price-body, .price-header { padding: 16px 20px; }
     .price-category, .price-row.discount, .price-row.subtotal { margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
     .price-total { margin: 20px -20px -16px; padding: 20px; }
     .price-note { margin-left: -20px; margin-right: -20px; }
+    .toast-notification { min-width: 280px; max-width: 90%; } /* Better mobile toast */
 }
 </style>
 </head>
 <body>
 <div class="container">
-    <!-- Language Selector -->
-    <div class="language-selector">
-        <button class="lang-btn active" onclick="switchLanguage('en')" id="langEn">English</button>
-        <button class="lang-btn" onclick="switchLanguage('bn')" id="langBn">বাংলা</button>
-    </div>
-
     <!-- NO LOGO IN HEADER -->
-
+    
     <!-- Offer Banner -->
     <div class="offer-banner" id="offerBanner">
         <h3>🎁 Limited Time Offer - Book Now & Save!</h3>
@@ -1648,6 +1665,12 @@ input.error { border-color: var(--danger) !important; }
 
 <!-- Save Indicator -->
 <div class="save-indicator" id="saveIndicator">💾 Auto-saved</div>
+
+<!-- Toast Notification -->
+<div class="toast-notification" id="toastNotification">
+    <span class="toast-icon" id="toastIcon"></span>
+    <span class="toast-message" id="toastMessage"></span>
+</div>
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -2045,11 +2068,17 @@ window.onload = function() {
 };
 
 // ==================== COUNTDOWN TIMER ====================
+let countdownInterval = null;
 function startCountdown() {
     const countdownEl = document.getElementById('countdown');
+    if (!countdownEl) return;
+
+    // Clear existing interval
+    if (countdownInterval) clearInterval(countdownInterval);
+
     let hours = 23, mins = 59, secs = 59;
-    
-    setInterval(() => {
+
+    countdownInterval = setInterval(() => {
         secs--;
         if (secs < 0) { secs = 59; mins--; }
         if (mins < 0) { mins = 59; hours--; }
@@ -2057,6 +2086,11 @@ function startCountdown() {
         countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }, 1000);
 }
+
+// Cleanup countdown on page unload
+window.addEventListener('beforeunload', () => {
+    if (countdownInterval) clearInterval(countdownInterval);
+});
 
 // ==================== MAP ====================
 function initMap() {
@@ -2217,7 +2251,7 @@ function toggleDestination(name) {
         card.classList.remove('selected');
     } else {
         if (selectedDestinations.length >= 4) {
-            alert('সর্বোচ্চ ৪টি destination নির্বাচন করতে পারবেন!');
+            showToast('Maximum 4 destinations can be selected!', 'warning');
             return;
         }
         selectedDestinations.push(name);
@@ -2541,21 +2575,26 @@ function updateAddonsTotal() {
 // ==================== NAVIGATION ====================
 function nextStep() {
     if (currentStep === 1 && selectedDestinations.length === 0) {
-        alert('অনুগ্রহ করে অন্তত একটি destination নির্বাচন করুন');
+        showToast('Please select at least one destination', 'error');
         return;
     }
-    
+
     if (currentStep === 2) {
         if (!document.getElementById('duration').value) {
-            alert('Trip duration নির্বাচন করুন');
+            showToast('Please select trip duration', 'error');
             return;
         }
         if (parseInt(document.getElementById('adults').value) < 1) {
-            alert('কমপক্ষে ১ জন Adult থাকতে হবে');
+            showToast('At least 1 adult is required', 'error');
             return;
         }
-        if (!document.getElementById('travelDate').value) {
-            alert('Travel date নির্বাচন করুন');
+        const travelDate = document.getElementById('travelDate').value;
+        if (!travelDate) {
+            showToast('Please select travel date', 'error');
+            return;
+        }
+        if (!validateDate(travelDate)) {
+            showToast('Travel date must be between 14 days and 2 years from today', 'error');
             return;
         }
     }
@@ -3296,7 +3335,7 @@ function calculateEMI() {
     
     const loan = amount - down;
     if (loan <= 0) {
-        alert('Loan amount must be positive');
+        showToast('Loan amount must be positive', 'error');
         return;
     }
     
@@ -3519,133 +3558,84 @@ function selectPopularPackage(dests, days) {
     document.querySelector('.planner-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ==================== LANGUAGE TRANSLATION SYSTEM ====================
-let currentLang = localStorage.getItem('preferredLanguage') || 'en';
+// ==================== UTILITY FUNCTIONS ====================
 
-const translations = {
-    en: {
-        offerTitle: '🎁 Limited Time Offer - Book Now & Save!',
-        offerText: 'Get <strong>5% OFF</strong> on all land packages for Jan-Feb 2026 travel',
-        offerEnds: '⏰ Offer ends in:',
-        mainTitle: '✈️ Plan Your Perfect Trip 2026',
-        mainSubtitle: 'Create your dream itinerary - <strong style="color: var(--primary);">AI-Powered Smart Suggestions!</strong>',
-        mainDesc: '🌍 Real prices • Smart warnings • Interest-based recommendations',
-        reviews: 'reviews',
-        travelers: 'Happy travelers',
-        visaSuccess: 'Visa success',
-        emiAvailable: 'EMI Available',
-        currencyTitle: '💱 Live Exchange Rates (BDT) - Jan 2026:',
-        mapTitle: '🗺️ Your Trip Route',
-        interestTitle: '🎯 What type of experience are you looking for?',
-        beachRelaxation: 'Beach & Relaxation',
-        adventure: 'Adventure',
-        cultureHeritage: 'Culture & Heritage',
-        shoppingCity: 'Shopping & City',
-        romantic: 'Romantic / Honeymoon',
-        familyFun: 'Family Fun',
-        recommendedCombos: '💡 Recommended Combos',
-        popularPackages: '🔥 Best-Selling Packages 2026 (Land Only)',
-        updatedPrices: 'Updated prices for 2026 •',
-        earlyBird: '5% Early Bird Discount!',
-        perPerson: 'per person',
-        days: 'Days',
-        nights: 'Nights',
-        countries: 'Countries'
-    },
-    bn: {
-        offerTitle: '🎁 সীমিত সময়ের অফার - এখনই বুক করুন এবং সাশ্রয় করুন!',
-        offerText: 'জানুয়ারি-ফেব্রুয়ারি ২০২৬ ট্র্যাভেলের জন্য সব ল্যান্ড প্যাকেজে <strong>৫% ছাড়</strong> পান',
-        offerEnds: '⏰ অফার শেষ হবে:',
-        mainTitle: '✈️ আপনার নিখুঁত ট্রিপ পরিকল্পনা করুন ২০২৬',
-        mainSubtitle: 'আপনার স্বপ্নের ভ্রমণ পরিকল্পনা তৈরি করুন - <strong style="color: var(--primary);">AI-চালিত স্মার্ট পরামর্শ!</strong>',
-        mainDesc: '🌍 সঠিক দাম • স্মার্ট সতর্কতা • আগ্রহ-ভিত্তিক সুপারিশ',
-        reviews: 'রিভিউ',
-        travelers: 'খুশি ভ্রমণকারী',
-        visaSuccess: 'ভিসা সফলতা',
-        emiAvailable: 'EMI সুবিধা আছে',
-        currencyTitle: '💱 লাইভ এক্সচেঞ্জ রেট (BDT) - জানুয়ারি ২০২৬:',
-        mapTitle: '🗺️ আপনার ট্রিপ রুট',
-        interestTitle: '🎯 আপনি কোন ধরনের অভিজ্ঞতা খুঁজছেন?',
-        beachRelaxation: 'বিচ ও বিশ্রাম',
-        adventure: 'অ্যাডভেঞ্চার',
-        cultureHeritage: 'সংস্কৃতি ও ঐতিহ্য',
-        shoppingCity: 'শপিং ও শহর',
-        romantic: 'রোমান্টিক / হানিমুন',
-        familyFun: 'পারিবারিক মজা',
-        recommendedCombos: '💡 প্রস্তাবিত কম্বো',
-        popularPackages: '🔥 সেরা বিক্রয় প্যাকেজ ২০২৬ (শুধু ল্যান্ড)',
-        updatedPrices: '২০২৬ এর আপডেট দাম •',
-        earlyBird: '৫% আর্লি বার্ড ছাড়!',
-        perPerson: 'প্রতি ব্যক্তি',
-        days: 'দিন',
-        nights: 'রাত',
-        countries: 'দেশ'
-    }
-};
+// Toast Notification System (replaces alert())
+let toastTimeout = null;
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toastNotification');
+    const icon = document.getElementById('toastIcon');
+    const msg = document.getElementById('toastMessage');
 
-function switchLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('preferredLanguage', lang);
+    // Clear existing timeout
+    if (toastTimeout) clearTimeout(toastTimeout);
 
-    // Update button states
-    document.getElementById('langEn').classList.toggle('active', lang === 'en');
-    document.getElementById('langBn').classList.toggle('active', lang === 'bn');
+    // Set icon based on type
+    const icons = {
+        error: '❌',
+        success: '✅',
+        warning: '⚠️',
+        info: 'ℹ️'
+    };
 
-    const t = translations[lang];
+    icon.textContent = icons[type] || icons.info;
+    msg.textContent = message;
 
-    // Update offer banner
-    document.querySelector('.offer-banner h3').innerHTML = t.offerTitle;
-    document.querySelector('.offer-banner p').innerHTML = t.offerText;
-    document.querySelector('.offer-countdown').innerHTML = t.offerEnds + ' <span id="countdown">23:59:59</span>';
+    // Remove old classes and add new
+    toast.className = `toast-notification ${type} show`;
 
-    // Update header
-    document.querySelector('.header h1').innerHTML = t.mainTitle;
-    document.querySelector('.header p:nth-of-type(1)').innerHTML = t.mainSubtitle;
-    document.querySelector('.header p:nth-of-type(2)').innerHTML = t.mainDesc;
-
-    // Update trust badges
-    const trustBadges = document.querySelectorAll('.trust-badge');
-    if (trustBadges[0]) trustBadges[0].innerHTML = `⭐ <strong>4.8/5</strong> (400+ ${t.reviews})`;
-    if (trustBadges[1]) trustBadges[1].innerHTML = `✅ <strong>10,000+</strong> ${t.travelers}`;
-    if (trustBadges[2]) trustBadges[2].innerHTML = `🎯 <strong>90-98%</strong> ${t.visaSuccess}`;
-    if (trustBadges[3]) trustBadges[3].innerHTML = `💳 <strong>0%</strong> ${t.emiAvailable}`;
-
-    // Update currency converter
-    document.querySelector('.currency-converter h4').textContent = t.currencyTitle;
-
-    // Update map title
-    const mapTitle = document.querySelector('.map-container h3');
-    if (mapTitle) mapTitle.textContent = t.mapTitle;
-
-    // Update interest selector
-    document.querySelector('.interest-selector h4').textContent = t.interestTitle;
-    const interestChips = document.querySelectorAll('.interest-chip');
-    if (interestChips[0]) interestChips[0].innerHTML = `<span class="icon">🏖️</span> ${t.beachRelaxation}`;
-    if (interestChips[1]) interestChips[1].innerHTML = `<span class="icon">🏔️</span> ${t.adventure}`;
-    if (interestChips[2]) interestChips[2].innerHTML = `<span class="icon">🏛️</span> ${t.cultureHeritage}`;
-    if (interestChips[3]) interestChips[3].innerHTML = `<span class="icon">🛍️</span> ${t.shoppingCity}`;
-    if (interestChips[4]) interestChips[4].innerHTML = `<span class="icon">💑</span> ${t.romantic}`;
-    if (interestChips[5]) interestChips[5].innerHTML = `<span class="icon">👨‍👩‍👧‍👦</span> ${t.familyFun}`;
-
-    // Update recommended combos
-    document.querySelector('.recommended-combos h4').textContent = t.recommendedCombos;
-
-    // Update popular packages
-    document.querySelector('.popular-packages h2').textContent = t.popularPackages;
-    document.querySelector('.popular-packages p').innerHTML = `${t.updatedPrices} <span style="color: var(--secondary); font-weight: 600;">${t.earlyBird}</span>`;
-
-    // Restart countdown
-    startCountdown();
+    // Auto hide after 4 seconds
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 4000);
 }
 
-// Initialize language on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (currentLang === 'bn') {
-        document.getElementById('langEn').classList.remove('active');
-        document.getElementById('langBn').classList.add('active');
-        switchLanguage('bn');
-    }
-});
+// Sanitize HTML to prevent XSS
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// Escape HTML for safe insertion
+function escapeHTML(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// Enhanced Validation Functions
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function validatePhone(phone) {
+    // Bangladesh phone: 01XXXXXXXXX (11 digits)
+    const re = /^01[3-9]\d{8}$/;
+    return re.test(phone);
+}
+
+function validateName(name) {
+    // 2-100 characters, letters, spaces, hyphens, apostrophes only
+    if (name.length < 2 || name.length > 100) return false;
+    const re = /^[a-zA-Z\s'-]+$/;
+    return re.test(name);
+}
+
+function validateDate(dateString) {
+    const selected = new Date(dateString);
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(minDate.getDate() + 14); // Minimum 14 days ahead
+    const maxDate = new Date(today);
+    maxDate.setFullYear(maxDate.getFullYear() + 2); // Maximum 2 years ahead
+
+    return selected >= minDate && selected <= maxDate;
+}
 
 // ==================== CONSOLE ====================
 console.log(`
