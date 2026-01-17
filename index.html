@@ -1297,10 +1297,14 @@ input.error { border-color: var(--danger) !important; }
     body { padding: 12px; }
     .header h1 { font-size: 1.8rem; }
     .planner-card { padding: 20px; }
-    .step-label { font-size: 0.7rem; }
-    .destination-grid { grid-template-columns: 1fr; }
-    .button-group { flex-direction: column; }
-    .btn { width: 100%; }
+    .step-label { font-size: 0.85rem; } /* Improved from 0.7rem for better readability */
+    .step-number { width: 36px; height: 36px; font-size: 0.9rem; } /* Better touch target */
+    .destination-grid { grid-template-columns: 1fr; gap: 12px; }
+    .destination-card { min-height: 180px; } /* Flexible height for mobile */
+    .destination-name { font-size: 1.3rem; } /* Larger text on mobile */
+    .button-group { flex-direction: column; gap: 12px; }
+    .btn { width: 100%; min-height: 48px; } /* Minimum 48px for touch targets */
+    .interest-chip, .combo-chip { min-height: 44px; padding: 12px 18px; } /* Better touch target */
     .trip-summary { grid-template-columns: repeat(2, 1fr); }
     .packages-grid, .testimonials-grid { grid-template-columns: 1fr; }
     .download-buttons, .cta-section { flex-direction: column; }
@@ -1535,8 +1539,8 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 2: Trip Details -->
         <div class="form-section" data-section="2">
             <div class="form-group">
-                <label>📅 Trip Duration</label>
-                <select id="duration" required onchange="updateDurationNote()">
+                <label for="duration">📅 Trip Duration</label>
+                <select id="duration" required onchange="updateDurationNote()" aria-label="Select trip duration in days">
                     <option value="">Select duration</option>
                     <option value="3">3 Days / 2 Nights</option>
                     <option value="4">4 Days / 3 Nights</option>
@@ -1550,14 +1554,14 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label>👥 Number of Travelers</label>
+                <label for="adults">👥 Number of Travelers</label>
                 <div class="form-row">
                     <div>
-                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required>
+                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required aria-label="Number of adults">
                         <small style="color: var(--gray-500);">Full price</small>
                     </div>
                     <div>
-                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0">
+                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0" aria-label="Number of children">
                         <small style="color: var(--primary);">50% discount on hotels</small>
                     </div>
                 </div>
@@ -1625,20 +1629,20 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 4: Contact -->
         <div class="form-section" data-section="4">
             <div class="form-group">
-                <label>👤 Your Name *</label>
-                <input type="text" id="userName" placeholder="Enter your full name" required>
+                <label for="userName">👤 Your Name *</label>
+                <input type="text" id="userName" placeholder="Enter your full name" required aria-label="Your full name" aria-describedby="nameError">
                 <div class="error-message" id="nameError">Please enter your name</div>
             </div>
 
             <div class="form-group">
-                <label>📱 Mobile Number *</label>
-                <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" required>
+                <label for="userPhone">📱 Mobile Number *</label>
+                <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" required aria-label="Your mobile number" aria-describedby="phoneError">
                 <div class="error-message" id="phoneError">Please enter a valid 11-digit number starting with 01</div>
             </div>
 
             <div class="form-group">
-                <label>✉️ Email (Optional)</label>
-                <input type="email" id="userEmail" placeholder="your@email.com">
+                <label for="userEmail">✉️ Email (Optional)</label>
+                <input type="email" id="userEmail" placeholder="your@email.com" aria-label="Your email address (optional)" aria-describedby="emailError">
                 <div class="error-message" id="emailError">Please enter a valid email</div>
             </div>
 
@@ -2089,10 +2093,26 @@ window.addEventListener('beforeunload', () => {
 
 // ==================== MAP ====================
 function initMap() {
-    map = L.map('tripMap').setView([15, 100], 3);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+    try {
+        // Check if Leaflet library loaded
+        if (typeof L === 'undefined') {
+            console.error('Leaflet library not loaded');
+            document.getElementById('mapContainer').style.display = 'none';
+            return;
+        }
+
+        map = L.map('tripMap').setView([15, 100], 3);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' // Transparent fallback
+        }).addTo(map);
+    } catch (error) {
+        console.error('Map initialization failed:', error);
+        const mapContainer = document.getElementById('mapContainer');
+        if (mapContainer) {
+            mapContainer.innerHTML = '<p style="text-align:center;color:#64748b;padding:20px;">Map temporarily unavailable</p>';
+        }
+    }
 }
 
 function updateMap() {
@@ -2720,11 +2740,37 @@ function generateItinerary() {
     clearError('userName', 'nameError');
     clearError('userPhone', 'phoneError');
     clearError('userEmail', 'emailError');
-    
+
     let hasError = false;
-    if (!userName) { showError('userName', 'nameError'); hasError = true; }
-    if (!validatePhone(userPhone)) { showError('userPhone', 'phoneError'); hasError = true; }
-    if (userEmail && !validateEmail(userEmail)) { showError('userEmail', 'emailError'); hasError = true; }
+
+    // Validate name
+    if (!userName) {
+        showError('userName', 'nameError');
+        showToast('Please enter your name', 'error');
+        hasError = true;
+    } else if (!validateName(userName)) {
+        showError('userName', 'nameError');
+        showToast('Name should contain only letters (2-100 characters)', 'error');
+        hasError = true;
+    }
+
+    // Validate phone
+    if (!userPhone) {
+        showError('userPhone', 'phoneError');
+        showToast('Please enter your phone number', 'error');
+        hasError = true;
+    } else if (!validatePhone(userPhone)) {
+        showError('userPhone', 'phoneError');
+        showToast('Invalid phone format. Use: 01XXXXXXXXX (11 digits)', 'error');
+        hasError = true;
+    }
+
+    // Validate email (optional but must be valid if provided)
+    if (userEmail && !validateEmail(userEmail)) {
+        showError('userEmail', 'emailError');
+        showToast('Invalid email format', 'error');
+        hasError = true;
+    }
     
     if (hasError) return;
     
@@ -3530,22 +3576,9 @@ function shareViaEmail() {
 }
 
 // ==================== POPULAR PACKAGE SELECTION ====================
+// Refactored to reduce code duplication
 function selectPopularPackage(dests, days) {
-    selectedDestinations = [];
-    document.querySelectorAll('.destination-card').forEach(card => card.classList.remove('selected'));
-    
-    dests.forEach(dest => {
-        selectedDestinations.push(dest);
-        const card = document.querySelector(`[data-name="${dest}"]`);
-        if (card) card.classList.add('selected');
-    });
-    
-    updateSelectedDisplay();
-    document.getElementById('duration').value = days;
-    updateDurationNote();
-    updateMap();
-    
-    document.querySelector('.planner-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    selectCombo(dests, days);
 }
 
 // ==================== UTILITY FUNCTIONS ====================
@@ -3590,6 +3623,31 @@ function validatePhone(phone) {
     // Bangladesh phone: 01XXXXXXXXX (11 digits)
     const re = /^01[3-9]\d{8}$/;
     return re.test(phone);
+}
+
+function validateName(name) {
+    // 2-100 characters, letters, spaces, hyphens, apostrophes only
+    if (name.length < 2 || name.length > 100) return false;
+    const re = /^[a-zA-Z\s'-]+$/;
+    return re.test(name);
+}
+
+function validateDate(dateString) {
+    const selected = new Date(dateString);
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(minDate.getDate() + 14); // Minimum 14 days ahead
+    const maxDate = new Date(today);
+    maxDate.setFullYear(maxDate.getFullYear() + 2); // Maximum 2 years ahead
+
+    return selected >= minDate && selected <= maxDate;
+}
+
+// Sanitize HTML to prevent XSS
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }
 
 // ==================== CONSOLE ====================
