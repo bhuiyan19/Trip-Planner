@@ -1361,15 +1361,15 @@ input.error { border-color: var(--danger) !important; }
     </div>
 
     <!-- Interest Selector -->
-    <div class="interest-selector" id="interestSelector">
-        <h4>🎯 What type of experience are you looking for?</h4>
+    <div class="interest-selector" id="interestSelector" role="group" aria-labelledby="interestTitle">
+        <h4 id="interestTitle">🎯 What type of experience are you looking for?</h4>
         <div class="interest-chips">
-            <div class="interest-chip" onclick="selectInterest('beach', this)"><span class="icon">🏖️</span> Beach & Relaxation</div>
-            <div class="interest-chip" onclick="selectInterest('adventure', this)"><span class="icon">🏔️</span> Adventure</div>
-            <div class="interest-chip" onclick="selectInterest('culture', this)"><span class="icon">🏛️</span> Culture & Heritage</div>
-            <div class="interest-chip" onclick="selectInterest('shopping', this)"><span class="icon">🛍️</span> Shopping & City</div>
-            <div class="interest-chip" onclick="selectInterest('romantic', this)"><span class="icon">💑</span> Romantic / Honeymoon</div>
-            <div class="interest-chip" onclick="selectInterest('family', this)"><span class="icon">👨‍👩‍👧‍👦</span> Family Fun</div>
+            <div class="interest-chip" onclick="selectInterest('beach', this)" role="button" tabindex="0" aria-label="Select beach and relaxation experience"><span class="icon" aria-hidden="true">🏖️</span> Beach & Relaxation</div>
+            <div class="interest-chip" onclick="selectInterest('adventure', this)" role="button" tabindex="0" aria-label="Select adventure experience"><span class="icon" aria-hidden="true">🏔️</span> Adventure</div>
+            <div class="interest-chip" onclick="selectInterest('culture', this)" role="button" tabindex="0" aria-label="Select culture and heritage experience"><span class="icon" aria-hidden="true">🏛️</span> Culture & Heritage</div>
+            <div class="interest-chip" onclick="selectInterest('shopping', this)" role="button" tabindex="0" aria-label="Select shopping and city experience"><span class="icon" aria-hidden="true">🛍️</span> Shopping & City</div>
+            <div class="interest-chip" onclick="selectInterest('romantic', this)" role="button" tabindex="0" aria-label="Select romantic or honeymoon experience"><span class="icon" aria-hidden="true">💑</span> Romantic / Honeymoon</div>
+            <div class="interest-chip" onclick="selectInterest('family', this)" role="button" tabindex="0" aria-label="Select family fun experience"><span class="icon" aria-hidden="true">👨‍👩‍👧‍👦</span> Family Fun</div>
         </div>
     </div>
 
@@ -1540,8 +1540,8 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 2: Trip Details -->
         <div class="form-section" data-section="2">
             <div class="form-group">
-                <label>📅 Trip Duration</label>
-                <select id="duration" required onchange="updateDurationNote()">
+                <label for="duration">📅 Trip Duration</label>
+                <select id="duration" required onchange="updateDurationNote()" aria-label="Select trip duration in days">
                     <option value="">Select duration</option>
                     <option value="3">3 Days / 2 Nights</option>
                     <option value="4">4 Days / 3 Nights</option>
@@ -1555,22 +1555,22 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label>👥 Number of Travelers</label>
+                <label for="adults">👥 Number of Travelers</label>
                 <div class="form-row">
                     <div>
-                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required>
+                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required aria-label="Number of adults">
                         <small style="color: var(--gray-500);">Full price</small>
                     </div>
                     <div>
-                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0">
+                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0" aria-label="Number of children">
                         <small style="color: var(--primary);">50% discount on hotels</small>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>🗓️ Preferred Travel Date</label>
-                <input type="date" id="travelDate" required onchange="checkPeakSeason2026()">
+                <label for="travelDate">🗓️ Preferred Travel Date</label>
+                <input type="date" id="travelDate" required onchange="checkPeakSeason2026()" aria-label="Select travel date">
                 <div class="peak-season-2026" id="peakSeason2026" style="display: none;">
                     <h5>🔥 Peak Season Dates 2026 (+25% hotel rates)</h5>
                     <div class="peak-dates">
@@ -2065,7 +2065,31 @@ window.onload = function() {
     startCountdown();
     initMap();
     sendHeightToParent();
+    initKeyboardAccessibility();
 };
+
+// ==================== KEYBOARD ACCESSIBILITY ====================
+function initKeyboardAccessibility() {
+    // Add keyboard support for interest chips
+    document.querySelectorAll('.interest-chip[role="button"]').forEach(chip => {
+        chip.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                chip.click();
+            }
+        });
+    });
+
+    // Add keyboard support for combo chips
+    document.querySelectorAll('.combo-chip').forEach(chip => {
+        chip.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                chip.click();
+            }
+        });
+    });
+}
 
 // ==================== COUNTDOWN TIMER ====================
 let countdownInterval = null;
@@ -2094,28 +2118,44 @@ window.addEventListener('beforeunload', () => {
 
 // ==================== MAP ====================
 function initMap() {
-    map = L.map('tripMap').setView([15, 100], 3);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+    try {
+        if (!window.L) {
+            console.error('Leaflet library not loaded');
+            document.getElementById('mapContainer').style.display = 'none';
+            return;
+        }
+        map = L.map('tripMap').setView([15, 100], 3);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+        }).addTo(map);
+    } catch (error) {
+        console.error('Map initialization failed:', error);
+        document.getElementById('mapContainer').innerHTML = '<p style="text-align: center; padding: 20px; color: var(--gray-500);">Map unavailable</p>';
+    }
 }
 
 function updateMap() {
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
-    
-    if (selectedDestinations.length === 0) {
-        document.getElementById('mapContainer').classList.remove('show');
-        return;
-    }
-    
-    document.getElementById('mapContainer').classList.add('show');
-    
-    const coords = [];
-    selectedDestinations.forEach((destName, index) => {
-        const dest = destinations[destName];
-        const marker = L.marker(dest.coordinates)
-            .addTo(map)
+    if (!map) return;
+
+    try {
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+
+        if (selectedDestinations.length === 0) {
+            document.getElementById('mapContainer').classList.remove('show');
+            return;
+        }
+
+        document.getElementById('mapContainer').classList.add('show');
+
+        const coords = [];
+        selectedDestinations.forEach((destName, index) => {
+            const dest = destinations[destName];
+            if (!dest || !dest.coordinates) return;
+
+            const marker = L.marker(dest.coordinates)
+                .addTo(map)
             .bindPopup(`<b>${index + 1}. ${dest.flag} ${destName}</b><br>Min: ${dest.minDays} days`);
         markers.push(marker);
         coords.push(dest.coordinates);
@@ -3540,22 +3580,9 @@ function shareViaEmail() {
 }
 
 // ==================== POPULAR PACKAGE SELECTION ====================
+// Reuse selectCombo to avoid code duplication
 function selectPopularPackage(dests, days) {
-    selectedDestinations = [];
-    document.querySelectorAll('.destination-card').forEach(card => card.classList.remove('selected'));
-    
-    dests.forEach(dest => {
-        selectedDestinations.push(dest);
-        const card = document.querySelector(`[data-name="${dest}"]`);
-        if (card) card.classList.add('selected');
-    });
-    
-    updateSelectedDisplay();
-    document.getElementById('duration').value = days;
-    updateDurationNote();
-    updateMap();
-    
-    document.querySelector('.planner-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    selectCombo(dests, days);
 }
 
 // ==================== UTILITY FUNCTIONS ====================
