@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Multi-Destination Trip Planner 2026 - goFLY Limited</title>
-<meta name="description" content="Plan your perfect multi-destination trip. Thailand, Malaysia, Singapore & 11+ destinations. Instant land package quotes, 90-98% visa success, EMI available.">
+<meta name="description" content="Plan a multi-destination 2026 trip from Bangladesh. Thailand, Malaysia, Singapore, Bali, Dubai & more. Instant land-package quotes in BDT, 90-98% visa success, 0% EMI.">
 <link rel="canonical" href="https://goflybd.com/trip-planner/">
 <link rel="icon" href="https://goflybd.com/wp-content/uploads/2023/07/goFLY-logo.png.webp" type="image/webp">
 
@@ -25,7 +25,20 @@
   "name": "goFLY Limited",
   "url": "https://goflybd.com",
   "telephone": "+8809639203090",
-  "email": "support@goflybd.com"
+  "email": "support@goflybd.com",
+  "areaServed": "BD",
+  "priceRange": "৳৳",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "463"
+  },
+  "makesOffer": [
+    { "@type": "Offer", "name": "Thailand + Malaysia 7D", "priceCurrency": "BDT", "price": "42750" },
+    { "@type": "Offer", "name": "Bali + Singapore 8D", "priceCurrency": "BDT", "price": "58900" },
+    { "@type": "Offer", "name": "Maldives 4D", "priceCurrency": "BDT", "price": "80750" },
+    { "@type": "Offer", "name": "Dubai 5D", "priceCurrency": "BDT", "price": "55100" }
+  ]
 }
 </script>
 
@@ -255,6 +268,18 @@ body {
     right: 0;
     height: 2px;
     background: var(--gray-200);
+}
+
+.step-indicator::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    height: 2px;
+    width: var(--progress, 0%);
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    transition: width 0.4s ease;
+    z-index: 0;
 }
 
 .step {
@@ -1351,6 +1376,17 @@ input.error { border-color: var(--danger) !important; }
     .price-note { margin-left: -20px; margin-right: -20px; }
     .toast-notification { min-width: 280px; max-width: 90%; }
 }
+
+/* ==================== REDUCED MOTION ==================== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    .offer-banner, .discount-badge, .result-header::before { animation: none !important; }
+}
 </style>
 </head>
 <body>
@@ -1359,15 +1395,15 @@ input.error { border-color: var(--danger) !important; }
     
     <!-- Offer Banner -->
     <div class="offer-banner" id="offerBanner">
-        <h3>🎁 Limited Time Offer - Book Now & Save!</h3>
-        <p>Get <strong>5% OFF</strong> on all land packages for Jan-Feb 2026 travel</p>
-        <div class="offer-countdown">⏰ Offer ends in: <span id="countdown">23:59:59</span></div>
+        <h3>🎁 Limited Time Offer — Book Now & Save</h3>
+        <p>Get <strong>5% OFF</strong> on all land packages for travel through 2026</p>
+        <div class="offer-countdown">⏰ Offer ends in: <span id="countdown">--:--:--</span></div>
     </div>
 
     <div class="header">
         <h1>✈️ Plan Your Perfect Trip 2026</h1>
-        <p style="font-size: 1.25rem; margin-bottom: 16px;">Create your dream itinerary - <strong style="color: var(--primary);">AI-Powered Smart Suggestions!</strong></p>
-        <p style="font-size: 1rem; color: var(--gray-600);">🌍 Real prices • Smart warnings • Interest-based recommendations</p>
+        <p style="font-size: 1.25rem; margin-bottom: 16px;">Create your dream itinerary — <strong style="color: var(--primary);">smart, personalized suggestions</strong></p>
+        <p style="font-size: 1rem; color: var(--gray-600);">🌍 Real BDT prices • Duration warnings • Interest-based combos</p>
         <div class="trust-badges">
             <div class="trust-badge">⭐ <strong>4.8/5</strong> (463+ reviews)</div>
             <div class="trust-badge">✅ <strong>10,000+</strong> Happy travelers</div>
@@ -1378,7 +1414,7 @@ input.error { border-color: var(--danger) !important; }
 
     <!-- Currency Converter -->
     <div class="currency-converter">
-        <h4>💱 Live Exchange Rates (BDT) - Jan 2026:</h4>
+        <h4>💱 Indicative Exchange Rates (BDT) — May 2026:</h4>
         <div class="currency-rates">
             <div class="currency-rate"><span class="flag">🇺🇸</span><span>1 USD =</span><span class="rate">৳122</span></div>
             <div class="currency-rate"><span class="flag">🇸🇬</span><span>1 SGD =</span><span class="rate">৳95</span></div>
@@ -2098,6 +2134,7 @@ window.onload = function() {
     loadProgress();
     startCountdown();
     initMap();
+    updateStepProgress();
     sendHeightToParent();
 };
 
@@ -2107,18 +2144,26 @@ function startCountdown() {
     const countdownEl = document.getElementById('countdown');
     if (!countdownEl) return;
 
-    // Clear existing interval to prevent memory leak
     if (countdownInterval) clearInterval(countdownInterval);
 
-    let hours = 23, mins = 59, secs = 59;
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
 
-    countdownInterval = setInterval(() => {
-        secs--;
-        if (secs < 0) { secs = 59; mins--; }
-        if (mins < 0) { mins = 59; hours--; }
-        if (hours < 0) { hours = 23; }
-        countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }, 1000);
+    const tick = () => {
+        const diff = endOfDay - new Date();
+        if (diff <= 0) {
+            countdownEl.textContent = '00:00:00';
+            clearInterval(countdownInterval);
+            return;
+        }
+        const h = Math.floor(diff / 3.6e6);
+        const m = Math.floor((diff % 3.6e6) / 6e4);
+        const s = Math.floor((diff % 6e4) / 1000);
+        countdownEl.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    };
+
+    tick();
+    countdownInterval = setInterval(tick, 1000);
 }
 
 // Cleanup on page unload
@@ -2645,16 +2690,17 @@ function nextStep() {
     }
     
     saveProgress();
-    
+
     document.querySelector(`[data-section="${currentStep}"]`).classList.remove('active');
     document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
     document.querySelector(`[data-step="${currentStep}"]`).classList.add('completed');
-    
+
     currentStep++;
-    
+
     document.querySelector(`[data-section="${currentStep}"]`).classList.add('active');
     document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-    
+    updateStepProgress();
+
     if (currentStep >= 2) {
         document.getElementById('popularPackages').style.display = 'none';
         document.getElementById('testimonials').style.display = 'none';
@@ -2686,8 +2732,17 @@ function prevStep() {
     document.querySelector(`[data-section="${currentStep}"]`).classList.add('active');
     document.querySelector(`[data-step="${currentStep}"]`).classList.remove('completed');
     document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-    
+    updateStepProgress();
+
     window.scrollTo({ top: document.querySelector('.planner-card').offsetTop - 20, behavior: 'smooth' });
+}
+
+function updateStepProgress() {
+    const indicator = document.getElementById('stepIndicator');
+    if (!indicator) return;
+    const totalSteps = indicator.querySelectorAll('.step').length;
+    const pct = totalSteps > 1 ? ((currentStep - 1) / (totalSteps - 1)) * 100 : 0;
+    indicator.style.setProperty('--progress', pct + '%');
 }
 
 // ==================== VALIDATION ====================
@@ -3719,7 +3774,7 @@ async function submitToWordPress(tripData) {
         addons:       tripData.addons          || [],
         isPeakSeason: tripData.isPeakSeason    || false,
         specialNotes: tripData.specialNotes    || '',
-        browser:      navigator.userAgent ? navigator.userAgent.substring(0, 254) : 'unknown'
+        browser:      (navigator.userAgent || 'unknown').replace(/[^\x20-\x7E]/g, '').slice(0, 180)
     };
 
     try {
