@@ -3774,7 +3774,7 @@ async function submitToWordPress(tripData) {
         addons:       tripData.addons          || [],
         isPeakSeason: tripData.isPeakSeason    || false,
         specialNotes: tripData.specialNotes    || '',
-        browser:      navigator.userAgent ? navigator.userAgent.substring(0, 254) : 'unknown'
+        browser:      (navigator.userAgent || 'unknown').replace(/[^\x20-\x7E]/g, '').slice(0, 180)
     };
 
     try {
