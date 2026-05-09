@@ -1402,25 +1402,12 @@ input.error { border-color: var(--danger) !important; }
 
     <div class="header">
         <h1>✈️ Plan Your Perfect Trip 2026</h1>
-        <p style="font-size: 1.25rem; margin-bottom: 16px;">Create your dream itinerary — <strong style="color: var(--primary);">smart, personalized suggestions</strong></p>
-        <p style="font-size: 1rem; color: var(--gray-600);">🌍 Real BDT prices • Duration warnings • Interest-based combos</p>
+        <p style="font-size: 1.15rem; color: var(--gray-700); margin-bottom: 16px;">Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.</p>
         <div class="trust-badges">
             <div class="trust-badge">⭐ <strong>4.8/5</strong> (463+ reviews)</div>
             <div class="trust-badge">✅ <strong>10,000+</strong> Happy travelers</div>
             <div class="trust-badge">🎯 <strong>90-98%</strong> Visa success</div>
             <div class="trust-badge">💳 <strong>0% EMI</strong> Available</div>
-        </div>
-    </div>
-
-    <!-- Currency Converter -->
-    <div class="currency-converter">
-        <h4>💱 Indicative Exchange Rates (BDT) — May 2026:</h4>
-        <div class="currency-rates">
-            <div class="currency-rate"><span class="flag">🇺🇸</span><span>1 USD =</span><span class="rate">৳122</span></div>
-            <div class="currency-rate"><span class="flag">🇸🇬</span><span>1 SGD =</span><span class="rate">৳95</span></div>
-            <div class="currency-rate"><span class="flag">🇲🇾</span><span>1 MYR =</span><span class="rate">৳30</span></div>
-            <div class="currency-rate"><span class="flag">🇹🇭</span><span>1 THB =</span><span class="rate">৳3.89</span></div>
-            <div class="currency-rate"><span class="flag">🇦🇪</span><span>1 AED =</span><span class="rate">৳33</span></div>
         </div>
     </div>
 
@@ -1451,121 +1438,6 @@ input.error { border-color: var(--danger) !important; }
             <div class="combo-chip" onclick="selectCombo(['Singapore', 'Malaysia'], 7)">🇸🇬🇲🇾 Singapore + Malaysia (7D)</div>
             <div class="combo-chip trending" onclick="selectCombo(['Indonesia', 'Singapore'], 8)">🇮🇩🇸🇬 Bali + Singapore (8D)</div>
             <div class="combo-chip" onclick="selectCombo(['Vietnam', 'Thailand'], 10)">🇻🇳🇹🇭 Vietnam + Thailand (10D)</div>
-        </div>
-    </div>
-
-    <!-- Popular Packages -->
-    <div class="popular-packages" id="popularPackages">
-        <h2>🔥 Best-Selling Packages 2026 (Land Only)</h2>
-        <p style="text-align: center; color: var(--gray-600); margin-bottom: 24px;">Updated prices for 2026 • <span style="color: var(--secondary); font-weight: 600;">5% Early Bird Discount!</span></p>
-        <div class="packages-grid">
-            <div class="package-card trending" onclick="selectPopularPackage(['Thailand', 'Malaysia'], 7)">
-                <span class="package-badge">🏆 BEST SELLER</span>
-                <div class="package-title">🇹🇭🇲🇾 Thailand + Malaysia</div>
-                <div class="package-details"><span>📅 7 Days / 6 Nights</span><span>✈️ 2 Countries</span></div>
-                <div class="package-price"><span class="original">৳45,000</span>৳42,750 <small>per person</small></div>
-                <ul class="package-highlights">
-                    <li>Bangkok + Pattaya + Kuala Lumpur</li>
-                    <li>Grand Palace, Petronas Towers</li>
-                    <li>Hotel + Transfers included</li>
-                </ul>
-            </div>
-
-            <div class="package-card" onclick="selectPopularPackage(['Indonesia', 'Singapore'], 8)">
-                <span class="package-badge">🌴 2026 TRENDING</span>
-                <div class="package-title">🇮🇩🇸🇬 Bali + Singapore</div>
-                <div class="package-details"><span>📅 8 Days / 7 Nights</span><span>✈️ 2 Countries</span></div>
-                <div class="package-price"><span class="original">৳62,000</span>৳58,900 <small>per person</small></div>
-                <ul class="package-highlights">
-                    <li>Ubud + Seminyak + Singapore</li>
-                    <li>Rice terraces + Universal Studios</li>
-                    <li>Best of nature + city</li>
-                </ul>
-            </div>
-
-            <div class="package-card" onclick="selectPopularPackage(['Thailand'], 5)">
-                <span class="package-badge">💰 BUDGET PICK</span>
-                <div class="package-title">🇹🇭 Thailand Explorer</div>
-                <div class="package-details"><span>📅 5 Days / 4 Nights</span><span>✈️ 1 Country</span></div>
-                <div class="package-price"><span class="original">৳30,000</span>৳28,500 <small>per person</small></div>
-                <ul class="package-highlights">
-                    <li>Bangkok + Pattaya</li>
-                    <li>Temples, Beach & Nightlife</li>
-                    <li>Perfect first international trip</li>
-                </ul>
-            </div>
-
-            <div class="package-card" onclick="selectPopularPackage(['Maldives'], 4)">
-                <span class="package-badge">💑 HONEYMOON</span>
-                <div class="package-title">🇲🇻 Maldives Paradise</div>
-                <div class="package-details"><span>📅 4 Days / 3 Nights</span><span>🏝️ Resort Stay</span></div>
-                <div class="package-price"><span class="original">৳85,000</span>৳80,750 <small>per person</small></div>
-                <ul class="package-highlights">
-                    <li>Water Villa accommodation</li>
-                    <li>Snorkeling + Dolphin cruise</li>
-                    <li>Breakfast included</li>
-                </ul>
-            </div>
-
-            <div class="package-card" onclick="selectPopularPackage(['Thailand', 'Malaysia', 'Singapore'], 10)">
-                <span class="package-badge">🌍 GRAND TOUR</span>
-                <div class="package-title">🇹🇭🇲🇾🇸🇬 SEA Triple</div>
-                <div class="package-details"><span>📅 10 Days / 9 Nights</span><span>✈️ 3 Countries</span></div>
-                <div class="package-price"><span class="original">৳92,000</span>৳87,400 <small>per person</small></div>
-                <ul class="package-highlights">
-                    <li>Bangkok + KL + Singapore</li>
-                    <li>Complete SEA experience</li>
-                    <li>All visas by goFLY</li>
-                </ul>
-            </div>
-
-            <div class="package-card" onclick="selectPopularPackage(['Dubai'], 5)">
-                <span class="package-badge">👑 LUXURY</span>
-                <div class="package-title">🇦🇪 Dubai Deluxe</div>
-                <div class="package-details"><span>📅 5 Days / 4 Nights</span><span>✈️ 1 Country</span></div>
-                <div class="package-price"><span class="original">৳58,000</span>৳55,100 <small>per person</small></div>
-                <ul class="package-highlights">
-                    <li>Dubai + Abu Dhabi</li>
-                    <li>Burj Khalifa, Desert Safari</li>
-                    <li>4-star hotel included</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Testimonials -->
-    <div class="testimonials-section" id="testimonials">
-        <h2>💬 Recent Traveler Reviews (2024-25)</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-header">
-                    <div class="testimonial-avatar">RS</div>
-                    <div class="testimonial-info"><h4>Rafiq & Sabrina</h4><p>Dhaka • Verified Purchase</p></div>
-                </div>
-                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                <div class="testimonial-text">"Thailand + Malaysia was PERFECT for our honeymoon! The warning about 3 countries being too rushed was spot on."</div>
-                <div class="testimonial-trip">🇹🇭🇲🇾 Thailand + Malaysia • 7 Days • Nov 2024</div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="testimonial-header">
-                    <div class="testimonial-avatar">KH</div>
-                    <div class="testimonial-info"><h4>Kamal Hossain</h4><p>Chittagong • Verified Purchase</p></div>
-                </div>
-                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                <div class="testimonial-text">"The add-ons feature helped me customize exactly what I wanted. Desert Safari in Dubai was amazing!"</div>
-                <div class="testimonial-trip">🇦🇪 Dubai Deluxe • 5 Days • Dec 2024</div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="testimonial-header">
-                    <div class="testimonial-avatar">FA</div>
-                    <div class="testimonial-info"><h4>Fatima Akter</h4><p>Sylhet • Verified Purchase</p></div>
-                </div>
-                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                <div class="testimonial-text">"Bali + Singapore was the BEST combo! The trip planner suggested it when I selected 'Beach + City' interest."</div>
-                <div class="testimonial-trip">🇮🇩🇸🇬 Bali + Singapore • 8 Days • Jan 2025</div>
-            </div>
         </div>
     </div>
 
@@ -1730,6 +1602,133 @@ input.error { border-color: var(--danger) !important; }
 
         <!-- Results -->
         <div class="itinerary-result" id="itineraryResult"></div>
+    </div>
+
+    <!-- Popular Packages -->
+    <div class="popular-packages" id="popularPackages" style="margin-top: 40px;">
+        <h2>🔥 Or Pick a Ready-Made Package</h2>
+        <p style="text-align: center; color: var(--gray-600); margin-bottom: 24px;">Click any package to instantly load it in the planner above • <span style="color: var(--secondary); font-weight: 600;">5% Early Bird Discount!</span></p>
+        <div class="packages-grid">
+            <div class="package-card trending" onclick="selectPopularPackage(['Thailand', 'Malaysia'], 7)">
+                <span class="package-badge">🏆 BEST SELLER</span>
+                <div class="package-title">🇹🇭🇲🇾 Thailand + Malaysia</div>
+                <div class="package-details"><span>📅 7 Days / 6 Nights</span><span>✈️ 2 Countries</span></div>
+                <div class="package-price"><span class="original">৳45,000</span>৳42,750 <small>per person</small></div>
+                <ul class="package-highlights">
+                    <li>Bangkok + Pattaya + Kuala Lumpur</li>
+                    <li>Grand Palace, Petronas Towers</li>
+                    <li>Hotel + Transfers included</li>
+                </ul>
+            </div>
+
+            <div class="package-card" onclick="selectPopularPackage(['Indonesia', 'Singapore'], 8)">
+                <span class="package-badge">🌴 2026 TRENDING</span>
+                <div class="package-title">🇮🇩🇸🇬 Bali + Singapore</div>
+                <div class="package-details"><span>📅 8 Days / 7 Nights</span><span>✈️ 2 Countries</span></div>
+                <div class="package-price"><span class="original">৳62,000</span>৳58,900 <small>per person</small></div>
+                <ul class="package-highlights">
+                    <li>Ubud + Seminyak + Singapore</li>
+                    <li>Rice terraces + Universal Studios</li>
+                    <li>Best of nature + city</li>
+                </ul>
+            </div>
+
+            <div class="package-card" onclick="selectPopularPackage(['Thailand'], 5)">
+                <span class="package-badge">💰 BUDGET PICK</span>
+                <div class="package-title">🇹🇭 Thailand Explorer</div>
+                <div class="package-details"><span>📅 5 Days / 4 Nights</span><span>✈️ 1 Country</span></div>
+                <div class="package-price"><span class="original">৳30,000</span>৳28,500 <small>per person</small></div>
+                <ul class="package-highlights">
+                    <li>Bangkok + Pattaya</li>
+                    <li>Temples, Beach & Nightlife</li>
+                    <li>Perfect first international trip</li>
+                </ul>
+            </div>
+
+            <div class="package-card" onclick="selectPopularPackage(['Maldives'], 4)">
+                <span class="package-badge">💑 HONEYMOON</span>
+                <div class="package-title">🇲🇻 Maldives Paradise</div>
+                <div class="package-details"><span>📅 4 Days / 3 Nights</span><span>🏝️ Resort Stay</span></div>
+                <div class="package-price"><span class="original">৳85,000</span>৳80,750 <small>per person</small></div>
+                <ul class="package-highlights">
+                    <li>Water Villa accommodation</li>
+                    <li>Snorkeling + Dolphin cruise</li>
+                    <li>Breakfast included</li>
+                </ul>
+            </div>
+
+            <div class="package-card" onclick="selectPopularPackage(['Thailand', 'Malaysia', 'Singapore'], 10)">
+                <span class="package-badge">🌍 GRAND TOUR</span>
+                <div class="package-title">🇹🇭🇲🇾🇸🇬 SEA Triple</div>
+                <div class="package-details"><span>📅 10 Days / 9 Nights</span><span>✈️ 3 Countries</span></div>
+                <div class="package-price"><span class="original">৳92,000</span>৳87,400 <small>per person</small></div>
+                <ul class="package-highlights">
+                    <li>Bangkok + KL + Singapore</li>
+                    <li>Complete SEA experience</li>
+                    <li>All visas by goFLY</li>
+                </ul>
+            </div>
+
+            <div class="package-card" onclick="selectPopularPackage(['Dubai'], 5)">
+                <span class="package-badge">👑 LUXURY</span>
+                <div class="package-title">🇦🇪 Dubai Deluxe</div>
+                <div class="package-details"><span>📅 5 Days / 4 Nights</span><span>✈️ 1 Country</span></div>
+                <div class="package-price"><span class="original">৳58,000</span>৳55,100 <small>per person</small></div>
+                <ul class="package-highlights">
+                    <li>Dubai + Abu Dhabi</li>
+                    <li>Burj Khalifa, Desert Safari</li>
+                    <li>4-star hotel included</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testimonials-section" id="testimonials">
+        <h2>💬 What Travelers Are Saying</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">RS</div>
+                    <div class="testimonial-info"><h4>Rafiq & Sabrina</h4><p>Dhaka • Verified Purchase</p></div>
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">"Thailand + Malaysia was PERFECT for our honeymoon! The warning about 3 countries being too rushed was spot on."</div>
+                <div class="testimonial-trip">🇹🇭🇲🇾 Thailand + Malaysia • 7 Days • Nov 2024</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">KH</div>
+                    <div class="testimonial-info"><h4>Kamal Hossain</h4><p>Chittagong • Verified Purchase</p></div>
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">"The add-ons feature helped me customize exactly what I wanted. Desert Safari in Dubai was amazing!"</div>
+                <div class="testimonial-trip">🇦🇪 Dubai Deluxe • 5 Days • Dec 2024</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">FA</div>
+                    <div class="testimonial-info"><h4>Fatima Akter</h4><p>Sylhet • Verified Purchase</p></div>
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">"Bali + Singapore was the BEST combo! The trip planner suggested it when I selected 'Beach + City' interest."</div>
+                <div class="testimonial-trip">🇮🇩🇸🇬 Bali + Singapore • 8 Days • Jan 2025</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Currency Converter (reference info) -->
+    <div class="currency-converter" style="margin-top: 24px;">
+        <h4>💱 Indicative Exchange Rates (BDT) — May 2026:</h4>
+        <div class="currency-rates">
+            <div class="currency-rate"><span class="flag">🇺🇸</span><span>1 USD =</span><span class="rate">৳122</span></div>
+            <div class="currency-rate"><span class="flag">🇸🇬</span><span>1 SGD =</span><span class="rate">৳95</span></div>
+            <div class="currency-rate"><span class="flag">🇲🇾</span><span>1 MYR =</span><span class="rate">৳30</span></div>
+            <div class="currency-rate"><span class="flag">🇹🇭</span><span>1 THB =</span><span class="rate">৳3.89</span></div>
+            <div class="currency-rate"><span class="flag">🇦🇪</span><span>1 AED =</span><span class="rate">৳33</span></div>
+        </div>
     </div>
 </div>
 
