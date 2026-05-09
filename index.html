@@ -13,9 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://unpkg.com">
 
-<!-- Leaflet Map CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Leaflet Map CSS (deferred — loaded on first destination select) -->
+<link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <!-- Schema.org -->
 <script type="application/ld+json">
@@ -191,7 +190,7 @@ body {
 
 /* ==================== INTEREST SELECTOR ==================== */
 .interest-selector {
-    background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+    background: var(--gray-50);
     border-radius: var(--radius-lg);
     padding: 20px;
     margin-bottom: 20px;
@@ -221,7 +220,7 @@ body {
 
 /* ==================== COMBO RECOMMENDATIONS ==================== */
 .recommended-combos {
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    background: var(--gray-50);
     border-radius: var(--radius-lg);
     padding: 20px;
     margin: 20px 0;
@@ -455,7 +454,7 @@ body {
 
 /* ==================== ADDONS ==================== */
 .addons-section {
-    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    background: white;
     border-radius: var(--radius-lg);
     padding: 24px;
     margin: 24px 0;
@@ -648,15 +647,7 @@ input.error { border-color: var(--danger) !important; }
     100% { transform: rotate(360deg); }
 }
 
-.result-header .emoji-bg {
-    position: absolute;
-    font-size: 4rem;
-    opacity: 0.1;
-}
-
-.result-header .emoji-bg:nth-child(1) { top: 10%; left: 5%; }
-.result-header .emoji-bg:nth-child(2) { top: 20%; right: 10%; }
-.result-header .emoji-bg:nth-child(3) { bottom: 10%; left: 15%; }
+.result-header .emoji-bg { display: none; }
 
 .result-header h2 {
     font-family: 'Cantora One', cursive;
@@ -1377,6 +1368,81 @@ input.error { border-color: var(--danger) !important; }
     .toast-notification { min-width: 280px; max-width: 90%; }
 }
 
+/* ==================== SMALL PHONES ==================== */
+@media (max-width: 480px) {
+    body { padding: 8px; }
+    .planner-card { padding: 16px; border-radius: 16px; }
+    .header h1 { font-size: 1.55rem; }
+    .step-number { width: 32px; height: 32px; font-size: 0.85rem; }
+    .step-label { font-size: 0.75rem; }
+    .destination-card { height: 160px; }
+    .destination-name { font-size: 1.15rem; }
+    .interest-chip, .combo-chip { padding: 10px 14px; font-size: 0.85rem; min-height: 44px; }
+    .currency-rate { font-size: 0.8rem; padding: 6px 10px; }
+    .currency-rates { gap: 8px; }
+    .summary-item { padding: 16px 12px; }
+    .summary-item .value { font-size: 1.2rem; }
+    .summary-item .icon { font-size: 1.5rem; }
+    .result-header { padding: 32px 20px; }
+    .result-destinations { font-size: 1.1rem; }
+    .result-destinations .country { padding: 6px 12px; }
+}
+
+/* ==================== A11Y FOCUS ==================== */
+:focus { outline: none; }
+:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--radius);
+}
+.interest-chip:focus-visible,
+.combo-chip:focus-visible,
+.budget-option:focus-visible,
+.addon-item:focus-visible,
+.destination-card:focus-visible,
+.package-card:focus-visible,
+.rating-star:focus-visible,
+.remove-btn:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+[role="button"] { cursor: pointer; }
+
+/* ==================== STICKY MOBILE CTA ==================== */
+.sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+    padding: 12px 16px;
+    display: none;
+    gap: 10px;
+    z-index: 50;
+    border-top: 1px solid var(--gray-200);
+}
+.sticky-cta a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 12px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.95rem;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.sticky-cta .sticky-whatsapp { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: white; }
+.sticky-cta .sticky-call { background: var(--primary); color: white; }
+@media (max-width: 768px) {
+    .sticky-cta.show { display: flex; }
+    body.has-sticky-cta { padding-bottom: 88px; }
+}
+
 /* ==================== REDUCED MOTION ==================== */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -1574,19 +1640,19 @@ input.error { border-color: var(--danger) !important; }
             <div class="form-group">
                 <label for="userName">👤 Your Name *</label>
                 <input type="text" id="userName" placeholder="Enter your full name" required aria-label="Your full name" aria-describedby="nameError">
-                <div class="error-message" id="nameError">Please enter your name</div>
+                <div class="error-message" id="nameError" role="alert" aria-live="polite">Please enter your name</div>
             </div>
 
             <div class="form-group">
                 <label for="userPhone">📱 Mobile Number *</label>
-                <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" required aria-label="Your mobile number" aria-describedby="phoneError">
-                <div class="error-message" id="phoneError">Please enter a valid 11-digit number starting with 01</div>
+                <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" inputmode="numeric" pattern="01[3-9][0-9]{8}" required aria-label="Your mobile number" aria-describedby="phoneError">
+                <div class="error-message" id="phoneError" role="alert" aria-live="polite">Please enter a valid 11-digit number starting with 01</div>
             </div>
 
             <div class="form-group">
                 <label for="userEmail">✉️ Email (Optional)</label>
                 <input type="email" id="userEmail" placeholder="your@email.com" aria-label="Your email address (optional)" aria-describedby="emailError">
-                <div class="error-message" id="emailError">Please enter a valid email</div>
+                <div class="error-message" id="emailError" role="alert" aria-live="polite">Please enter a valid email</div>
             </div>
 
             <div class="form-group">
@@ -1741,8 +1807,7 @@ input.error { border-color: var(--danger) !important; }
     <span class="toast-message" id="toastMessage"></span>
 </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet JS loaded lazily by ensureLeaflet() on first destination select -->
 
 <script>
 // ==================== TRAVEL TIME BETWEEN COUNTRIES (NEW!) ====================
@@ -2132,10 +2197,55 @@ window.onload = function() {
     setMinDate();
     loadProgress();
     startCountdown();
-    initMap();
     updateStepProgress();
+    enableA11yClickables();
     sendHeightToParent();
 };
+
+// ==================== LEAFLET LAZY LOADER ====================
+let leafletPromise = null;
+function ensureLeaflet() {
+    if (leafletPromise) return leafletPromise;
+    leafletPromise = new Promise((resolve, reject) => {
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        document.head.appendChild(css);
+        const js = document.createElement('script');
+        js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        js.onload = () => { initMap(); resolve(); };
+        js.onerror = reject;
+        document.head.appendChild(js);
+    });
+    return leafletPromise;
+}
+
+// ==================== A11Y: make div[onclick] keyboard reachable ====================
+function enableA11yClickables() {
+    const selectors = '.interest-chip,.combo-chip,.budget-option,.addon-item,.destination-card,.package-card,.rating-star,.remove-btn';
+    const promote = (el) => {
+        if (el.dataset._a11y) return;
+        el.dataset._a11y = '1';
+        if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+        if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                el.click();
+            }
+        });
+    };
+    document.querySelectorAll(selectors).forEach(promote);
+    // observe future DOM (destination grid, addons, result page) for new clickables
+    const obs = new MutationObserver((mutations) => {
+        mutations.forEach(m => m.addedNodes.forEach(n => {
+            if (n.nodeType !== 1) return;
+            if (n.matches && n.matches(selectors)) promote(n);
+            if (n.querySelectorAll) n.querySelectorAll(selectors).forEach(promote);
+        }));
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+}
 
 // ==================== COUNTDOWN TIMER ====================
 let countdownInterval = null;
@@ -2195,35 +2305,40 @@ function initMap() {
 }
 
 function updateMap() {
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
-    
     if (selectedDestinations.length === 0) {
-        document.getElementById('mapContainer').classList.remove('show');
+        const mc = document.getElementById('mapContainer');
+        if (mc) mc.classList.remove('show');
         return;
     }
-    
-    document.getElementById('mapContainer').classList.add('show');
-    
-    const coords = [];
-    selectedDestinations.forEach((destName, index) => {
-        const dest = destinations[destName];
-        const marker = L.marker(dest.coordinates)
-            .addTo(map)
-            .bindPopup(`<b>${index + 1}. ${dest.flag} ${destName}</b><br>Min: ${dest.minDays} days`);
-        markers.push(marker);
-        coords.push(dest.coordinates);
+    ensureLeaflet().then(() => {
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+
+        document.getElementById('mapContainer').classList.add('show');
+
+        const coords = [];
+        selectedDestinations.forEach((destName, index) => {
+            const dest = destinations[destName];
+            const marker = L.marker(dest.coordinates)
+                .addTo(map)
+                .bindPopup(`<b>${index + 1}. ${dest.flag} ${destName}</b><br>Min: ${dest.minDays} days`);
+            markers.push(marker);
+            coords.push(dest.coordinates);
+        });
+
+        if (coords.length > 1) {
+            const polyline = L.polyline(coords, {color: '#10b981', weight: 3, dashArray: '10, 10'}).addTo(map);
+            markers.push(polyline);
+            map.fitBounds(polyline.getBounds(), {padding: [50, 50]});
+        } else if (coords.length === 1) {
+            map.setView(coords[0], 5);
+        }
+
+        setTimeout(() => map.invalidateSize(), 100);
+    }).catch(() => {
+        const mc = document.getElementById('mapContainer');
+        if (mc) mc.classList.remove('show');
     });
-    
-    if (coords.length > 1) {
-        const polyline = L.polyline(coords, {color: '#10b981', weight: 3, dashArray: '10, 10'}).addTo(map);
-        markers.push(polyline);
-        map.fitBounds(polyline.getBounds(), {padding: [50, 50]});
-    } else if (coords.length === 1) {
-        map.setView(coords[0], 5);
-    }
-    
-    setTimeout(() => map.invalidateSize(), 100);
 }
 
 // ==================== INTEREST SELECTION ====================
@@ -3194,116 +3309,63 @@ function displayItinerary() {
     
     // FINAL HTML
     document.getElementById('itineraryResult').innerHTML = `
-        <!-- Improved Header -->
+        <!-- Result Header -->
         <div class="result-header">
-            <span class="emoji-bg">✈️</span>
-            <span class="emoji-bg">🌴</span>
-            <span class="emoji-bg">🏖️</span>
-            
-            <h2>Your ${totalDays}-Day Adventure Awaits! 🎉</h2>
-            
+            <h2>Your ${totalDays}-Day Trip is Ready</h2>
+
             <div class="result-destinations">
                 ${selectedDestinations.map(d => `<span class="country">${destinations[d].flag} ${d}</span>`).join('')}
             </div>
-            
+
             <div class="result-meta">
-                <span>📅 ${totalDays} Days / ${nights} Nights</span>
+                <span>📅 ${totalDays}D / ${nights}N</span>
                 <span>👥 ${tripData.adults} Adults${tripData.children > 0 ? ` + ${tripData.children} Children` : ''}</span>
                 <span>🗓️ ${formatDateShort(tripData.travelDate, 0)}</span>
             </div>
-            
-            <div class="discount-badge">🎁 5% Early Bird Discount Applied!</div>
+
+            <div class="discount-badge">5% Early Bird Discount Applied</div>
         </div>
-        
+
         <!-- Trip Summary -->
         <div class="trip-summary">
             <div class="summary-item">
-                <div class="icon">🌍</div>
                 <div class="label">Countries</div>
                 <div class="value">${selectedDestinations.length}</div>
             </div>
             <div class="summary-item">
-                <div class="icon">📅</div>
                 <div class="label">Duration</div>
                 <div class="value">${totalDays}D/${nights}N</div>
             </div>
             <div class="summary-item">
-                <div class="icon">👥</div>
                 <div class="label">Travelers</div>
                 <div class="value">${totalTravelers}</div>
             </div>
             <div class="summary-item">
-                <div class="icon">🎯</div>
                 <div class="label">Tours</div>
                 <div class="value">${selectedAddons.length}</div>
             </div>
             <div class="summary-item highlight">
-                <div class="icon">💰</div>
                 <div class="label">Total Cost</div>
                 <div class="value">৳${costs.grandTotal.toLocaleString()}</div>
             </div>
         </div>
-        
-        <!-- What's Included -->
-        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 16px; padding: 24px; margin-bottom: 24px; border-left: 4px solid var(--primary);">
-            <h4 style="color: var(--primary-dark); margin-bottom: 16px; font-size: 1.2rem;">✅ What's Included in Base Package</h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                <div>
-                    <h5 style="color: var(--primary); margin-bottom: 8px;">🏨 Accommodation</h5>
-                    <ul style="list-style: none; font-size: 0.9rem; color: var(--gray-700);">
-                        <li>✅ ${tripData.budget === 'economy' ? '3★' : tripData.budget === 'premium' ? '5★' : '4★'} Hotels</li>
-                        <li>✅ Daily Breakfast</li>
-                        <li>✅ ${nights} Nights Stay</li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 style="color: var(--primary); margin-bottom: 8px;">🚗 Transfers</h5>
-                                        <ul style="list-style: none; font-size: 0.9rem; color: var(--gray-700);">
-                        <li>✅ Airport Pickup & Drop</li>
-                        <li>✅ All Inter-city Transfers</li>
-                        <li>✅ AC Private Vehicle</li>
-                    </ul>
-                </div>
+
+        <!-- Per Person + Primary CTA (the conversion moment) -->
+        <div style="background: white; border: 2px solid var(--primary); padding: 28px 24px; border-radius: 16px; margin-bottom: 24px; text-align: center;">
+            <p style="color: var(--gray-600); margin-bottom: 6px; font-size: 0.95rem;">Per person (${totalTravelers} travelers)</p>
+            <p style="font-size: 2.4rem; font-weight: 700; color: var(--primary); line-height: 1; margin-bottom: 4px;">৳${Math.round(costs.grandTotal / totalTravelers).toLocaleString()}</p>
+            <p style="color: var(--gray-500); font-size: 0.85rem; margin-bottom: 20px;">Hotel + Breakfast + Transfers${costs.totalCityTours > 0 ? ' + Selected Tours' : ''}</p>
+            <div class="cta-section" style="margin-top: 0;">
+                <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="cta-button cta-whatsapp" target="_blank" rel="noopener">💬 WhatsApp Quote</a>
+                <a href="tel:+8809639203090" class="cta-button cta-call">📞 Call Now</a>
+                <a href="mailto:support@goflybd.com?subject=Trip%20Quote%20${encodeURIComponent(destinationNames)}" class="cta-button cta-email">✉️ Email</a>
             </div>
         </div>
-        
-        <!-- What's NOT Included -->
-        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-radius: 16px; padding: 24px; margin-bottom: 24px; border-left: 4px solid var(--warning);">
-            <h4 style="color: #92400e; margin-bottom: 12px; font-size: 1.1rem;">❌ Not Included (Book Separately)</h4>
-            <div style="display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.95rem; color: #92400e;">
-                <span>✈️ Flights</span>
-                <span>🛂 Visa Fee</span>
-                <span>🍽️ Lunch & Dinner</span>
-                <span>🎯 City Tours (optional)</span>
-                <span>💼 Travel Insurance</span>
-            </div>
-        </div>
-        
-        <!-- Flight Notice -->
-        <div class="flight-notice">
-            <h3>✈️ Flights & Visa - Get Complete Quote!</h3>
-            <p>Our IATA certified experts get exclusive airfare deals. Save ৳5,000 - ৳20,000 on flights!</p>
-            <div class="flight-cta">
-                <a href="https://wa.me/8801713289171?text=${whatsappMessage}" target="_blank" style="background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: white;">
-                    💬 Get Full Quote
-                </a>
-                <a href="tel:+8809639203090" style="background: var(--secondary); color: white;">
-                    📞 09639-203090
-                </a>
-            </div>
-        </div>
-        
-        <!-- Download Buttons -->
-        <div class="download-buttons">
-            <button onclick="downloadPDF()" class="btn-download">📥 Download PDF</button>
-            <button onclick="window.print()" class="btn-download" style="background: var(--primary);">🖨️ Print</button>
-            <button onclick="shareViaEmail()" class="btn-download" style="background: var(--secondary);">📤 Share</button>
-        </div>
-        
+
         <!-- Day-by-Day Itinerary -->
-        <h3 style="font-size: 1.5rem; margin: 32px 0 20px; display: flex; align-items: center; gap: 10px;">
-            📅 Day-by-Day Itinerary
-            <span style="font-size: 0.9rem; color: var(--gray-500); font-weight: 400;">(Flexible timings)</span>
+        <h3 style="font-size: 1.4rem; margin: 32px 0 20px; display: flex; align-items: center; gap: 10px;">
+            Day-by-Day Itinerary
+            <span style="font-size: 0.85rem; color: var(--gray-500); font-weight: 400;">(Flexible timings)</span>
         </h3>
         ${daysHtml}
         
@@ -3360,36 +3422,48 @@ function displayItinerary() {
             </div>
         </div>
         
-        <!-- Per Person Breakdown -->
-        <div style="background: var(--gray-50); padding: 20px; border-radius: 12px; margin: 24px 0; text-align: center;">
-            <p style="color: var(--gray-600); margin-bottom: 8px;">Per Person Cost (${totalTravelers} travelers)</p>
-            <p style="font-size: 2rem; font-weight: 700; color: var(--primary);">৳${Math.round(costs.grandTotal / totalTravelers).toLocaleString()}</p>
-            <p style="color: var(--gray-500); font-size: 0.9rem;">Includes: Hotel + Breakfast + Transfers${costs.totalCityTours > 0 ? ' + Selected Tours' : ''}</p>
-        </div>
-        
-        <!-- Visa Links -->
-        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
-            <h3 style="color: #92400e; margin-bottom: 16px;">📋 Visa Processing (90-98% Success Rate)</h3>
-            <p style="color: #92400e; margin-bottom: 16px;">goFLY handles visa processing with expert support. Click to learn more:</p>
+        <!-- What's included / not included (compact) -->
+        <details style="background: var(--gray-50); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; border-left: 4px solid var(--primary);">
+            <summary style="cursor: pointer; font-weight: 600; color: var(--gray-800);">What's included &amp; what's not</summary>
+            <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; font-size: 0.9rem;">
+                <div>
+                    <strong style="color: var(--primary);">Included</strong>
+                    <ul style="list-style: none; margin-top: 6px; color: var(--gray-700);">
+                        <li>${tripData.budget === 'economy' ? '3★' : tripData.budget === 'premium' ? '5★' : '4★'} Hotels — ${nights} nights</li>
+                        <li>Daily breakfast</li>
+                        <li>Airport pickup &amp; drop</li>
+                        <li>All inter-city AC transfers</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong style="color: var(--warning);">Not included</strong>
+                    <ul style="list-style: none; margin-top: 6px; color: var(--gray-700);">
+                        <li>Flights</li>
+                        <li>Visa fee</li>
+                        <li>Lunch &amp; dinner</li>
+                        <li>Travel insurance</li>
+                    </ul>
+                </div>
+            </div>
+        </details>
+
+        <!-- Visa Processing -->
+        <div style="background: var(--gray-50); border-left: 4px solid var(--warning); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+            <h3 style="color: var(--gray-800); margin-bottom: 8px; font-size: 1.1rem;">Visa Processing — 90-98% success rate</h3>
+            <p style="color: var(--gray-600); margin-bottom: 14px; font-size: 0.9rem;">goFLY handles visa processing with expert support.</p>
             <div class="visa-links-grid">${visaLinksHtml}</div>
         </div>
-        
-        <!-- CTA Section -->
-        <div class="cta-section">
-            <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="cta-button cta-whatsapp" target="_blank">
-                💬 WhatsApp Quote
-            </a>
-            <a href="tel:+8809639203090" class="cta-button cta-call">
-                📞 Call Now
-            </a>
-            <a href="mailto:support@goflybd.com?subject=Trip%20Quote%20${encodeURIComponent(destinationNames)}" class="cta-button cta-email">
-                ✉️ Email
-            </a>
+
+        <!-- Download / Print / Share -->
+        <div class="download-buttons">
+            <button onclick="downloadPDF()" class="btn-download">📥 Download PDF</button>
+            <button onclick="window.print()" class="btn-download" style="background: var(--primary);">🖨️ Print</button>
+            <button onclick="shareViaEmail()" class="btn-download" style="background: var(--secondary);">📤 Share</button>
         </div>
-        
+
         <!-- EMI Calculator -->
         <div class="emi-calculator">
-            <h3>💳 EMI Calculator (0% Available on Select Cards)</h3>
+            <h3>EMI Calculator — 0% available on select cards</h3>
             <div class="emi-inputs">
                 <div class="emi-input-group">
                     <label>Amount (৳)</label>
@@ -3428,27 +3502,33 @@ function displayItinerary() {
         
         <!-- Rating Section -->
         <div class="rating-section">
-            <h4>⭐ How was this trip planning experience?</h4>
-            <div class="rating-stars">
-                <span class="rating-star" onclick="setRating(1)">⭐</span>
-                <span class="rating-star" onclick="setRating(2)">⭐</span>
-                <span class="rating-star" onclick="setRating(3)">⭐</span>
-                <span class="rating-star" onclick="setRating(4)">⭐</span>
-                <span class="rating-star" onclick="setRating(5)">⭐</span>
+            <h4>How was this trip planning experience?</h4>
+            <div class="rating-stars" role="radiogroup" aria-label="Rate this experience">
+                <span class="rating-star" onclick="setRating(1)" role="radio" aria-label="1 star" aria-checked="false">⭐</span>
+                <span class="rating-star" onclick="setRating(2)" role="radio" aria-label="2 stars" aria-checked="false">⭐</span>
+                <span class="rating-star" onclick="setRating(3)" role="radio" aria-label="3 stars" aria-checked="false">⭐</span>
+                <span class="rating-star" onclick="setRating(4)" role="radio" aria-label="4 stars" aria-checked="false">⭐</span>
+                <span class="rating-star" onclick="setRating(5)" role="radio" aria-label="5 stars" aria-checked="false">⭐</span>
             </div>
             <div class="rating-feedback" id="ratingFeedback">
                 <textarea id="feedbackText" placeholder="Tell us more about your experience (optional)..." style="width: 100%; padding: 12px; border: 2px solid var(--gray-200); border-radius: 10px; min-height: 80px; font-family: Inter, sans-serif;"></textarea>
-                <button onclick="submitRating()" style="margin-top: 12px; background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Feedback</button>
+                <button onclick="submitRating()" style="margin-top: 12px; background: var(--gray-800); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Feedback</button>
             </div>
         </div>
-        
-        <!-- Plan Another - NO FOOTER HERE! -->
+
+        <!-- Plan Another -->
         <div style="text-align: center; margin-top: 32px; padding: 24px; background: var(--gray-50); border-radius: 12px;">
             <p style="color: var(--gray-600); margin-bottom: 16px;">Want to explore more options?</p>
-            <button onclick="location.reload()" class="btn btn-secondary" style="padding: 14px 32px;">🔄 Plan Another Trip</button>
+            <button onclick="location.reload()" class="btn btn-secondary" style="padding: 14px 32px;">Plan another trip</button>
+        </div>
+
+        <!-- Sticky mobile CTA bar -->
+        <div class="sticky-cta show" id="stickyCta">
+            <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="sticky-whatsapp" target="_blank" rel="noopener">💬 WhatsApp</a>
+            <a href="tel:+8809639203090" class="sticky-call">📞 Call</a>
         </div>
     `;
-    
+    document.body.classList.add('has-sticky-cta');
     sendHeightToParent();
 }
 
