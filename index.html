@@ -3774,7 +3774,12 @@ async function submitToWordPress(tripData) {
         addons:       tripData.addons          || [],
         isPeakSeason: tripData.isPeakSeason    || false,
         specialNotes: tripData.specialNotes    || '',
-        browser:      (navigator.userAgent || 'unknown').replace(/[^\x20-\x7E]/g, '').slice(0, 180)
+        browser:      (function() {
+            var ua = navigator.userAgent || '';
+            var b = (ua.match(/(Edg|OPR|Chrome|Firefox|Safari|MSIE|Trident)\/[\d.]+/) || ['Unknown'])[0];
+            var o = (ua.match(/Windows NT [\d.]+|Android [\d.]+|iPhone OS [\d_]+|Mac OS X [\d_]+|Linux/) || ['?'])[0];
+            return (b + ' | ' + o).replace(/[^\x20-\x7E]/g, '').slice(0, 60);
+        })()
     };
 
     try {
