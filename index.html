@@ -77,6 +77,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+html, body { overflow-x: hidden; max-width: 100%; }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -216,6 +217,7 @@ body[lang="bn"] .header h1 {
 
 .currency-rate .flag { font-size: 1.2rem; }
 .currency-rate .rate { font-weight: 600; color: var(--primary); }
+.currency-rate .unit-short { display: none; }
 
 /* ==================== MAP ==================== */
 .map-container {
@@ -1473,18 +1475,29 @@ input.error { border-color: var(--danger) !important; }
     .offer-banner p { font-size: 0.8rem; }
     .offer-countdown { font-size: 0.85rem; margin-top: 4px; }
 
-    /* Currency rates — horizontal scroll, single row */
+    /* Currency rates — compact, fits 5 in one row */
     .currency-converter { flex-direction: column; padding: 12px; }
-    .currency-converter h4 { font-size: 0.85rem; margin-bottom: 8px; }
+    .currency-converter h4 { font-size: 0.85rem; margin-bottom: 8px; text-align: center; }
     .currency-rates {
-        display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 4px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 4px;
+        width: 100%;
     }
-    .currency-rate { flex-shrink: 0; }
+    .currency-rate {
+        padding: 6px 4px;
+        font-size: 0.72rem;
+        flex-direction: column;
+        gap: 2px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-width: 0;
+    }
+    .currency-rate .flag { font-size: 1rem; }
+    .currency-rate .rate { font-size: 0.78rem; }
+    .currency-rate .unit-label { display: none; }
+    .currency-rate .unit-short { display: inline; font-size: 0.65rem; color: var(--gray-500); font-weight: 500; }
 
     /* Testimonials — tighter padding */
     .testimonial-card { padding: 16px; }
@@ -1935,11 +1948,11 @@ input.error { border-color: var(--danger) !important; }
     <div class="currency-converter" style="margin-top: 24px;">
         <h4 data-i18n="currency.title">💱 Indicative Exchange Rates (BDT) — May 2026:</h4>
         <div class="currency-rates">
-            <div class="currency-rate"><span class="flag">🇺🇸</span><span>1 USD =</span><span class="rate">৳122</span></div>
-            <div class="currency-rate"><span class="flag">🇸🇬</span><span>1 SGD =</span><span class="rate">৳95</span></div>
-            <div class="currency-rate"><span class="flag">🇲🇾</span><span>1 MYR =</span><span class="rate">৳30</span></div>
-            <div class="currency-rate"><span class="flag">🇹🇭</span><span>1 THB =</span><span class="rate">৳3.89</span></div>
-            <div class="currency-rate"><span class="flag">🇦🇪</span><span>1 AED =</span><span class="rate">৳33</span></div>
+            <div class="currency-rate"><span class="flag">🇺🇸</span><span class="unit-label">1 USD =</span><span class="rate">৳122</span><span class="unit-short">USD</span></div>
+            <div class="currency-rate"><span class="flag">🇸🇬</span><span class="unit-label">1 SGD =</span><span class="rate">৳95</span><span class="unit-short">SGD</span></div>
+            <div class="currency-rate"><span class="flag">🇲🇾</span><span class="unit-label">1 MYR =</span><span class="rate">৳30</span><span class="unit-short">MYR</span></div>
+            <div class="currency-rate"><span class="flag">🇹🇭</span><span class="unit-label">1 THB =</span><span class="rate">৳3.89</span><span class="unit-short">THB</span></div>
+            <div class="currency-rate"><span class="flag">🇦🇪</span><span class="unit-label">1 AED =</span><span class="rate">৳33</span><span class="unit-short">AED</span></div>
         </div>
     </div>
 </div>
