@@ -21,16 +21,48 @@
 {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
+  "@id": "https://goflybd.com/#organization",
   "name": "goFLY Limited",
+  "alternateName": "goFLY",
   "url": "https://goflybd.com",
+  "logo": "https://goflybd.com/wp-content/uploads/2023/07/goFLY-logo.png.webp",
+  "image": "https://goflybd.com/wp-content/uploads/2023/07/goFLY-logo.png.webp",
   "telephone": "+8809639203090",
-  "email": "support@goflybd.com",
-  "areaServed": "BD",
+  "email": "goflybd@gmail.com",
+  "foundingDate": "2017",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1 Shukrabad Road, Motiur Nibash, Beside New Model Degree College, Opposite Metro Shopping Mall, Dhanmondi",
+    "addressLocality": "Dhaka",
+    "postalCode": "1207",
+    "addressCountry": "BD"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "23.7520618",
+    "longitude": "90.378054"
+  },
+  "areaServed": { "@type": "Country", "name": "Bangladesh" },
   "priceRange": "৳৳",
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"], "opens": "10:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "14:00", "closes": "20:00" }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/goflybd",
+    "https://www.instagram.com/goflybd"
+  ],
+  "hasMap": "https://maps.app.goo.gl/kA44Gowb9TANqZ2dA",
+  "identifier": [
+    { "@type": "PropertyValue", "propertyID": "IATA", "value": "42337956" },
+    { "@type": "PropertyValue", "propertyID": "ATAB", "value": "4298" },
+    { "@type": "PropertyValue", "propertyID": "CivilAviation", "value": "0007726" }
+  ],
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.8",
-    "reviewCount": "463"
+    "reviewCount": "463",
+    "bestRating": "5"
   },
   "makesOffer": [
     { "@type": "Offer", "name": "Thailand + Malaysia 7D", "priceCurrency": "BDT", "price": "42750" },
@@ -162,9 +194,8 @@ body[lang="bn"] .header h1 {
     position: relative;
 }
 
-.offer-banner h3 { font-size: 1.3rem; margin-bottom: 4px; }
+.offer-banner h3 { font-size: 1.2rem; margin-bottom: 4px; }
 .offer-banner p { font-size: 0.95rem; opacity: 0.95; }
-.offer-countdown { font-weight: 700; font-size: 1.1rem; margin-top: 8px; }
 
 /* ==================== TRUST BADGES ==================== */
 .trust-badges {
@@ -188,6 +219,25 @@ body[lang="bn"] .header h1 {
 }
 
 .trust-badge strong { color: var(--primary); }
+a.trust-badge { color: inherit; text-decoration: none; }
+a.trust-badge:hover { background: var(--gray-50); }
+
+.cert-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+.cert-chip {
+    font-size: 0.72rem;
+    color: var(--gray-500);
+    background: var(--gray-100);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.02em;
+    font-weight: 500;
+}
 
 /* ==================== CURRENCY CONVERTER ==================== */
 .currency-converter {
@@ -396,7 +446,7 @@ body[lang="bn"] .header h1 {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%);
     transition: all 0.3s;
 }
 
@@ -679,12 +729,8 @@ input.error { border-color: var(--danger) !important; }
 .result-header::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
-    animation: shimmer 8s linear infinite;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08) 0%, transparent 60%);
 }
 
 @keyframes shimmer {
@@ -1660,26 +1706,24 @@ input.error { border-color: var(--danger) !important; }
     
     <!-- Offer Banner -->
     <div class="offer-banner" id="offerBanner">
-        <h3 data-i18n="offer.title">🎁 Limited Time Offer — Book Now & Save</h3>
-        <p data-i18n-html="offer.body">Get <strong>5% OFF</strong> on all land packages for travel through 2026</p>
-        <div class="offer-countdown"><span data-i18n="offer.endsIn">⏰ Offer ends in:</span> <span id="countdown">--:--:--</span></div>
+        <h3 data-i18n="offer.title">🎁 5% Early-Bird Discount</h3>
+        <p data-i18n-html="offer.body">Save <strong>5%</strong> on all land packages for travel through 2026</p>
     </div>
 
     <div class="header">
         <h1 data-i18n="header.title">✈️ Plan Your Perfect Trip 2026</h1>
         <p style="font-size: 1.15rem; color: var(--gray-700); margin-bottom: 16px;" data-i18n-html="header.tagline">Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.</p>
         <div class="trust-badges">
-            <div class="trust-badge"><span>⭐ <strong>4.8/5</strong></span> <span data-i18n="trust.reviews">(463+ reviews)</span></div>
+            <a href="https://maps.app.goo.gl/kA44Gowb9TANqZ2dA" target="_blank" rel="noopener" class="trust-badge"><span>⭐ <strong>4.8/5</strong></span> <span data-i18n="trust.reviews">(463+ reviews)</span></a>
             <div class="trust-badge"><span>✅ <strong>10,000+</strong></span> <span data-i18n="trust.travelers">Happy travelers</span></div>
             <div class="trust-badge"><span>🎯 <strong>90-98%</strong></span> <span data-i18n="trust.visa">Visa success</span></div>
             <div class="trust-badge"><span>💳 <strong>0% EMI</strong></span> <span data-i18n="trust.emi">Available</span></div>
         </div>
-    </div>
-
-    <!-- Map -->
-    <div class="map-container" id="mapContainer">
-        <h3 data-i18n="map.title">🗺️ Your Trip Route</h3>
-        <div id="tripMap"></div>
+        <div class="cert-row" aria-label="Certifications">
+            <span class="cert-chip">IATA #42337956</span>
+            <span class="cert-chip">ATAB #4298</span>
+            <span class="cert-chip" data-i18n="cert.since">Since 2017 · 8+ yrs</span>
+        </div>
     </div>
 
     <!-- Interest Selector -->
@@ -1718,7 +1762,7 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 1: Destinations -->
         <div class="form-section active" data-section="1">
             <div class="form-group">
-                <label><span data-i18n="dest.label">🌍 Select Your Destination(s)</span> <span style="font-weight: 400; color: var(--gray-500);" data-i18n="dest.max">(Max 4)</span></label>
+                <label><span data-i18n="dest.label">Select Your Destination(s)</span> <span style="font-weight: 400; color: var(--gray-500);" data-i18n="dest.max">(Max 4)</span></label>
                 <div class="destination-grid" id="destinationGrid"></div>
             </div>
 
@@ -1747,7 +1791,7 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 2: Trip Details -->
         <div class="form-section" data-section="2">
             <div class="form-group">
-                <label for="duration" data-i18n="form.duration">📅 Trip Duration</label>
+                <label for="duration" data-i18n="form.duration">Trip Duration</label>
                 <select id="duration" required onchange="updateDurationNote()" aria-label="Select trip duration in days">
                     <option value="" data-i18n="form.durationPlaceholder">Select duration</option>
                     <option value="3" data-i18n="form.duration3">3 Days / 2 Nights</option>
@@ -1762,7 +1806,7 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label for="adults" data-i18n="form.travelers">👥 Number of Travelers</label>
+                <label for="adults" data-i18n="form.travelers">Number of Travelers</label>
                 <div class="form-row">
                     <div>
                         <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required aria-label="Number of adults" data-i18n-attr="placeholder:form.adultsPh">
@@ -1776,7 +1820,7 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label data-i18n="form.date">🗓️ Preferred Travel Date</label>
+                <label data-i18n="form.date">Preferred Travel Date</label>
                 <input type="date" id="travelDate" required onchange="checkPeakSeason2026()">
                 <div class="peak-season-2026" id="peakSeason2026" style="display: none;">
                     <h5 data-i18n="form.peakTitle">🔥 Peak Season Dates 2026 (+25% hotel rates)</h5>
@@ -1790,7 +1834,7 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label data-i18n="form.budget">💰 Budget Range</label>
+                <label data-i18n="form.budget">Budget Range</label>
                 <div class="budget-options">
                     <div class="budget-option" onclick="selectBudget('economy', this)">
                         <div class="icon">💰</div>
@@ -1819,7 +1863,7 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 3: Add-ons -->
         <div class="form-section" data-section="3">
             <div class="addons-section">
-                <h4 data-i18n="addons.title">🎯 Optional City Tours & Activities</h4>
+                <h4 data-i18n="addons.title">Optional City Tours & Activities</h4>
                 <p style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 16px;" data-i18n="addons.help">Select tours you want to add. Prices are per person.</p>
                 <div class="addons-grid" id="addonsGrid"></div>
                 <div class="addons-total">
@@ -1837,25 +1881,25 @@ input.error { border-color: var(--danger) !important; }
         <!-- Step 4: Contact -->
         <div class="form-section" data-section="4">
             <div class="form-group">
-                <label for="userName" data-i18n="form.name">👤 Your Name *</label>
+                <label for="userName" data-i18n="form.name">Your Name *</label>
                 <input type="text" id="userName" placeholder="Enter your full name" required aria-label="Your full name" aria-describedby="nameError" data-i18n-attr="placeholder:form.namePh">
                 <div class="error-message" id="nameError" role="alert" aria-live="polite" data-i18n="err.name">Please enter your name</div>
             </div>
 
             <div class="form-group">
-                <label for="userPhone" data-i18n="form.phone">📱 Mobile Number *</label>
+                <label for="userPhone" data-i18n="form.phone">Mobile Number *</label>
                 <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" inputmode="numeric" pattern="01[3-9][0-9]{8}" required aria-label="Your mobile number" aria-describedby="phoneError">
                 <div class="error-message" id="phoneError" role="alert" aria-live="polite" data-i18n="err.phone">Please enter a valid 11-digit number starting with 01</div>
             </div>
 
             <div class="form-group">
-                <label for="userEmail" data-i18n="form.email">✉️ Email (Optional)</label>
+                <label for="userEmail" data-i18n="form.email">Email (Optional)</label>
                 <input type="email" id="userEmail" placeholder="your@email.com" aria-label="Your email address (optional)" aria-describedby="emailError">
                 <div class="error-message" id="emailError" role="alert" aria-live="polite" data-i18n="err.email">Please enter a valid email</div>
             </div>
 
             <div class="form-group">
-                <label data-i18n="form.notes">📝 Special Requests (Optional)</label>
+                <label data-i18n="form.notes">Special Requests (Optional)</label>
                 <input type="text" id="specialNotes" placeholder="Any special requirements?" data-i18n-attr="placeholder:form.notesPh">
             </div>
 
@@ -2386,8 +2430,7 @@ let selectedBudget = 'standard';
 let selectedInterest = null;
 let selectedAddons = [];
 let tripData = {};
-let map = null;
-let markers = [];
+// (map state variables removed — map component dropped)
 let isPeakSeason = false;
 
 // ==================== INITIALIZATION ====================
@@ -2395,31 +2438,12 @@ window.onload = function() {
     renderDestinations();
     setMinDate();
     loadProgress();
-    startCountdown();
     updateStepProgress();
     enableA11yClickables();
     initLanguage();
     document.body.classList.add('has-form-bar');
     sendHeightToParent();
 };
-
-// ==================== LEAFLET LAZY LOADER ====================
-let leafletPromise = null;
-function ensureLeaflet() {
-    if (leafletPromise) return leafletPromise;
-    leafletPromise = new Promise((resolve, reject) => {
-        const css = document.createElement('link');
-        css.rel = 'stylesheet';
-        css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-        document.head.appendChild(css);
-        const js = document.createElement('script');
-        js.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-        js.onload = () => { initMap(); resolve(); };
-        js.onerror = reject;
-        document.head.appendChild(js);
-    });
-    return leafletPromise;
-}
 
 // ==================== A11Y: make div[onclick] keyboard reachable ====================
 function enableA11yClickables() {
@@ -2451,9 +2475,9 @@ function enableA11yClickables() {
 // ==================== I18N ====================
 const translations = {
     en: {
-        'offer.title': '🎁 Limited Time Offer — Book Now & Save',
-        'offer.body': 'Get <strong>5% OFF</strong> on all land packages for travel through 2026',
-        'offer.endsIn': '⏰ Offer ends in:',
+        'offer.title': '🎁 5% Early-Bird Discount',
+        'offer.body': 'Save <strong>5%</strong> on all land packages for travel through 2026',
+        'cert.since': 'Since 2017 · 8+ yrs',
         'header.title': '✈️ Plan Your Perfect Trip 2026',
         'header.tagline': 'Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.',
         'trust.reviews': '(463+ reviews)',
@@ -2477,7 +2501,7 @@ const translations = {
         'step.details': 'Details',
         'step.addons': 'Add-ons',
         'step.contact': 'Contact',
-        'dest.label': '🌍 Select Your Destination(s)',
+        'dest.label': 'Select Your Destination(s)',
         'dest.max': '(Max 4)',
         'warn.title': '⚠️ Trip Duration Warning',
         'warn.extend': '✅ Extend Days',
@@ -2487,7 +2511,7 @@ const translations = {
         'btn.continue': 'Continue →',
         'btn.back': '← Back',
         'btn.generate': '✨ Generate My Itinerary',
-        'form.duration': '📅 Trip Duration',
+        'form.duration': 'Trip Duration',
         'form.durationPlaceholder': 'Select duration',
         'form.duration3': '3 Days / 2 Nights',
         'form.duration4': '4 Days / 3 Nights',
@@ -2495,37 +2519,37 @@ const translations = {
         'form.duration7': '7 Days / 6 Nights ⭐ Popular',
         'form.duration10': '10 Days / 9 Nights ⭐ Recommended',
         'form.duration14': '14 Days / 13 Nights',
-        'form.travelers': '👥 Number of Travelers',
+        'form.travelers': 'Number of Travelers',
         'form.adultsPh': 'Adults (12+)',
         'form.adultsNote': 'Full price',
         'form.childrenPh': 'Children (2-11)',
         'form.childrenNote': "Share parents' room — no extra hotel charge",
-        'form.date': '🗓️ Preferred Travel Date',
+        'form.date': 'Preferred Travel Date',
         'form.peakTitle': '🔥 Peak Season Dates 2026 (+25% hotel rates)',
-        'form.budget': '💰 Budget Range',
+        'form.budget': 'Budget Range',
         'form.budgetEconomy': 'Economy',
         'form.budgetEconomyDesc': '3★ Hotels, Budget-friendly',
         'form.budgetStandard': 'Standard',
         'form.budgetStandardDesc': '4★ Hotels, Best Value',
         'form.budgetPremium': 'Premium',
         'form.budgetPremiumDesc': '5★ Hotels, Luxury',
-        'addons.title': '🎯 Optional City Tours & Activities',
+        'addons.title': 'Optional City Tours & Activities',
         'addons.help': 'Select tours you want to add. Prices are per person.',
         'addons.total': 'Selected Tours Total:',
-        'form.name': '👤 Your Name *',
+        'form.name': 'Your Name *',
         'form.namePh': 'Enter your full name',
-        'form.phone': '📱 Mobile Number *',
-        'form.email': '✉️ Email (Optional)',
-        'form.notes': '📝 Special Requests (Optional)',
+        'form.phone': 'Mobile Number *',
+        'form.email': 'Email (Optional)',
+        'form.notes': 'Special Requests (Optional)',
         'form.notesPh': 'Any special requirements?',
         'err.name': 'Please enter your name',
         'err.phone': 'Please enter a valid 11-digit number starting with 01',
         'err.email': 'Please enter a valid email'
     },
     bn: {
-        'offer.title': '🎁 সীমিত সময়ের অফার — এখনই বুক করে সাশ্রয় করুন',
-        'offer.body': '২০২৬ জুড়ে ভ্রমণের জন্য সব ল্যান্ড প্যাকেজে <strong>৫% ছাড়</strong>',
-        'offer.endsIn': '⏰ অফার শেষ হবে:',
+        'offer.title': '🎁 ৫% আর্লি-বার্ড ছাড়',
+        'offer.body': '২০২৬ জুড়ে ভ্রমণের জন্য সব ল্যান্ড প্যাকেজে <strong>৫% সাশ্রয়</strong>',
+        'cert.since': '২০১৭ থেকে · ৮+ বছর',
         'header.title': '✈️ আপনার পারফেক্ট ট্রিপ ২০২৬ প্ল্যান করুন',
         'header.tagline': 'নিচ থেকে গন্তব্য বেছে নিন, টাকায় ইনস্ট্যান্ট ইটিনারারি পান — <strong style="color: var(--primary);">ফ্রি, সাইনআপ ছাড়াই</strong>।',
         'trust.reviews': '(৪৬৩+ রিভিউ)',
@@ -2549,7 +2573,7 @@ const translations = {
         'step.details': 'বিস্তারিত',
         'step.addons': 'অ্যাড-অন',
         'step.contact': 'যোগাযোগ',
-        'dest.label': '🌍 আপনার গন্তব্য বেছে নিন',
+        'dest.label': 'আপনার গন্তব্য বেছে নিন',
         'dest.max': '(সর্বোচ্চ ৪টি)',
         'warn.title': '⚠️ ট্রিপ দৈর্ঘ্য সতর্কতা',
         'warn.extend': '✅ দিন বাড়ান',
@@ -2559,7 +2583,7 @@ const translations = {
         'btn.continue': 'এগিয়ে যান →',
         'btn.back': '← পেছনে',
         'btn.generate': '✨ আমার ইটিনারারি তৈরি করুন',
-        'form.duration': '📅 ট্রিপের সময়কাল',
+        'form.duration': 'ট্রিপের সময়কাল',
         'form.durationPlaceholder': 'সময়কাল নির্বাচন করুন',
         'form.duration3': '৩ দিন / ২ রাত',
         'form.duration4': '৪ দিন / ৩ রাত',
@@ -2567,28 +2591,28 @@ const translations = {
         'form.duration7': '৭ দিন / ৬ রাত ⭐ জনপ্রিয়',
         'form.duration10': '১০ দিন / ৯ রাত ⭐ প্রস্তাবিত',
         'form.duration14': '১৪ দিন / ১৩ রাত',
-        'form.travelers': '👥 ভ্রমণকারীর সংখ্যা',
+        'form.travelers': 'ভ্রমণকারীর সংখ্যা',
         'form.adultsPh': 'প্রাপ্তবয়স্ক (১২+)',
         'form.adultsNote': 'সম্পূর্ণ মূল্য',
         'form.childrenPh': 'শিশু (২-১১)',
         'form.childrenNote': 'অভিভাবকদের রুম শেয়ার করবে — অতিরিক্ত হোটেল চার্জ নেই',
-        'form.date': '🗓️ পছন্দের ভ্রমণ তারিখ',
+        'form.date': 'পছন্দের ভ্রমণ তারিখ',
         'form.peakTitle': '🔥 পিক সিজন তারিখ ২০২৬ (+২৫% হোটেল রেট)',
-        'form.budget': '💰 বাজেট পরিসীমা',
+        'form.budget': 'বাজেট পরিসীমা',
         'form.budgetEconomy': 'ইকোনমি',
         'form.budgetEconomyDesc': '৩★ হোটেল, সাশ্রয়ী',
         'form.budgetStandard': 'স্ট্যান্ডার্ড',
         'form.budgetStandardDesc': '৪★ হোটেল, সেরা মূল্য',
         'form.budgetPremium': 'প্রিমিয়াম',
         'form.budgetPremiumDesc': '৫★ হোটেল, বিলাসবহুল',
-        'addons.title': '🎯 ঐচ্ছিক সিটি ট্যুর ও কার্যক্রম',
+        'addons.title': 'ঐচ্ছিক সিটি ট্যুর ও কার্যক্রম',
         'addons.help': 'যেগুলো যোগ করতে চান বেছে নিন। দাম প্রতি ব্যক্তি।',
         'addons.total': 'নির্বাচিত ট্যুরের মোট:',
-        'form.name': '👤 আপনার নাম *',
+        'form.name': 'আপনার নাম *',
         'form.namePh': 'আপনার পূর্ণ নাম লিখুন',
-        'form.phone': '📱 মোবাইল নম্বর *',
-        'form.email': '✉️ ইমেইল (ঐচ্ছিক)',
-        'form.notes': '📝 বিশেষ অনুরোধ (ঐচ্ছিক)',
+        'form.phone': 'মোবাইল নম্বর *',
+        'form.email': 'ইমেইল (ঐচ্ছিক)',
+        'form.notes': 'বিশেষ অনুরোধ (ঐচ্ছিক)',
         'form.notesPh': 'কোনো বিশেষ চাহিদা?',
         'err.name': 'অনুগ্রহ করে আপনার নাম লিখুন',
         'err.phone': '০১ দিয়ে শুরু হওয়া ১১ ডিজিটের বৈধ নম্বর লিখুন',
@@ -2672,66 +2696,10 @@ window.addEventListener('beforeunload', () => {
     if (countdownInterval) clearInterval(countdownInterval);
 });
 
-// ==================== MAP ====================
-function initMap() {
-    try {
-        // Check if Leaflet library loaded
-        if (typeof L === 'undefined') {
-            console.error('Leaflet library not loaded');
-            document.getElementById('mapContainer').style.display = 'none';
-            return;
-        }
+// Map removed — no initMap()
 
-        map = L.map('tripMap').setView([15, 100], 3);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap',
-            errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' // Transparent fallback
-        }).addTo(map);
-    } catch (error) {
-        console.error('Map initialization failed:', error);
-        const mapContainer = document.getElementById('mapContainer');
-        if (mapContainer) {
-            mapContainer.innerHTML = '<p style="text-align:center;color:#64748b;padding:20px;">Map temporarily unavailable</p>';
-        }
-    }
-}
-
-function updateMap() {
-    if (selectedDestinations.length === 0) {
-        const mc = document.getElementById('mapContainer');
-        if (mc) mc.classList.remove('show');
-        return;
-    }
-    ensureLeaflet().then(() => {
-        markers.forEach(m => map.removeLayer(m));
-        markers = [];
-
-        document.getElementById('mapContainer').classList.add('show');
-
-        const coords = [];
-        selectedDestinations.forEach((destName, index) => {
-            const dest = destinations[destName];
-            const marker = L.marker(dest.coordinates)
-                .addTo(map)
-                .bindPopup(`<b>${index + 1}. ${dest.flag} ${destName}</b><br>Min: ${dest.minDays} days`);
-            markers.push(marker);
-            coords.push(dest.coordinates);
-        });
-
-        if (coords.length > 1) {
-            const polyline = L.polyline(coords, {color: '#10b981', weight: 3, dashArray: '10, 10'}).addTo(map);
-            markers.push(polyline);
-            map.fitBounds(polyline.getBounds(), {padding: [50, 50]});
-        } else if (coords.length === 1) {
-            map.setView(coords[0], 5);
-        }
-
-        setTimeout(() => map.invalidateSize(), 100);
-    }).catch(() => {
-        const mc = document.getElementById('mapContainer');
-        if (mc) mc.classList.remove('show');
-    });
-}
+// Map removed — visitors decide based on price/duration, not geography.
+function updateMap() { /* intentionally empty */ }
 
 // ==================== INTEREST SELECTION ====================
 function selectInterest(interest, element) {
@@ -3748,7 +3716,7 @@ function displayItinerary() {
             <div class="cta-section" style="margin-top: 0;">
                 <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="cta-button cta-whatsapp" target="_blank" rel="noopener">💬 WhatsApp Quote</a>
                 <a href="tel:+8809639203090" class="cta-button cta-call">📞 Call Now</a>
-                <a href="mailto:support@goflybd.com?subject=Trip%20Quote%20${encodeURIComponent(destinationNames)}" class="cta-button cta-email">✉️ Email</a>
+                <a href="mailto:goflybd@gmail.com?subject=Trip%20Quote%20${encodeURIComponent(destinationNames)}" class="cta-button cta-email">✉️ Email</a>
             </div>
         </div>
 
@@ -4101,7 +4069,7 @@ function downloadPDF() {
             <div class="footer">
                 <img src="https://goflybd.com/wp-content/uploads/2023/07/goFLY-logo.png.webp" alt="goFLY" style="filter: brightness(0) invert(1);">
                 <p><strong>goFLY Limited</strong> | IATA Certified | Since 2017</p>
-                <p>📞 09639-203090 | 💬 01713-289171 | ✉️ support@goflybd.com</p>
+                <p>📞 09639-203090 | 💬 01713-289171 | ✉️ goflybd@gmail.com</p>
                 <p>📍 1 Shukrabad Road, Dhaka 1207 | 🌐 goflybd.com</p>
             </div>
         </body>
