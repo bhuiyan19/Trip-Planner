@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://unpkg.com">
 
 <!-- Leaflet Map CSS (deferred — loaded on first destination select) -->
-<link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <!-- Schema.org -->
 <script type="application/ld+json">
@@ -85,6 +85,49 @@ body {
     padding: 20px;
     color: var(--gray-800);
     line-height: 1.6;
+}
+
+body[lang="bn"] {
+    font-family: 'Hind Siliguri', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body[lang="bn"] .header h1 {
+    font-family: 'Hind Siliguri', sans-serif;
+}
+
+/* ==================== LANGUAGE TOGGLE ==================== */
+.lang-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: inline-flex;
+    background: white;
+    border-radius: var(--radius-full);
+    padding: 4px;
+    box-shadow: var(--shadow-md);
+    z-index: 40;
+    border: 1px solid var(--gray-200);
+}
+.lang-toggle button {
+    background: none;
+    border: none;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    font-family: inherit;
+    transition: all 0.2s;
+}
+.lang-toggle button.active {
+    background: var(--primary);
+    color: white;
+}
+.lang-toggle button:hover:not(.active) { color: var(--gray-800); }
+@media (max-width: 480px) {
+    .lang-toggle { top: 10px; right: 10px; }
+    .lang-toggle button { padding: 5px 10px; font-size: 0.8rem; }
 }
 
 .container { max-width: 1400px; margin: 0 auto; }
@@ -1463,50 +1506,55 @@ input.error { border-color: var(--danger) !important; }
 }
 </style>
 </head>
-<body>
+<body lang="en">
+<!-- Language Toggle -->
+<div class="lang-toggle" role="group" aria-label="Language selector">
+    <button type="button" data-lang-btn="en" class="active" aria-label="Switch to English">EN</button>
+    <button type="button" data-lang-btn="bn" aria-label="Switch to Bangla">বাংলা</button>
+</div>
 <div class="container">
     <!-- NO LOGO IN HEADER -->
     
     <!-- Offer Banner -->
     <div class="offer-banner" id="offerBanner">
-        <h3>🎁 Limited Time Offer — Book Now & Save</h3>
-        <p>Get <strong>5% OFF</strong> on all land packages for travel through 2026</p>
-        <div class="offer-countdown">⏰ Offer ends in: <span id="countdown">--:--:--</span></div>
+        <h3 data-i18n="offer.title">🎁 Limited Time Offer — Book Now & Save</h3>
+        <p data-i18n-html="offer.body">Get <strong>5% OFF</strong> on all land packages for travel through 2026</p>
+        <div class="offer-countdown"><span data-i18n="offer.endsIn">⏰ Offer ends in:</span> <span id="countdown">--:--:--</span></div>
     </div>
 
     <div class="header">
-        <h1>✈️ Plan Your Perfect Trip 2026</h1>
-        <p style="font-size: 1.15rem; color: var(--gray-700); margin-bottom: 16px;">Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.</p>
+        <h1 data-i18n="header.title">✈️ Plan Your Perfect Trip 2026</h1>
+        <p style="font-size: 1.15rem; color: var(--gray-700); margin-bottom: 16px;" data-i18n-html="header.tagline">Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.</p>
         <div class="trust-badges">
-            <div class="trust-badge">⭐ <strong>4.8/5</strong> (463+ reviews)</div>
-            <div class="trust-badge">✅ <strong>10,000+</strong> Happy travelers</div>
-            <div class="trust-badge">🎯 <strong>90-98%</strong> Visa success</div>
-            <div class="trust-badge">💳 <strong>0% EMI</strong> Available</div>
+            <div class="trust-badge"><span>⭐ <strong>4.8/5</strong></span> <span data-i18n="trust.reviews">(463+ reviews)</span></div>
+            <div class="trust-badge"><span>✅ <strong>10,000+</strong></span> <span data-i18n="trust.travelers">Happy travelers</span></div>
+            <div class="trust-badge"><span>🎯 <strong>90-98%</strong></span> <span data-i18n="trust.visa">Visa success</span></div>
+            <div class="trust-badge"><span>💳 <strong>0% EMI</strong></span> <span data-i18n="trust.emi">Available</span></div>
         </div>
     </div>
 
     <!-- Map -->
     <div class="map-container" id="mapContainer">
-        <h3>🗺️ Your Trip Route</h3>
+        <h3 data-i18n="map.title">🗺️ Your Trip Route</h3>
         <div id="tripMap"></div>
     </div>
 
     <!-- Interest Selector -->
     <div class="interest-selector" id="interestSelector">
-        <h4>🎯 What type of experience are you looking for?</h4>
+        <h4 data-i18n="interest.title">🎯 What type of experience are you looking for?</h4>
         <div class="interest-chips">
-            <div class="interest-chip" onclick="selectInterest('beach', this)"><span class="icon">🏖️</span> Beach & Relaxation</div>
-            <div class="interest-chip" onclick="selectInterest('adventure', this)"><span class="icon">🏔️</span> Adventure</div>
-            <div class="interest-chip" onclick="selectInterest('culture', this)"><span class="icon">🏛️</span> Culture & Heritage</div>
-            <div class="interest-chip" onclick="selectInterest('shopping', this)"><span class="icon">🛍️</span> Shopping & City</div>
-            <div class="interest-chip" onclick="selectInterest('romantic', this)"><span class="icon">💑</span> Romantic / Honeymoon</div>
-            <div class="interest-chip" onclick="selectInterest('family', this)"><span class="icon">👨‍👩‍👧‍👦</span> Family Fun</div>
+            <div class="interest-chip" onclick="selectInterest('beach', this)"><span class="icon">🏖️</span> <span data-i18n="interest.beach">Beach & Relaxation</span></div>
+            <div class="interest-chip" onclick="selectInterest('adventure', this)"><span class="icon">🏔️</span> <span data-i18n="interest.adventure">Adventure</span></div>
+            <div class="interest-chip" onclick="selectInterest('culture', this)"><span class="icon">🏛️</span> <span data-i18n="interest.culture">Culture & Heritage</span></div>
+            <div class="interest-chip" onclick="selectInterest('shopping', this)"><span class="icon">🛍️</span> <span data-i18n="interest.shopping">Shopping & City</span></div>
+            <div class="interest-chip" onclick="selectInterest('romantic', this)"><span class="icon">💑</span> <span data-i18n="interest.romantic">Romantic / Honeymoon</span></div>
+            <div class="interest-chip" onclick="selectInterest('family', this)"><span class="icon">👨‍👩‍👧‍👦</span> <span data-i18n="interest.family">Family Fun</span></div>
         </div>
     </div>
 
     <!-- Recommended Combos -->
     <div class="recommended-combos" id="recommendedCombos">
-        <h4>💡 Recommended Combos</h4>
+        <h4 data-i18n="combos.title">💡 Recommended Combos</h4>
         <div class="combo-chips" id="comboChips">
             <div class="combo-chip trending" onclick="selectCombo(['Thailand', 'Malaysia'], 7)">🇹🇭🇲🇾 Thailand + Malaysia (7D)</div>
             <div class="combo-chip" onclick="selectCombo(['Singapore', 'Malaysia'], 7)">🇸🇬🇲🇾 Singapore + Malaysia (7D)</div>
@@ -1518,77 +1566,77 @@ input.error { border-color: var(--danger) !important; }
     <!-- Main Planner Card -->
     <div class="planner-card">
         <div class="step-indicator" id="stepIndicator">
-            <div class="step active" data-step="1"><div class="step-number">1</div><div class="step-label">Destinations</div></div>
-            <div class="step" data-step="2"><div class="step-number">2</div><div class="step-label">Details</div></div>
-            <div class="step" data-step="3"><div class="step-number">3</div><div class="step-label">Add-ons</div></div>
-            <div class="step" data-step="4"><div class="step-number">4</div><div class="step-label">Contact</div></div>
+            <div class="step active" data-step="1"><div class="step-number">1</div><div class="step-label" data-i18n="step.destinations">Destinations</div></div>
+            <div class="step" data-step="2"><div class="step-number">2</div><div class="step-label" data-i18n="step.details">Details</div></div>
+            <div class="step" data-step="3"><div class="step-number">3</div><div class="step-label" data-i18n="step.addons">Add-ons</div></div>
+            <div class="step" data-step="4"><div class="step-number">4</div><div class="step-label" data-i18n="step.contact">Contact</div></div>
         </div>
 
         <!-- Step 1: Destinations -->
         <div class="form-section active" data-section="1">
             <div class="form-group">
-                <label>🌍 Select Your Destination(s) <span style="font-weight: 400; color: var(--gray-500);">(Max 4)</span></label>
+                <label><span data-i18n="dest.label">🌍 Select Your Destination(s)</span> <span style="font-weight: 400; color: var(--gray-500);" data-i18n="dest.max">(Max 4)</span></label>
                 <div class="destination-grid" id="destinationGrid"></div>
             </div>
 
             <!-- Smart Warning -->
             <div class="smart-warning" id="smartWarning">
-                <h4>⚠️ Trip Duration Warning</h4>
+                <h4 data-i18n="warn.title">⚠️ Trip Duration Warning</h4>
                 <p id="warningText"></p>
                 <div class="suggestion-buttons">
-                    <button class="btn-suggest btn-extend" onclick="extendDuration()">✅ Extend Days</button>
-                    <button class="btn-suggest btn-reduce" onclick="reduceDestinations()">📍 Reduce Countries</button>
-                    <button class="btn-suggest btn-keep" onclick="keepCurrent()">Keep Current</button>
+                    <button class="btn-suggest btn-extend" onclick="extendDuration()" data-i18n="warn.extend">✅ Extend Days</button>
+                    <button class="btn-suggest btn-reduce" onclick="reduceDestinations()" data-i18n="warn.reduce">📍 Reduce Countries</button>
+                    <button class="btn-suggest btn-keep" onclick="keepCurrent()" data-i18n="warn.keep">Keep Current</button>
                 </div>
             </div>
 
             <div id="selectedDestinationsBox" style="display: none;" class="selected-destinations">
-                <h4>✅ Selected Destinations (<span id="selectedCount">0</span>)</h4>
+                <h4><span data-i18n="selected.title">✅ Selected Destinations</span> (<span id="selectedCount">0</span>)</h4>
                 <div class="selected-list" id="selectedList"></div>
                 <div id="travelTimeInfo" style="margin-top: 12px; font-size: 0.9rem; color: var(--gray-600);"></div>
             </div>
 
             <div class="button-group">
-                <button class="btn btn-primary" onclick="nextStep()" id="step1Next" disabled>Continue →</button>
+                <button class="btn btn-primary" onclick="nextStep()" id="step1Next" disabled data-i18n="btn.continue">Continue →</button>
             </div>
         </div>
 
         <!-- Step 2: Trip Details -->
         <div class="form-section" data-section="2">
             <div class="form-group">
-                <label for="duration">📅 Trip Duration</label>
+                <label for="duration" data-i18n="form.duration">📅 Trip Duration</label>
                 <select id="duration" required onchange="updateDurationNote()" aria-label="Select trip duration in days">
-                    <option value="">Select duration</option>
-                    <option value="3">3 Days / 2 Nights</option>
-                    <option value="4">4 Days / 3 Nights</option>
-                    <option value="5">5 Days / 4 Nights</option>
-                    <option value="7">7 Days / 6 Nights ⭐ Popular</option>
-                    <option value="10">10 Days / 9 Nights ⭐ Recommended</option>
-                    <option value="14">14 Days / 13 Nights</option>
+                    <option value="" data-i18n="form.durationPlaceholder">Select duration</option>
+                    <option value="3" data-i18n="form.duration3">3 Days / 2 Nights</option>
+                    <option value="4" data-i18n="form.duration4">4 Days / 3 Nights</option>
+                    <option value="5" data-i18n="form.duration5">5 Days / 4 Nights</option>
+                    <option value="7" data-i18n="form.duration7">7 Days / 6 Nights ⭐ Popular</option>
+                    <option value="10" data-i18n="form.duration10">10 Days / 9 Nights ⭐ Recommended</option>
+                    <option value="14" data-i18n="form.duration14">14 Days / 13 Nights</option>
                 </select>
                 <div id="durationNote" style="margin-top: 12px; padding: 16px; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; font-size: 0.9rem; display: none; border-left: 4px solid var(--primary);"></div>
                 <div id="durationWarning" style="margin-top: 8px; padding: 12px; background: #fef3c7; border-radius: 8px; font-size: 0.9rem; color: #92400e; display: none;"></div>
             </div>
 
             <div class="form-group">
-                <label for="adults">👥 Number of Travelers</label>
+                <label for="adults" data-i18n="form.travelers">👥 Number of Travelers</label>
                 <div class="form-row">
                     <div>
-                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required aria-label="Number of adults">
-                        <small style="color: var(--gray-500);">Full price</small>
+                        <input type="number" id="adults" placeholder="Adults (12+)" min="1" max="20" value="2" required aria-label="Number of adults" data-i18n-attr="placeholder:form.adultsPh">
+                        <small style="color: var(--gray-500);" data-i18n="form.adultsNote">Full price</small>
                     </div>
                     <div>
-                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0" aria-label="Number of children">
-                        <small style="color: var(--primary);">Share parents' room — no extra hotel charge</small>
+                        <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0" aria-label="Number of children" data-i18n-attr="placeholder:form.childrenPh">
+                        <small style="color: var(--primary);" data-i18n="form.childrenNote">Share parents' room — no extra hotel charge</small>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>🗓️ Preferred Travel Date</label>
+                <label data-i18n="form.date">🗓️ Preferred Travel Date</label>
                 <input type="date" id="travelDate" required onchange="checkPeakSeason2026()">
                 <div class="peak-season-2026" id="peakSeason2026" style="display: none;">
-                    <h5>🔥 Peak Season Dates 2026 (+25% hotel rates)</h5>
+                    <h5 data-i18n="form.peakTitle">🔥 Peak Season Dates 2026 (+25% hotel rates)</h5>
                     <div class="peak-dates">
                         <div class="peak-date"><span class="date">🧧 Chinese New Year</span><br>Feb 15-25</div>
                         <div class="peak-date"><span class="date">💦 Songkran</span><br>Apr 10-20</div>
@@ -1599,78 +1647,78 @@ input.error { border-color: var(--danger) !important; }
             </div>
 
             <div class="form-group">
-                <label>💰 Budget Range</label>
+                <label data-i18n="form.budget">💰 Budget Range</label>
                 <div class="budget-options">
                     <div class="budget-option" onclick="selectBudget('economy', this)">
                         <div class="icon">💰</div>
-                        <h3>Economy</h3>
-                        <p>3★ Hotels, Budget-friendly</p>
+                        <h3 data-i18n="form.budgetEconomy">Economy</h3>
+                        <p data-i18n="form.budgetEconomyDesc">3★ Hotels, Budget-friendly</p>
                     </div>
                     <div class="budget-option popular selected" onclick="selectBudget('standard', this)">
                         <div class="icon">⭐</div>
-                        <h3>Standard</h3>
-                        <p>4★ Hotels, Best Value</p>
+                        <h3 data-i18n="form.budgetStandard">Standard</h3>
+                        <p data-i18n="form.budgetStandardDesc">4★ Hotels, Best Value</p>
                     </div>
                     <div class="budget-option" onclick="selectBudget('premium', this)">
                         <div class="icon">👑</div>
-                        <h3>Premium</h3>
-                        <p>5★ Hotels, Luxury</p>
+                        <h3 data-i18n="form.budgetPremium">Premium</h3>
+                        <p data-i18n="form.budgetPremiumDesc">5★ Hotels, Luxury</p>
                     </div>
                 </div>
             </div>
 
             <div class="button-group">
-                <button class="btn btn-secondary" onclick="prevStep()">← Back</button>
-                <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                <button class="btn btn-secondary" onclick="prevStep()" data-i18n="btn.back">← Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" data-i18n="btn.continue">Continue →</button>
             </div>
         </div>
 
         <!-- Step 3: Add-ons -->
         <div class="form-section" data-section="3">
             <div class="addons-section">
-                <h4>🎯 Optional City Tours & Activities</h4>
-                <p style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 16px;">Select tours you want to add. Prices are per person.</p>
+                <h4 data-i18n="addons.title">🎯 Optional City Tours & Activities</h4>
+                <p style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 16px;" data-i18n="addons.help">Select tours you want to add. Prices are per person.</p>
                 <div class="addons-grid" id="addonsGrid"></div>
                 <div class="addons-total">
-                    <span class="total-label">Selected Tours Total:</span>
+                    <span class="total-label" data-i18n="addons.total">Selected Tours Total:</span>
                     <span class="total-amount" id="addonsTotal">৳0</span>
                 </div>
             </div>
 
             <div class="button-group">
-                <button class="btn btn-secondary" onclick="prevStep()">← Back</button>
-                <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                <button class="btn btn-secondary" onclick="prevStep()" data-i18n="btn.back">← Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" data-i18n="btn.continue">Continue →</button>
             </div>
         </div>
 
         <!-- Step 4: Contact -->
         <div class="form-section" data-section="4">
             <div class="form-group">
-                <label for="userName">👤 Your Name *</label>
-                <input type="text" id="userName" placeholder="Enter your full name" required aria-label="Your full name" aria-describedby="nameError">
-                <div class="error-message" id="nameError" role="alert" aria-live="polite">Please enter your name</div>
+                <label for="userName" data-i18n="form.name">👤 Your Name *</label>
+                <input type="text" id="userName" placeholder="Enter your full name" required aria-label="Your full name" aria-describedby="nameError" data-i18n-attr="placeholder:form.namePh">
+                <div class="error-message" id="nameError" role="alert" aria-live="polite" data-i18n="err.name">Please enter your name</div>
             </div>
 
             <div class="form-group">
-                <label for="userPhone">📱 Mobile Number *</label>
+                <label for="userPhone" data-i18n="form.phone">📱 Mobile Number *</label>
                 <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11" inputmode="numeric" pattern="01[3-9][0-9]{8}" required aria-label="Your mobile number" aria-describedby="phoneError">
-                <div class="error-message" id="phoneError" role="alert" aria-live="polite">Please enter a valid 11-digit number starting with 01</div>
+                <div class="error-message" id="phoneError" role="alert" aria-live="polite" data-i18n="err.phone">Please enter a valid 11-digit number starting with 01</div>
             </div>
 
             <div class="form-group">
-                <label for="userEmail">✉️ Email (Optional)</label>
+                <label for="userEmail" data-i18n="form.email">✉️ Email (Optional)</label>
                 <input type="email" id="userEmail" placeholder="your@email.com" aria-label="Your email address (optional)" aria-describedby="emailError">
-                <div class="error-message" id="emailError" role="alert" aria-live="polite">Please enter a valid email</div>
+                <div class="error-message" id="emailError" role="alert" aria-live="polite" data-i18n="err.email">Please enter a valid email</div>
             </div>
 
             <div class="form-group">
-                <label>📝 Special Requests (Optional)</label>
-                <input type="text" id="specialNotes" placeholder="Any special requirements?">
+                <label data-i18n="form.notes">📝 Special Requests (Optional)</label>
+                <input type="text" id="specialNotes" placeholder="Any special requirements?" data-i18n-attr="placeholder:form.notesPh">
             </div>
 
             <div class="button-group">
-                <button class="btn btn-secondary" onclick="prevStep()">← Back</button>
-                <button class="btn btn-primary" onclick="generateItinerary()">✨ Generate My Itinerary</button>
+                <button class="btn btn-secondary" onclick="prevStep()" data-i18n="btn.back">← Back</button>
+                <button class="btn btn-primary" onclick="generateItinerary()" data-i18n="btn.generate">✨ Generate My Itinerary</button>
             </div>
         </div>
 
@@ -1680,8 +1728,8 @@ input.error { border-color: var(--danger) !important; }
 
     <!-- Popular Packages -->
     <div class="popular-packages" id="popularPackages" style="margin-top: 40px;">
-        <h2>🔥 Or Pick a Ready-Made Package</h2>
-        <p style="text-align: center; color: var(--gray-600); margin-bottom: 24px;">Click any package to instantly load it in the planner above • <span style="color: var(--secondary); font-weight: 600;">5% Early Bird Discount!</span></p>
+        <h2 data-i18n="packages.title">🔥 Or Pick a Ready-Made Package</h2>
+        <p style="text-align: center; color: var(--gray-600); margin-bottom: 24px;" data-i18n-html="packages.subtitle">Click any package to instantly load it in the planner above • <span style="color: var(--secondary); font-weight: 600;">5% Early Bird Discount!</span></p>
         <div class="packages-grid">
             <div class="package-card trending" onclick="selectPopularPackage(['Thailand', 'Malaysia'], 7)">
                 <span class="package-badge">🏆 BEST SELLER</span>
@@ -1759,7 +1807,7 @@ input.error { border-color: var(--danger) !important; }
 
     <!-- Testimonials -->
     <div class="testimonials-section" id="testimonials">
-        <h2>💬 What Travelers Are Saying</h2>
+        <h2 data-i18n="testimonials.title">💬 What Travelers Are Saying</h2>
         <div class="testimonials-grid">
             <div class="testimonial-card">
                 <div class="testimonial-header">
@@ -1795,7 +1843,7 @@ input.error { border-color: var(--danger) !important; }
 
     <!-- Currency Converter (reference info) -->
     <div class="currency-converter" style="margin-top: 24px;">
-        <h4>💱 Indicative Exchange Rates (BDT) — May 2026:</h4>
+        <h4 data-i18n="currency.title">💱 Indicative Exchange Rates (BDT) — May 2026:</h4>
         <div class="currency-rates">
             <div class="currency-rate"><span class="flag">🇺🇸</span><span>1 USD =</span><span class="rate">৳122</span></div>
             <div class="currency-rate"><span class="flag">🇸🇬</span><span>1 SGD =</span><span class="rate">৳95</span></div>
@@ -2207,6 +2255,7 @@ window.onload = function() {
     startCountdown();
     updateStepProgress();
     enableA11yClickables();
+    initLanguage();
     sendHeightToParent();
 };
 
@@ -2253,6 +2302,197 @@ function enableA11yClickables() {
         }));
     });
     obs.observe(document.body, { childList: true, subtree: true });
+}
+
+// ==================== I18N ====================
+const translations = {
+    en: {
+        'offer.title': '🎁 Limited Time Offer — Book Now & Save',
+        'offer.body': 'Get <strong>5% OFF</strong> on all land packages for travel through 2026',
+        'offer.endsIn': '⏰ Offer ends in:',
+        'header.title': '✈️ Plan Your Perfect Trip 2026',
+        'header.tagline': 'Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.',
+        'trust.reviews': '(463+ reviews)',
+        'trust.travelers': 'Happy travelers',
+        'trust.visa': 'Visa success',
+        'trust.emi': 'Available',
+        'map.title': '🗺️ Your Trip Route',
+        'interest.title': '🎯 What type of experience are you looking for?',
+        'interest.beach': 'Beach & Relaxation',
+        'interest.adventure': 'Adventure',
+        'interest.culture': 'Culture & Heritage',
+        'interest.shopping': 'Shopping & City',
+        'interest.romantic': 'Romantic / Honeymoon',
+        'interest.family': 'Family Fun',
+        'combos.title': '💡 Recommended Combos',
+        'packages.title': '🔥 Or Pick a Ready-Made Package',
+        'packages.subtitle': 'Click any package to instantly load it in the planner above • <span style="color: var(--secondary); font-weight: 600;">5% Early Bird Discount!</span>',
+        'testimonials.title': '💬 What Travelers Are Saying',
+        'currency.title': '💱 Indicative Exchange Rates (BDT) — May 2026:',
+        'step.destinations': 'Destinations',
+        'step.details': 'Details',
+        'step.addons': 'Add-ons',
+        'step.contact': 'Contact',
+        'dest.label': '🌍 Select Your Destination(s)',
+        'dest.max': '(Max 4)',
+        'warn.title': '⚠️ Trip Duration Warning',
+        'warn.extend': '✅ Extend Days',
+        'warn.reduce': '📍 Reduce Countries',
+        'warn.keep': 'Keep Current',
+        'selected.title': '✅ Selected Destinations',
+        'btn.continue': 'Continue →',
+        'btn.back': '← Back',
+        'btn.generate': '✨ Generate My Itinerary',
+        'form.duration': '📅 Trip Duration',
+        'form.durationPlaceholder': 'Select duration',
+        'form.duration3': '3 Days / 2 Nights',
+        'form.duration4': '4 Days / 3 Nights',
+        'form.duration5': '5 Days / 4 Nights',
+        'form.duration7': '7 Days / 6 Nights ⭐ Popular',
+        'form.duration10': '10 Days / 9 Nights ⭐ Recommended',
+        'form.duration14': '14 Days / 13 Nights',
+        'form.travelers': '👥 Number of Travelers',
+        'form.adultsPh': 'Adults (12+)',
+        'form.adultsNote': 'Full price',
+        'form.childrenPh': 'Children (2-11)',
+        'form.childrenNote': "Share parents' room — no extra hotel charge",
+        'form.date': '🗓️ Preferred Travel Date',
+        'form.peakTitle': '🔥 Peak Season Dates 2026 (+25% hotel rates)',
+        'form.budget': '💰 Budget Range',
+        'form.budgetEconomy': 'Economy',
+        'form.budgetEconomyDesc': '3★ Hotels, Budget-friendly',
+        'form.budgetStandard': 'Standard',
+        'form.budgetStandardDesc': '4★ Hotels, Best Value',
+        'form.budgetPremium': 'Premium',
+        'form.budgetPremiumDesc': '5★ Hotels, Luxury',
+        'addons.title': '🎯 Optional City Tours & Activities',
+        'addons.help': 'Select tours you want to add. Prices are per person.',
+        'addons.total': 'Selected Tours Total:',
+        'form.name': '👤 Your Name *',
+        'form.namePh': 'Enter your full name',
+        'form.phone': '📱 Mobile Number *',
+        'form.email': '✉️ Email (Optional)',
+        'form.notes': '📝 Special Requests (Optional)',
+        'form.notesPh': 'Any special requirements?',
+        'err.name': 'Please enter your name',
+        'err.phone': 'Please enter a valid 11-digit number starting with 01',
+        'err.email': 'Please enter a valid email'
+    },
+    bn: {
+        'offer.title': '🎁 সীমিত সময়ের অফার — এখনই বুক করে সাশ্রয় করুন',
+        'offer.body': '২০২৬ জুড়ে ভ্রমণের জন্য সব ল্যান্ড প্যাকেজে <strong>৫% ছাড়</strong>',
+        'offer.endsIn': '⏰ অফার শেষ হবে:',
+        'header.title': '✈️ আপনার পারফেক্ট ট্রিপ ২০২৬ প্ল্যান করুন',
+        'header.tagline': 'নিচ থেকে গন্তব্য বেছে নিন, টাকায় ইনস্ট্যান্ট ইটিনারারি পান — <strong style="color: var(--primary);">ফ্রি, সাইনআপ ছাড়াই</strong>।',
+        'trust.reviews': '(৪৬৩+ রিভিউ)',
+        'trust.travelers': 'খুশি ভ্রমণকারী',
+        'trust.visa': 'ভিসা সাফল্য',
+        'trust.emi': 'উপলব্ধ',
+        'map.title': '🗺️ আপনার ট্রিপ রুট',
+        'interest.title': '🎯 কী ধরনের অভিজ্ঞতা খুঁজছেন?',
+        'interest.beach': 'সমুদ্র ও বিশ্রাম',
+        'interest.adventure': 'অ্যাডভেঞ্চার',
+        'interest.culture': 'সংস্কৃতি ও ঐতিহ্য',
+        'interest.shopping': 'শপিং ও সিটি',
+        'interest.romantic': 'রোমান্টিক / হানিমুন',
+        'interest.family': 'পরিবারিক আনন্দ',
+        'combos.title': '💡 প্রস্তাবিত কম্বো',
+        'packages.title': '🔥 অথবা রেডি-মেড প্যাকেজ বেছে নিন',
+        'packages.subtitle': 'যেকোনো প্যাকেজে ক্লিক করলে উপরের প্ল্যানারে লোড হয়ে যাবে • <span style="color: var(--secondary); font-weight: 600;">৫% আর্লি বার্ড ডিসকাউন্ট!</span>',
+        'testimonials.title': '💬 ভ্রমণকারীরা যা বলছেন',
+        'currency.title': '💱 সূচক বিনিময় হার (BDT) — মে ২০২৬:',
+        'step.destinations': 'গন্তব্য',
+        'step.details': 'বিস্তারিত',
+        'step.addons': 'অ্যাড-অন',
+        'step.contact': 'যোগাযোগ',
+        'dest.label': '🌍 আপনার গন্তব্য বেছে নিন',
+        'dest.max': '(সর্বোচ্চ ৪টি)',
+        'warn.title': '⚠️ ট্রিপ দৈর্ঘ্য সতর্কতা',
+        'warn.extend': '✅ দিন বাড়ান',
+        'warn.reduce': '📍 দেশ কমান',
+        'warn.keep': 'আগের মতোই রাখুন',
+        'selected.title': '✅ নির্বাচিত গন্তব্য',
+        'btn.continue': 'এগিয়ে যান →',
+        'btn.back': '← পেছনে',
+        'btn.generate': '✨ আমার ইটিনারারি তৈরি করুন',
+        'form.duration': '📅 ট্রিপের সময়কাল',
+        'form.durationPlaceholder': 'সময়কাল নির্বাচন করুন',
+        'form.duration3': '৩ দিন / ২ রাত',
+        'form.duration4': '৪ দিন / ৩ রাত',
+        'form.duration5': '৫ দিন / ৪ রাত',
+        'form.duration7': '৭ দিন / ৬ রাত ⭐ জনপ্রিয়',
+        'form.duration10': '১০ দিন / ৯ রাত ⭐ প্রস্তাবিত',
+        'form.duration14': '১৪ দিন / ১৩ রাত',
+        'form.travelers': '👥 ভ্রমণকারীর সংখ্যা',
+        'form.adultsPh': 'প্রাপ্তবয়স্ক (১২+)',
+        'form.adultsNote': 'সম্পূর্ণ মূল্য',
+        'form.childrenPh': 'শিশু (২-১১)',
+        'form.childrenNote': 'অভিভাবকদের রুম শেয়ার করবে — অতিরিক্ত হোটেল চার্জ নেই',
+        'form.date': '🗓️ পছন্দের ভ্রমণ তারিখ',
+        'form.peakTitle': '🔥 পিক সিজন তারিখ ২০২৬ (+২৫% হোটেল রেট)',
+        'form.budget': '💰 বাজেট পরিসীমা',
+        'form.budgetEconomy': 'ইকোনমি',
+        'form.budgetEconomyDesc': '৩★ হোটেল, সাশ্রয়ী',
+        'form.budgetStandard': 'স্ট্যান্ডার্ড',
+        'form.budgetStandardDesc': '৪★ হোটেল, সেরা মূল্য',
+        'form.budgetPremium': 'প্রিমিয়াম',
+        'form.budgetPremiumDesc': '৫★ হোটেল, বিলাসবহুল',
+        'addons.title': '🎯 ঐচ্ছিক সিটি ট্যুর ও কার্যক্রম',
+        'addons.help': 'যেগুলো যোগ করতে চান বেছে নিন। দাম প্রতি ব্যক্তি।',
+        'addons.total': 'নির্বাচিত ট্যুরের মোট:',
+        'form.name': '👤 আপনার নাম *',
+        'form.namePh': 'আপনার পূর্ণ নাম লিখুন',
+        'form.phone': '📱 মোবাইল নম্বর *',
+        'form.email': '✉️ ইমেইল (ঐচ্ছিক)',
+        'form.notes': '📝 বিশেষ অনুরোধ (ঐচ্ছিক)',
+        'form.notesPh': 'কোনো বিশেষ চাহিদা?',
+        'err.name': 'অনুগ্রহ করে আপনার নাম লিখুন',
+        'err.phone': '০১ দিয়ে শুরু হওয়া ১১ ডিজিটের বৈধ নম্বর লিখুন',
+        'err.email': 'অনুগ্রহ করে একটি বৈধ ইমেইল লিখুন'
+    }
+};
+
+let currentLang = 'en';
+
+function applyTranslations(lang) {
+    const dict = translations[lang] || translations.en;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.textContent = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-attr]').forEach(el => {
+        el.getAttribute('data-i18n-attr').split(',').forEach(pair => {
+            const [attr, key] = pair.split(':').map(s => s.trim());
+            if (attr && key && dict[key] !== undefined) el.setAttribute(attr, dict[key]);
+        });
+    });
+}
+
+function setLanguage(lang) {
+    if (!translations[lang]) lang = 'en';
+    currentLang = lang;
+    document.body.setAttribute('lang', lang);
+    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);
+    });
+    applyTranslations(lang);
+    try { localStorage.setItem('gofly_lang', lang); } catch (e) {}
+    sendHeightToParent();
+}
+
+function initLanguage() {
+    let saved = null;
+    try { saved = localStorage.getItem('gofly_lang'); } catch (e) {}
+    const browserBn = (navigator.language || '').toLowerCase().startsWith('bn');
+    const initial = saved || (browserBn ? 'bn' : 'en');
+    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang-btn')));
+    });
+    setLanguage(initial);
 }
 
 // ==================== COUNTDOWN TIMER ====================
