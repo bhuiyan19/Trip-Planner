@@ -1287,7 +1287,15 @@ input.error { border-color: var(--danger) !important; }
 
 /* ==================== LOADING ==================== */
 .loading-spinner { text-align: center; padding: 60px; }
-.loading-spinner .spinner { font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; }
+.loading-spinner .spinner {
+    width: 56px;
+    height: 56px;
+    border: 4px solid var(--gray-200);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: spin 0.9s linear infinite;
+}
 
 /* ==================== ANIMATIONS ==================== */
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
@@ -1571,7 +1579,7 @@ input.error { border-color: var(--danger) !important; }
                     </div>
                     <div>
                         <input type="number" id="children" placeholder="Children (2-11)" min="0" max="10" value="0" aria-label="Number of children">
-                        <small style="color: var(--primary);">50% discount on hotels</small>
+                        <small style="color: var(--primary);">Share parents' room — no extra hotel charge</small>
                     </div>
                 </div>
             </div>
@@ -1582,10 +1590,10 @@ input.error { border-color: var(--danger) !important; }
                 <div class="peak-season-2026" id="peakSeason2026" style="display: none;">
                     <h5>🔥 Peak Season Dates 2026 (+25% hotel rates)</h5>
                     <div class="peak-dates">
-                        <div class="peak-date"><span class="date">🧧 Chinese New Year</span><br>Feb 17-23</div>
-                        <div class="peak-date"><span class="date">💦 Songkran</span><br>Apr 13-17</div>
-                        <div class="peak-date"><span class="date">🎄 Christmas/NY</span><br>Dec 20 - Jan 5</div>
-                        <div class="peak-date"><span class="date">☀️ Summer</span><br>Jun 15 - Aug 31</div>
+                        <div class="peak-date"><span class="date">🧧 Chinese New Year</span><br>Feb 15-25</div>
+                        <div class="peak-date"><span class="date">💦 Songkran</span><br>Apr 10-20</div>
+                        <div class="peak-date"><span class="date">🎄 Christmas / NY</span><br>Dec 15 - Jan 10</div>
+                        <div class="peak-date"><span class="date">☀️ Summer</span><br>Jun - Aug</div>
                     </div>
                 </div>
             </div>
@@ -1760,7 +1768,7 @@ input.error { border-color: var(--danger) !important; }
                 </div>
                 <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                 <div class="testimonial-text">"Thailand + Malaysia was PERFECT for our honeymoon! The warning about 3 countries being too rushed was spot on."</div>
-                <div class="testimonial-trip">🇹🇭🇲🇾 Thailand + Malaysia • 7 Days • Nov 2024</div>
+                <div class="testimonial-trip">🇹🇭🇲🇾 Thailand + Malaysia • 7 Days</div>
             </div>
 
             <div class="testimonial-card">
@@ -1770,7 +1778,7 @@ input.error { border-color: var(--danger) !important; }
                 </div>
                 <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                 <div class="testimonial-text">"The add-ons feature helped me customize exactly what I wanted. Desert Safari in Dubai was amazing!"</div>
-                <div class="testimonial-trip">🇦🇪 Dubai Deluxe • 5 Days • Dec 2024</div>
+                <div class="testimonial-trip">🇦🇪 Dubai Deluxe • 5 Days</div>
             </div>
 
             <div class="testimonial-card">
@@ -1780,7 +1788,7 @@ input.error { border-color: var(--danger) !important; }
                 </div>
                 <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                 <div class="testimonial-text">"Bali + Singapore was the BEST combo! The trip planner suggested it when I selected 'Beach + City' interest."</div>
-                <div class="testimonial-trip">🇮🇩🇸🇬 Bali + Singapore • 8 Days • Jan 2025</div>
+                <div class="testimonial-trip">🇮🇩🇸🇬 Bali + Singapore • 8 Days</div>
             </div>
         </div>
     </div>
@@ -2979,9 +2987,9 @@ function generateItinerary() {
     if (hasError) return;
     
     document.getElementById('itineraryResult').innerHTML = `
-        <div class="loading-spinner">
-            <div class="spinner">⏳</div>
-            <p style="margin-top: 16px;">Creating your perfect 2026 itinerary...</p>
+        <div class="loading-spinner" role="status" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <p style="margin-top: 16px; color: var(--gray-600);">Building your itinerary…</p>
         </div>
     `;
     
@@ -3059,11 +3067,9 @@ function calculateRealCosts() {
         costs.totalHotels += hotelCost;
     });
     
-    // Children 50% discount on hotels
-    if (children > 0) {
-        costs.childrenDiscount = Math.round(costs.totalHotels * 0.1 * children); // Approximate
-        costs.totalHotels = costs.totalHotels - costs.childrenDiscount;
-    }
+    // Children share parents' room — no extra hotel charge (policy).
+    // Tours are still charged per traveler (handled below in cityTours loop).
+    costs.childrenDiscount = 0;
     
     // City Tours (only if selected)
     const totalTravelers = adults + children;
@@ -3783,18 +3789,7 @@ function showToast(message, type = 'info') {
     }, 4000);
 }
 
-// Enhanced Validation Functions
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-function validatePhone(phone) {
-    // Bangladesh phone: 01XXXXXXXXX (11 digits)
-    const re = /^01[3-9]\d{8}$/;
-    return re.test(phone);
-}
-
+// Additional validators (validatePhone and validateEmail are defined above)
 function validateName(name) {
     // 2-100 characters, letters, spaces, hyphens, apostrophes only
     if (name.length < 2 || name.length > 100) return false;
@@ -3821,10 +3816,15 @@ function sanitizeHTML(str) {
 }
 
 // ==================== SEND HEIGHT TO PARENT ====================
+const PARENT_ORIGINS = ['https://goflybd.com', 'https://www.goflybd.com'];
 function sendHeightToParent() {
+    if (window.parent === window) return;
     try {
         const height = document.body.scrollHeight;
-        window.parent.postMessage({ type: 'resize', height: height }, '*');
+        const msg = { type: 'resize', height: height };
+        PARENT_ORIGINS.forEach(origin => {
+            try { window.parent.postMessage(msg, origin); } catch(e) {}
+        });
     } catch(e) {}
 }
 
