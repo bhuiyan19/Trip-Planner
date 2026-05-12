@@ -730,11 +730,11 @@ input.error { border-color: var(--danger) !important; }
 .itinerary-result { display: none; }
 .itinerary-result.active { display: block; animation: fadeIn 0.6s ease; }
 
-/* IMPROVED HEADER */
+/* RESULT HEADER — calm brand-color card */
 .result-header {
-    background: linear-gradient(135deg, var(--primary) 0%, #047857 50%, var(--secondary) 100%);
+    background: linear-gradient(160deg, #065f46 0%, #059669 100%);
     color: white;
-    padding: 50px 40px;
+    padding: 36px 32px;
     border-radius: var(--radius-xl);
     margin-bottom: 24px;
     text-align: center;
@@ -746,67 +746,77 @@ input.error { border-color: var(--danger) !important; }
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08) 0%, transparent 60%);
-}
-
-@keyframes shimmer {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    background: radial-gradient(circle at 85% 0%, rgba(255,255,255,0.10) 0%, transparent 55%);
+    pointer-events: none;
 }
 
 .result-header .emoji-bg { display: none; }
 
 .result-header h2 {
     font-family: 'Cantora One', cursive;
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    margin-bottom: 16px;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    margin-bottom: 18px;
     position: relative;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 0.01em;
+    font-weight: 400;
 }
 
 .result-destinations {
-    font-size: 1.4rem;
-    margin-bottom: 12px;
+    font-size: 1.15rem;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
+    position: relative;
 }
 
 .result-destinations .country {
-    background: rgba(255,255,255,0.2);
-    padding: 8px 16px;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 14px;
     border-radius: var(--radius-full);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.18);
 }
 
 .result-meta {
     display: flex;
     justify-content: center;
-    gap: 24px;
+    gap: 4px 18px;
     flex-wrap: wrap;
-    margin-top: 16px;
-    font-size: 1rem;
-    opacity: 0.95;
+    margin-top: 12px;
+    font-size: 0.92rem;
+    opacity: 0.88;
+    position: relative;
 }
 
 .result-meta span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+}
+
+.result-meta span + span::before {
+    content: '·';
+    color: rgba(255,255,255,0.5);
+    margin-right: 14px;
 }
 
 .discount-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #78350f;
-    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.14);
+    color: white;
+    padding: 7px 14px;
     border-radius: var(--radius-full);
-    font-weight: 700;
-    font-size: 1rem;
-    margin-top: 20px;
-    animation: bounce 1s infinite;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(8px);
+    margin-top: 16px;
 }
 
 @keyframes bounce {
@@ -1675,9 +1685,13 @@ input.error { border-color: var(--danger) !important; }
     .summary-item { padding: 16px 12px; }
     .summary-item .value { font-size: 1.2rem; }
     .summary-item .icon { font-size: 1.5rem; }
-    .result-header { padding: 32px 20px; }
-    .result-destinations { font-size: 1.1rem; }
-    .result-destinations .country { padding: 6px 12px; }
+    .result-header { padding: 28px 20px; }
+    .result-header h2 { font-size: 1.4rem; margin-bottom: 14px; }
+    .result-destinations { font-size: 1rem; gap: 6px; }
+    .result-destinations .country { padding: 5px 12px; font-size: 0.95rem; }
+    .result-meta { font-size: 0.82rem; gap: 2px 12px; }
+    .result-meta span + span::before { margin-right: 10px; }
+    .discount-badge { font-size: 0.78rem; padding: 6px 12px; margin-top: 14px; }
 
     /* Tighter offer banner on tiny screens */
     .offer-banner { padding: 8px 12px; }
@@ -3762,12 +3776,12 @@ function displayItinerary() {
             </div>
 
             <div class="result-meta">
-                <span>📅 ${totalDays}D / ${nights}N</span>
-                <span>👥 ${tripData.adults} Adults${tripData.children > 0 ? ` + ${tripData.children} Children` : ''}</span>
-                <span>🗓️ ${formatDateShort(tripData.travelDate, 0)}</span>
+                <span>${totalDays}D / ${nights}N</span>
+                <span>${tripData.adults} Adults${tripData.children > 0 ? ` + ${tripData.children} Children` : ''}</span>
+                <span>${formatDateShort(tripData.travelDate, 0)}</span>
             </div>
 
-            <div class="discount-badge">5% Early Bird Discount Applied</div>
+            <div class="discount-badge"><span aria-hidden="true">✓</span> 5% Early-Bird Discount Applied</div>
         </div>
 
         <!-- Trip Summary -->
