@@ -1877,8 +1877,12 @@ input.error { border-color: var(--danger) !important; }
                     <option value="3" data-i18n="form.duration3">3 Days / 2 Nights</option>
                     <option value="4" data-i18n="form.duration4">4 Days / 3 Nights</option>
                     <option value="5" data-i18n="form.duration5">5 Days / 4 Nights</option>
+                    <option value="6" data-i18n="form.duration6">6 Days / 5 Nights</option>
                     <option value="7" data-i18n="form.duration7">7 Days / 6 Nights ⭐ Popular</option>
+                    <option value="8" data-i18n="form.duration8">8 Days / 7 Nights</option>
+                    <option value="9" data-i18n="form.duration9">9 Days / 8 Nights</option>
                     <option value="10" data-i18n="form.duration10">10 Days / 9 Nights ⭐ Recommended</option>
+                    <option value="12" data-i18n="form.duration12">12 Days / 11 Nights</option>
                     <option value="14" data-i18n="form.duration14">14 Days / 13 Nights</option>
                 </select>
                 <div id="durationNote" style="margin-top: 12px; padding: 16px; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-radius: 12px; font-size: 0.9rem; display: none; border-left: 4px solid var(--primary);"></div>
@@ -2240,7 +2244,32 @@ const travelTimes = {
     'Sri Lanka-Maldives': { hours: 3, description: 'Flight: 1.5h + Airport time: 1.5h', fullDay: false },
     'Sri Lanka-Singapore': { hours: 6, description: 'Flight: 4h + Airport time: 2h', fullDay: true },
     'Philippines-Singapore': { hours: 5, description: 'Flight: 3.5h + Airport time: 1.5h', fullDay: false },
-    'Philippines-Malaysia': { hours: 5, description: 'Flight: 3.5h + Airport time: 1.5h', fullDay: false }
+    'Philippines-Malaysia':  { hours: 5, description: 'Flight: 3.5h + Airport time: 1.5h', fullDay: false },
+    'Philippines-Thailand':  { hours: 5, description: 'Flight: 3.5h + Airport time: 1.5h', fullDay: false },
+    'Philippines-Vietnam':   { hours: 5, description: 'Flight: 3h + Airport time: 2h', fullDay: false },
+    'Philippines-Indonesia': { hours: 6, description: 'Flight: 4h + Airport time: 2h', fullDay: false },
+    'Philippines-Dubai':     { hours: 11, description: 'Flight: 9h + Airport time: 2h', fullDay: true },
+    'Philippines-Maldives':  { hours: 9, description: 'Flight: 7h + Airport time: 2h', fullDay: true },
+
+    'Sri Lanka-Thailand':    { hours: 6, description: 'Flight: 3.5h + Airport time: 2.5h', fullDay: false },
+    'Sri Lanka-Malaysia':    { hours: 6, description: 'Flight: 3.5h + Airport time: 2.5h', fullDay: false },
+    'Sri Lanka-Indonesia':   { hours: 7, description: 'Flight: 4.5h + Airport time: 2.5h', fullDay: true },
+    'Sri Lanka-Vietnam':     { hours: 7, description: 'Flight: 4.5h + Airport time: 2.5h', fullDay: true },
+    'Sri Lanka-Dubai':       { hours: 7, description: 'Flight: 4.5h + Airport time: 2.5h', fullDay: true },
+    'Sri Lanka-Nepal':       { hours: 5, description: 'Flight: 2.5h + Airport time: 2.5h', fullDay: false },
+    'Sri Lanka-Philippines': { hours: 8, description: 'Flight: 6h + Airport time: 2h', fullDay: true },
+
+    'Nepal-Malaysia':        { hours: 6, description: 'Flight: 4h + Airport time: 2h', fullDay: false },
+    'Nepal-Singapore':       { hours: 7, description: 'Flight: 4.5h + Airport time: 2.5h', fullDay: true },
+    'Nepal-Indonesia':       { hours: 8, description: 'Flight: 6h + Airport time: 2h', fullDay: true },
+    'Nepal-Vietnam':         { hours: 7, description: 'Flight: 4.5h + Airport time: 2.5h', fullDay: true },
+    'Nepal-Dubai':           { hours: 7, description: 'Flight: 5h + Airport time: 2h', fullDay: true },
+    'Nepal-Maldives':        { hours: 7, description: 'Flight: 4.5h + Airport time: 2.5h', fullDay: true },
+    'Nepal-Philippines':     { hours: 9, description: 'Flight: 7h + Airport time: 2h', fullDay: true },
+
+    'Indonesia-Maldives':    { hours: 8, description: 'Flight: 6h + Airport time: 2h', fullDay: true },
+    'Vietnam-Maldives':      { hours: 9, description: 'Flight: 7h + Airport time: 2h', fullDay: true },
+    'Maldives-Malaysia':     { hours: 7, description: 'Flight: 4.5h + Airport time: 2.5h', fullDay: true }
 };
 
 // Get travel time between two countries
@@ -2731,8 +2760,12 @@ const translations = {
         'form.duration3': '3 Days / 2 Nights',
         'form.duration4': '4 Days / 3 Nights',
         'form.duration5': '5 Days / 4 Nights',
+        'form.duration6': '6 Days / 5 Nights',
         'form.duration7': '7 Days / 6 Nights ⭐ Popular',
+        'form.duration8': '8 Days / 7 Nights',
+        'form.duration9': '9 Days / 8 Nights',
         'form.duration10': '10 Days / 9 Nights ⭐ Recommended',
+        'form.duration12': '12 Days / 11 Nights',
         'form.duration14': '14 Days / 13 Nights',
         'form.travelers': 'Number of Travelers',
         'form.adultsPh': 'Adults (12+)',
@@ -2804,8 +2837,12 @@ const translations = {
         'form.duration3': '৩ দিন / ২ রাত',
         'form.duration4': '৪ দিন / ৩ রাত',
         'form.duration5': '৫ দিন / ৪ রাত',
+        'form.duration6': '৬ দিন / ৫ রাত',
         'form.duration7': '৭ দিন / ৬ রাত ⭐ জনপ্রিয়',
+        'form.duration8': '৮ দিন / ৭ রাত',
+        'form.duration9': '৯ দিন / ৮ রাত',
         'form.duration10': '১০ দিন / ৯ রাত ⭐ প্রস্তাবিত',
+        'form.duration12': '১২ দিন / ১১ রাত',
         'form.duration14': '১৪ দিন / ১৩ রাত',
         'form.travelers': 'ভ্রমণকারীর সংখ্যা',
         'form.adultsPh': 'প্রাপ্তবয়স্ক (১২+)',
