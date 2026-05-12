@@ -2792,7 +2792,28 @@ const translations = {
         'form.notesPh': 'Any special requirements?',
         'err.name': 'Please enter your name',
         'err.phone': 'Please enter a valid 11-digit number starting with 01',
-        'err.email': 'Please enter a valid email'
+        'err.email': 'Please enter a valid email',
+        'loading.building': 'Building your itinerary…',
+        'result.title': 'Your {days}-Day Trip is Ready',
+        'result.adults': 'Adults',
+        'result.children': 'Children',
+        'result.discount': '5% Early-Bird Discount Applied',
+        'result.perPerson': 'Per person',
+        'result.includes': 'Hotel + Breakfast + Transfers',
+        'result.includesTours': 'Selected Tours',
+        'result.dayByDay': 'Day-by-Day Itinerary',
+        'result.flexible': '(Flexible timings)',
+        'summary.countries': 'Countries',
+        'summary.duration': 'Duration',
+        'summary.travelers': 'Travelers',
+        'summary.tours': 'Tours',
+        'summary.totalCost': 'Total Cost',
+        'cta.whatsapp': 'WhatsApp Quote',
+        'cta.call': 'Call Now',
+        'cta.email': 'Email',
+        'sticky.whatsapp': 'WhatsApp',
+        'sticky.call': 'Call',
+        'planAnother': 'Plan another trip'
     },
     bn: {
         'offer.title': '🎁 ৫% আর্লি-বার্ড ছাড়',
@@ -2869,11 +2890,40 @@ const translations = {
         'form.notesPh': 'কোনো বিশেষ চাহিদা?',
         'err.name': 'অনুগ্রহ করে আপনার নাম লিখুন',
         'err.phone': '০১ দিয়ে শুরু হওয়া ১১ ডিজিটের বৈধ নম্বর লিখুন',
-        'err.email': 'অনুগ্রহ করে একটি বৈধ ইমেইল লিখুন'
+        'err.email': 'অনুগ্রহ করে একটি বৈধ ইমেইল লিখুন',
+        'loading.building': 'আপনার ইটিনারারি তৈরি হচ্ছে…',
+        'result.title': 'আপনার {days}-দিনের ট্রিপ প্রস্তুত',
+        'result.adults': 'প্রাপ্তবয়স্ক',
+        'result.children': 'শিশু',
+        'result.discount': '৫% আর্লি-বার্ড ছাড় প্রয়োগ',
+        'result.perPerson': 'প্রতি ব্যক্তি',
+        'result.includes': 'হোটেল + ব্রেকফাস্ট + ট্রান্সফার',
+        'result.includesTours': 'নির্বাচিত ট্যুর',
+        'result.dayByDay': 'দিন-বাই-দিন ইটিনারারি',
+        'result.flexible': '(সময় নমনীয়)',
+        'summary.countries': 'দেশ',
+        'summary.duration': 'সময়কাল',
+        'summary.travelers': 'ভ্রমণকারী',
+        'summary.tours': 'ট্যুর',
+        'summary.totalCost': 'মোট খরচ',
+        'cta.whatsapp': 'হোয়াটসঅ্যাপ কোট',
+        'cta.call': 'এখনই কল',
+        'cta.email': 'ইমেইল',
+        'sticky.whatsapp': 'হোয়াটসঅ্যাপ',
+        'sticky.call': 'কল',
+        'planAnother': 'আরেকটা ট্রিপ প্ল্যান করুন'
     }
 };
 
 let currentLang = 'en';
+
+// Small translation helper used by code that builds HTML on the fly
+// (result page, toasts, loading spinner). Static markup keeps using
+// data-i18n + applyTranslations.
+function t(key, fallback) {
+    const dict = translations[currentLang] || translations.en;
+    return dict[key] !== undefined ? dict[key] : (fallback != null ? fallback : key);
+}
 
 function applyTranslations(lang) {
     const dict = translations[lang] || translations.en;
@@ -3667,7 +3717,7 @@ function generateItinerary() {
     document.getElementById('itineraryResult').innerHTML = `
         <div class="loading-spinner" role="status" aria-live="polite">
             <div class="spinner" aria-hidden="true"></div>
-            <p style="margin-top: 16px; color: var(--gray-600);">Building your itinerary…</p>
+            <p style="margin-top: 16px; color: var(--gray-600);">${t('loading.building', 'Building your itinerary…')}</p>
         </div>
     `;
     
@@ -4068,7 +4118,7 @@ function displayItinerary() {
     document.getElementById('itineraryResult').innerHTML = `
         <!-- Result Header -->
         <div class="result-header">
-            <h2>Your ${totalDays}-Day Trip is Ready</h2>
+            <h2>${t('result.title', `Your ${totalDays}-Day Trip is Ready`).replace('{days}', totalDays)}</h2>
 
             <div class="result-destinations">
                 ${selectedDestinations.map(d => `<span class="country">${destinations[d].flag} ${d}</span>`).join('')}
@@ -4076,53 +4126,53 @@ function displayItinerary() {
 
             <div class="result-meta">
                 <span>${totalDays}D / ${nights}N</span>
-                <span>${tripData.adults} Adults${tripData.children > 0 ? ` + ${tripData.children} Children` : ''}</span>
+                <span>${tripData.adults} ${t('result.adults', 'Adults')}${tripData.children > 0 ? ` + ${tripData.children} ${t('result.children', 'Children')}` : ''}</span>
                 <span>${formatDateShort(tripData.travelDate, 0)}</span>
             </div>
 
-            <div class="discount-badge"><span aria-hidden="true">✓</span> 5% Early-Bird Discount Applied</div>
+            <div class="discount-badge"><span aria-hidden="true">✓</span> ${t('result.discount', '5% Early-Bird Discount Applied')}</div>
         </div>
 
         <!-- Trip Summary -->
         <div class="trip-summary">
             <div class="summary-item">
-                <div class="label">Countries</div>
+                <div class="label">${t('summary.countries', 'Countries')}</div>
                 <div class="value">${selectedDestinations.length}</div>
             </div>
             <div class="summary-item">
-                <div class="label">Duration</div>
+                <div class="label">${t('summary.duration', 'Duration')}</div>
                 <div class="value">${totalDays}D/${nights}N</div>
             </div>
             <div class="summary-item">
-                <div class="label">Travelers</div>
+                <div class="label">${t('summary.travelers', 'Travelers')}</div>
                 <div class="value">${totalTravelers}</div>
             </div>
             <div class="summary-item">
-                <div class="label">Tours</div>
+                <div class="label">${t('summary.tours', 'Tours')}</div>
                 <div class="value">${selectedAddons.length}</div>
             </div>
             <div class="summary-item highlight">
-                <div class="label">Total Cost</div>
+                <div class="label">${t('summary.totalCost', 'Total Cost')}</div>
                 <div class="value">৳${costs.grandTotal.toLocaleString()}</div>
             </div>
         </div>
 
         <!-- Per Person + Primary CTA (the conversion moment) -->
         <div style="background: white; border: 2px solid var(--primary); padding: 28px 24px; border-radius: 16px; margin-bottom: 24px; text-align: center;">
-            <p style="color: var(--gray-600); margin-bottom: 6px; font-size: 0.95rem;">Per person (${totalTravelers} travelers)</p>
+            <p style="color: var(--gray-600); margin-bottom: 6px; font-size: 0.95rem;">${t('result.perPerson', 'Per person')} (${totalTravelers} ${t('summary.travelers', 'travelers').toLowerCase()})</p>
             <p style="font-size: 2.4rem; font-weight: 700; color: var(--primary); line-height: 1; margin-bottom: 4px;">৳${Math.round(costs.grandTotal / totalTravelers).toLocaleString()}</p>
-            <p style="color: var(--gray-500); font-size: 0.85rem; margin-bottom: 20px;">Hotel + Breakfast + Transfers${costs.totalCityTours > 0 ? ' + Selected Tours' : ''}</p>
+            <p style="color: var(--gray-500); font-size: 0.85rem; margin-bottom: 20px;">${t('result.includes', 'Hotel + Breakfast + Transfers')}${costs.totalCityTours > 0 ? ' + ' + t('result.includesTours', 'Selected Tours') : ''}</p>
             <div class="cta-section" style="margin-top: 0;">
-                <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="cta-button cta-whatsapp" target="_blank" rel="noopener">💬 WhatsApp Quote</a>
-                <a href="tel:+8809639203090" class="cta-button cta-call">📞 Call Now</a>
-                <a href="mailto:goflybd@gmail.com?subject=Trip%20Quote%20${encodeURIComponent(destinationNames)}" class="cta-button cta-email">✉️ Email</a>
+                <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="cta-button cta-whatsapp" target="_blank" rel="noopener">💬 ${t('cta.whatsapp', 'WhatsApp Quote')}</a>
+                <a href="tel:+8809639203090" class="cta-button cta-call">📞 ${t('cta.call', 'Call Now')}</a>
+                <a href="mailto:goflybd@gmail.com?subject=Trip%20Quote%20${encodeURIComponent(destinationNames)}" class="cta-button cta-email">✉️ ${t('cta.email', 'Email')}</a>
             </div>
         </div>
 
         <!-- Day-by-Day Itinerary -->
         <h3 style="font-size: 1.4rem; margin: 32px 0 20px; display: flex; align-items: center; gap: 10px;">
-            Day-by-Day Itinerary
-            <span style="font-size: 0.85rem; color: var(--gray-500); font-weight: 400;">(Flexible timings)</span>
+            ${t('result.dayByDay', 'Day-by-Day Itinerary')}
+            <span style="font-size: 0.85rem; color: var(--gray-500); font-weight: 400;">${t('result.flexible', '(Flexible timings)')}</span>
         </h3>
         ${daysHtml}
         
@@ -4276,13 +4326,13 @@ function displayItinerary() {
         <!-- Plan Another -->
         <div style="text-align: center; margin-top: 32px; padding: 24px; background: var(--gray-50); border-radius: 12px;">
             <p style="color: var(--gray-600); margin-bottom: 16px;">Want to explore more options?</p>
-            <button onclick="location.reload()" class="btn btn-secondary" style="padding: 14px 32px;">Plan another trip</button>
+            <button onclick="location.reload()" class="btn btn-secondary" style="padding: 14px 32px;">${t('planAnother', 'Plan another trip')}</button>
         </div>
 
         <!-- Sticky mobile CTA bar -->
         <div class="sticky-cta show" id="stickyCta">
-            <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="sticky-whatsapp" target="_blank" rel="noopener">💬 WhatsApp</a>
-            <a href="tel:+8809639203090" class="sticky-call">📞 Call</a>
+            <a href="https://wa.me/8801713289171?text=${whatsappMessage}" class="sticky-whatsapp" target="_blank" rel="noopener">💬 ${t('sticky.whatsapp', 'WhatsApp')}</a>
+            <a href="tel:+8809639203090" class="sticky-call">📞 ${t('sticky.call', 'Call')}</a>
         </div>
     `;
     document.body.classList.remove('has-form-bar');
