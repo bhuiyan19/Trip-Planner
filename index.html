@@ -599,7 +599,23 @@ select, input[type="number"], input[type="date"], input[type="text"], input[type
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
     transition: all 0.3s;
+    background: white;
+    color: var(--gray-800);
+    text-align: left;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    min-height: 52px;
 }
+
+/* iOS Safari quirks for date inputs */
+input[type="date"] {
+    display: block;
+    line-height: 1.2;
+    font-family: 'Inter', sans-serif;
+}
+input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+input[type="date"]::-webkit-calendar-picker-indicator { margin-left: auto; opacity: 0.6; }
 
 select:focus, input:focus {
     outline: none;
@@ -2029,7 +2045,7 @@ input.error { border-color: var(--danger) !important; }
     </div>
 
     <!-- Currency Converter (reference info) -->
-    <div class="currency-converter" style="margin-top: 24px;">
+    <div class="currency-converter" id="currencyConverter" style="margin-top: 24px;">
         <h4 data-i18n="currency.title">💱 Indicative Exchange Rates (BDT) — May 2026:</h4>
         <div class="currency-rates">
             <div class="currency-rate"><span class="flag">🇺🇸</span><span class="unit-label">1 USD =</span><span class="rate">৳122</span><span class="unit-short">USD</span></div>
@@ -3180,6 +3196,8 @@ function nextStep() {
         document.getElementById('testimonials').style.display = 'none';
         document.getElementById('interestSelector').style.display = 'none';
         document.getElementById('recommendedCombos').style.display = 'none';
+        const cc = document.getElementById('currencyConverter');
+        if (cc) cc.style.display = 'none';
     }
     
     if (currentStep === 3) {
@@ -3201,6 +3219,8 @@ function prevStep() {
         document.getElementById('testimonials').style.display = 'block';
         document.getElementById('interestSelector').style.display = 'block';
         document.getElementById('recommendedCombos').style.display = 'block';
+        const cc = document.getElementById('currencyConverter');
+        if (cc) cc.style.display = '';
     }
     
     document.querySelector(`[data-section="${currentStep}"]`).classList.add('active');
@@ -3347,6 +3367,8 @@ function generateItinerary() {
     
     document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
     document.getElementById('stepIndicator').style.display = 'none';
+    const cc = document.getElementById('currencyConverter');
+    if (cc) cc.style.display = 'none';
     document.getElementById('itineraryResult').classList.add('active');
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
