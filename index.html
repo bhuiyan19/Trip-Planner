@@ -2145,6 +2145,74 @@ input.error { border-color: var(--danger) !important; }
 <!-- Leaflet JS loaded lazily by ensureLeaflet() on first destination select -->
 
 <script>
+// ==================== INTRA-COUNTRY TRANSIT (NEW!) ====================
+// How travelers move between two cities inside the same country.
+// Default falls back to a country-level mode if a specific pair isn't listed.
+const intraCountryDefault = {
+    'Thailand':    { type: 'flight', time: '~1.5 hours', mode: 'Domestic flight' },
+    'Malaysia':    { type: 'flight', time: '~1 hour',    mode: 'Domestic flight' },
+    'Indonesia':   { type: 'drive',  time: '~2 hours',   mode: 'Private car transfer' },
+    'Vietnam':     { type: 'flight', time: '~1.5 hours', mode: 'Domestic flight' },
+    'Nepal':       { type: 'drive',  time: '~5-6 hours', mode: 'Scenic mountain drive' },
+    'Sri Lanka':   { type: 'drive',  time: '~3 hours',   mode: 'Private car' },
+    'Philippines': { type: 'flight', time: '~1.5 hours', mode: 'Domestic flight' },
+    'Dubai':       { type: 'drive',  time: '~1.5 hours', mode: 'Private transfer' }
+};
+
+const intraCountryTransit = {
+    'Thailand': {
+        'Bangkok-Pattaya':       { type: 'drive',  time: '~2 hours',   mode: 'Private car (no flight needed)' },
+        'Phuket-Krabi':          { type: 'ferry',  time: '~2 hours',   mode: 'Speedboat ferry' },
+        'Phuket-Koh Samui':      { type: 'flight', time: '~1 hour',    mode: 'Domestic flight via Bangkok' },
+        'Krabi-Koh Samui':       { type: 'ferry',  time: '~4 hours',   mode: 'Long-distance ferry' }
+    },
+    'Malaysia': {
+        'Kuala Lumpur-Genting Highlands': { type: 'drive', time: '~1 hour', mode: 'Private car (mountain road)' },
+        'Langkawi-Penang':       { type: 'ferry',  time: '~3 hours',   mode: 'Inter-island ferry' }
+    },
+    'Indonesia': {
+        'Seminyak-Ubud':         { type: 'drive',  time: '~1.5 hours', mode: 'Private car' },
+        'Seminyak-Nusa Penida':  { type: 'ferry',  time: '~45 mins',   mode: 'Fast boat from Sanur' },
+        'Ubud-Nusa Penida':      { type: 'ferry',  time: '~1 hour',    mode: 'Car + fast boat' },
+        'Seminyak-Jakarta':      { type: 'flight', time: '~2 hours',   mode: 'Domestic flight' }
+    },
+    'Vietnam': {
+        'Hanoi-Ha Long Bay':     { type: 'drive',  time: '~3 hours',   mode: 'Private car (no flight)' },
+        'Ha Long Bay-Hanoi':     { type: 'drive',  time: '~3 hours',   mode: 'Private car (no flight)' }
+    },
+    'Nepal': {
+        'Kathmandu-Nagarkot':    { type: 'drive',  time: '~2 hours',   mode: 'Private car (hill road)' },
+        'Kathmandu-Pokhara':     { type: 'drive',  time: '~6 hours',   mode: 'Scenic drive or 25-min flight' },
+        'Pokhara-Chitwan':       { type: 'drive',  time: '~5 hours',   mode: 'Private car' },
+        'Kathmandu-Chitwan':     { type: 'drive',  time: '~5 hours',   mode: 'Private car' }
+    },
+    'Sri Lanka': {
+        'Colombo-Kandy':         { type: 'drive',  time: '~3 hours',   mode: 'Private car (Kandy Road)' },
+        'Kandy-Nuwara Eliya':    { type: 'drive',  time: '~2.5 hours', mode: 'Scenic mountain road' },
+        'Nuwara Eliya-Ella':     { type: 'train',  time: '~2 hours',   mode: 'Famous scenic blue train' },
+        'Ella-Galle':            { type: 'drive',  time: '~4 hours',   mode: 'Private car (southern coast)' },
+        'Galle-Colombo':         { type: 'drive',  time: '~2 hours',   mode: 'Southern expressway' }
+    },
+    'Philippines': {
+        'Manila-Tagaytay':       { type: 'drive',  time: '~2 hours',   mode: 'Private van' },
+        'Cebu-Boracay':          { type: 'flight', time: '~1.5 hours', mode: 'Flight + boat transfer' }
+    },
+    'Dubai': {
+        'Dubai-Abu Dhabi':       { type: 'drive',  time: '~1.5 hours', mode: 'Private car' }
+    }
+};
+
+function getIntraTransit(country, fromCity, toCity) {
+    const map = intraCountryTransit[country] || {};
+    return map[`${fromCity}-${toCity}`] || map[`${toCity}-${fromCity}`]
+        || intraCountryDefault[country]
+        || { type: 'transfer', time: '~2-3 hours', mode: 'Private transfer' };
+}
+
+function transitIcon(type) {
+    return ({ flight: '✈️', train: '🚂', ferry: '⛴️', drive: '🚗', bus: '🚌', transfer: '🚐' })[type] || '🚐';
+}
+
 // ==================== TRAVEL TIME BETWEEN COUNTRIES (NEW!) ====================
 const travelTimes = {
     'Thailand-Malaysia': { hours: 4, description: 'Flight: 2h + Airport time: 2h', fullDay: false },
@@ -3759,25 +3827,52 @@ function generateDynamicItinerary() {
             : (dest.cities || []).slice(0, 1).map(c => ({ name: c.name, days: 1 }));
         const citySeq = expandCitySequence(chosenCityDetails, sightseeingDays);
 
+        // The user arrives in the first chosen city of this country, so day 0's
+        // "previous city" is the arrival city — no transit needed on day 0.
+        let prevCity = chosenCityDetails[0]?.name || null;
+
         for (let d = 0; d < sightseeingDays; d++) {
             const cityName = citySeq[d] || chosenCityDetails[0]?.name || destKey;
             const cityAttractions = highlights[cityName] || ['Explore', 'Sightseeing'];
-            
-            itinerary.push({
-                day: currentDay,
-                location: `${destKey} - ${cityName}`,
-                isTravelDay: false,
-                country: destKey,
-                highlights: cityAttractions.slice(0, 3),
-                activities: [
-                    { time: 'Morning', name: '🍳 Breakfast', desc: 'Hotel buffet breakfast (Included)' },
-                    { time: '09:30 AM', name: '🎯 ' + (cityAttractions[0] || 'Morning Activity'), desc: 'Full morning exploration' },
-                    { time: '01:00 PM', name: '🍱 Lunch', desc: 'Local cuisine (own expense)' },
-                    { time: '03:00 PM', name: '🎨 ' + (cityAttractions[1] || 'Afternoon Activity'), desc: 'Afternoon sightseeing' },
-                    { time: '06:00 PM', name: '🌅 ' + (cityAttractions[2] || 'Evening'), desc: 'Sunset views or shopping' },
-                    { time: '08:00 PM', name: '🍽️ Dinner', desc: 'Restaurant or street food (own expense)' }
-                ]
-            });
+            const isCityChange = prevCity && cityName !== prevCity;
+
+            if (isCityChange) {
+                const transit = getIntraTransit(destKey, prevCity, cityName);
+                const icon = transitIcon(transit.type);
+                itinerary.push({
+                    day: currentDay,
+                    location: `${prevCity} → ${cityName}`,
+                    isTravelDay: true,
+                    country: destKey,
+                    highlights: ['Inter-city travel', cityName],
+                    activities: [
+                        { time: 'Morning',   name: '🍳 Breakfast',                          desc: `Final breakfast in ${prevCity}` },
+                        { time: 'Check-out', name: '🏨 Hotel Checkout',                     desc: `Pack and prepare to leave ${prevCity}` },
+                        { time: 'Transit',   name: `${icon} ${transit.mode}`,               desc: `${prevCity} → ${cityName} · ${transit.time}` },
+                        { time: 'Afternoon', name: `🛬 Arrive in ${cityName}`,              desc: 'Transfer to new hotel & check-in' },
+                        { time: 'Evening',   name: `🚶 ${cityAttractions[0] || 'Explore'}`, desc: `Light evening in ${cityName}` },
+                        { time: 'Night',     name: '🍽️ Dinner',                             desc: `Local cuisine in ${cityName} (own expense)` }
+                    ]
+                });
+            } else {
+                itinerary.push({
+                    day: currentDay,
+                    location: `${destKey} - ${cityName}`,
+                    isTravelDay: false,
+                    country: destKey,
+                    highlights: cityAttractions.slice(0, 3),
+                    activities: [
+                        { time: 'Morning',  name: '🍳 Breakfast',                            desc: 'Hotel buffet breakfast (Included)' },
+                        { time: '09:30 AM', name: '🎯 ' + (cityAttractions[0] || 'Morning Activity'),  desc: 'Full morning exploration' },
+                        { time: '01:00 PM', name: '🍱 Lunch',                                desc: 'Local cuisine (own expense)' },
+                        { time: '03:00 PM', name: '🎨 ' + (cityAttractions[1] || 'Afternoon Activity'), desc: 'Afternoon sightseeing' },
+                        { time: '06:00 PM', name: '🌅 ' + (cityAttractions[2] || 'Evening'),             desc: 'Sunset views or shopping' },
+                        { time: '08:00 PM', name: '🍽️ Dinner',                              desc: 'Restaurant or street food (own expense)' }
+                    ]
+                });
+            }
+
+            prevCity = cityName;
             currentDay++;
         }
         
