@@ -222,13 +222,21 @@ body[lang="bn"] .header h1 {
 a.trust-badge { color: inherit; text-decoration: none; }
 a.trust-badge:hover { background: var(--gray-50); }
 
-.cert-line {
-    font-size: 0.78rem;
+.cert-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+.cert-chip {
+    font-size: 0.72rem;
     color: var(--gray-500);
-    margin-top: 14px;
-    letter-spacing: 0.01em;
-    line-height: 1.5;
-    text-align: center;
+    background: var(--gray-100);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.02em;
+    font-weight: 500;
 }
 
 /* ==================== CURRENCY CONVERTER ==================== */
@@ -1770,12 +1778,18 @@ input.error { border-color: var(--danger) !important; }
 
     <div class="header">
         <h1 data-i18n="header.title">✈️ Plan Your Perfect Trip 2026</h1>
-        <p style="font-size: 1.1rem; color: var(--gray-700); margin-bottom: 14px;" data-i18n-html="header.tagline">Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.</p>
+        <p style="font-size: 1.15rem; color: var(--gray-700); margin-bottom: 16px;" data-i18n-html="header.tagline">Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.</p>
         <div class="trust-badges">
-            <a href="https://maps.app.goo.gl/kA44Gowb9TANqZ2dA" target="_blank" rel="noopener" class="trust-badge"><span>⭐ <strong>4.8</strong></span> <span data-i18n="trust.reviews">463+ Google reviews</span></a>
-            <div class="trust-badge"><span><strong>10,000+</strong></span> <span data-i18n="trust.travelers">happy travelers</span></div>
+            <a href="https://maps.app.goo.gl/kA44Gowb9TANqZ2dA" target="_blank" rel="noopener" class="trust-badge"><span>⭐ <strong>4.8/5</strong></span> <span data-i18n="trust.reviews">(463+ reviews)</span></a>
+            <div class="trust-badge"><span>✅ <strong>10,000+</strong></span> <span data-i18n="trust.travelers">Happy travelers</span></div>
+            <div class="trust-badge"><span>🎯 <strong>90-98%</strong></span> <span data-i18n="trust.visa">Visa success</span></div>
+            <div class="trust-badge"><span>💳 <strong>0% EMI</strong></span> <span data-i18n="trust.emi">Available</span></div>
         </div>
-        <p class="cert-line" aria-label="Certifications" data-i18n="cert.line">Licensed travel agency · IATA #42337956 · ATAB #4298 · Since 2017</p>
+        <div class="cert-row" aria-label="Certifications">
+            <span class="cert-chip">IATA #42337956</span>
+            <span class="cert-chip">ATAB #4298</span>
+            <span class="cert-chip" data-i18n="cert.since">Since 2017 · 8+ yrs</span>
+        </div>
     </div>
 
     <!-- Interest Selector -->
@@ -2543,11 +2557,11 @@ const translations = {
         'offer.body': 'Save <strong>5%</strong> on all land packages for travel through 2026',
         'header.title': '✈️ Plan Your Perfect Trip 2026',
         'header.tagline': 'Pick destinations below to get an instant itinerary in BDT — <strong style="color: var(--primary);">free, no signup</strong>.',
-        'trust.reviews': '463+ Google reviews',
-        'trust.travelers': 'happy travelers',
+        'trust.reviews': '(463+ reviews)',
+        'trust.travelers': 'Happy travelers',
         'trust.visa': 'Visa success',
         'trust.emi': 'Available',
-        'cert.line': 'Licensed travel agency · IATA #42337956 · ATAB #4298 · Since 2017',
+        'cert.since': 'Since 2017 · 8+ yrs',
         'map.title': '🗺️ Your Trip Route',
         'interest.title': '🎯 What type of experience are you looking for?',
         'interest.beach': 'Beach & Relaxation',
@@ -2616,11 +2630,11 @@ const translations = {
         'offer.body': '২০২৬ জুড়ে ভ্রমণের জন্য সব ল্যান্ড প্যাকেজে <strong>৫% সাশ্রয়</strong>',
         'header.title': '✈️ আপনার পারফেক্ট ট্রিপ ২০২৬ প্ল্যান করুন',
         'header.tagline': 'নিচ থেকে গন্তব্য বেছে নিন, টাকায় ইনস্ট্যান্ট ইটিনারারি পান — <strong style="color: var(--primary);">ফ্রি, সাইনআপ ছাড়াই</strong>।',
-        'trust.reviews': '৪৬৩+ গুগল রিভিউ',
+        'trust.reviews': '(৪৬৩+ রিভিউ)',
         'trust.travelers': 'খুশি ভ্রমণকারী',
         'trust.visa': 'ভিসা সাফল্য',
         'trust.emi': 'উপলব্ধ',
-        'cert.line': 'লাইসেন্সপ্রাপ্ত ট্রাভেল এজেন্সি · IATA #42337956 · ATAB #4298 · ২০১৭ থেকে',
+        'cert.since': '২০১৭ থেকে · ৮+ বছর',
         'map.title': '🗺️ আপনার ট্রিপ রুট',
         'interest.title': '🎯 কী ধরনের অভিজ্ঞতা খুঁজছেন?',
         'interest.beach': 'সমুদ্র ও বিশ্রাম',
