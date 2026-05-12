@@ -3234,14 +3234,11 @@ function calculateCityDistribution(totalDays) {
     const distribution = [];
     const numCountries = selectedDestinations.length;
 
-    // Full-day inter-country travel
-    let travelDays = 0;
-    for (let i = 0; i < numCountries - 1; i++) {
-        const time = getTravelTime(selectedDestinations[i], selectedDestinations[i + 1]);
-        if (time.fullDay) travelDays++;
-    }
-
-    const sightseeingDays = Math.max(numCountries, totalDays - travelDays);
+    // Inter-country travel days are *rendered* inside the next country's
+    // loop (as that country's first day), so they're already part of each
+    // country's day budget. Don't subtract them again — doing that used to
+    // make 7-day Thailand+Dubai render only 6 days of itinerary.
+    const sightseeingDays = Math.max(numCountries, totalDays);
     const baseDaysPerCountry = Math.floor(sightseeingDays / numCountries);
     let extraDays = sightseeingDays % numCountries;
 
@@ -3691,8 +3688,13 @@ function calculateRealCosts() {
     selectedDestinations.forEach((country, countryIdx) => {
         const dest = destinations[country];
         const countryInfo = distribution[countryIdx];
-        const countryNights = countryInfo.totalDays;
-        
+        const isLastCountry = countryIdx === selectedDestinations.length - 1;
+        // The last country loses a hotel night on the departure day (you
+        // check out in the morning and fly home). Earlier countries pay
+        // for every day in their budget because the inter-country travel
+        // day's night is spent in the next country.
+        const countryNights = Math.max(1, countryInfo.totalDays - (isLastCountry ? 1 : 0));
+
         // Hotels (per room, breakfast included)
         let hotelRate = tripData.budget === 'economy' ? dest.hotelBudget : 
                         tripData.budget === 'premium' ? dest.hotelLuxury : dest.hotelStandard;
