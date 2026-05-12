@@ -2274,12 +2274,18 @@ const destinations = {
             'Bangkok ↔ Pattaya': 11000
         },
         cityTours: [
-            { id: 'th_temple', name: 'Grand Palace + Wat Pho + Wat Arun', desc: 'Half day temple tour', price: 3500, duration: '5 hours' },
-            { id: 'th_floating', name: 'Floating Market Tour', desc: 'Damnoen Saduak + Train Market', price: 3500, duration: '6 hours' },
-            { id: 'th_coral', name: 'Coral Island (Koh Larn)', desc: 'Speedboat + lunch + activities', price: 4500, duration: 'Full day' },
-            { id: 'th_alcazar', name: 'Alcazar Cabaret Show', desc: 'Famous Pattaya show', price: 2500, duration: '2 hours' },
-            { id: 'th_safari', name: 'Safari World Bangkok', desc: 'Zoo + Marine Park', price: 4000, duration: 'Full day' },
-            { id: 'th_cruise', name: 'Chao Phraya Dinner Cruise', desc: 'Buffet dinner on river', price: 4000, duration: '2.5 hours' }
+            { id: 'th_temple',   city: 'Bangkok',     name: 'Grand Palace + Wat Pho + Wat Arun', desc: 'Half day temple tour', price: 3500, duration: '5 hours' },
+            { id: 'th_floating', city: 'Bangkok',     name: 'Floating Market Tour', desc: 'Damnoen Saduak + Train Market', price: 3500, duration: '6 hours' },
+            { id: 'th_safari',   city: 'Bangkok',     name: 'Safari World Bangkok', desc: 'Zoo + Marine Park', price: 4000, duration: 'Full day' },
+            { id: 'th_cruise',   city: 'Bangkok',     name: 'Chao Phraya Dinner Cruise', desc: 'Buffet dinner on river', price: 4000, duration: '2.5 hours' },
+            { id: 'th_coral',    city: 'Pattaya',     name: 'Coral Island (Koh Larn)', desc: 'Speedboat + lunch + activities', price: 4500, duration: 'Full day' },
+            { id: 'th_alcazar',  city: 'Pattaya',     name: 'Alcazar Cabaret Show', desc: 'Famous Pattaya show', price: 2500, duration: '2 hours' },
+            { id: 'th_phiphi',   city: 'Phuket',      name: 'Phi Phi Islands by Speedboat', desc: 'Maya Bay + snorkeling + lunch', price: 6500, duration: 'Full day' },
+            { id: 'th_jamesbond',city: 'Phuket',      name: 'James Bond Island + Phang Nga', desc: 'Sea canoe + lunch', price: 6000, duration: 'Full day' },
+            { id: 'th_4islands', city: 'Krabi',       name: '4 Islands Tour (Krabi)', desc: 'Speedboat island hopping', price: 5500, duration: 'Full day' },
+            { id: 'th_chiang',   city: 'Chiang Mai',  name: 'Old City Temples & Doi Suthep', desc: 'City tour + mountain temple', price: 3500, duration: '6 hours' },
+            { id: 'th_elephant', city: 'Chiang Mai',  name: 'Ethical Elephant Sanctuary', desc: 'Bathe & feed elephants', price: 5500, duration: 'Full day' },
+            { id: 'th_samui',    city: 'Koh Samui',   name: 'Angthong Marine Park', desc: 'Boat tour + snorkeling + lunch', price: 6000, duration: 'Full day' }
         ],
         cities: [
             { name: 'Bangkok',    days: 3 },
@@ -2306,10 +2312,14 @@ const destinations = {
             'Airport ↔ Hotel': 9000
         },
         cityTours: [
-            { id: 'my_city', name: 'KL City Tour + Batu Caves', desc: 'Petronas view + Batu Caves', price: 3000, duration: '5 hours' },
-            { id: 'my_genting', name: 'Genting Highlands Day Trip', desc: 'Cable car + theme park', price: 5500, duration: 'Full day' },
-            { id: 'my_sunway', name: 'Sunway Lagoon Theme Park', desc: 'Water + theme park', price: 4500, duration: 'Full day' },
-            { id: 'my_firefly', name: 'Firefly Tour', desc: 'Magical night river cruise', price: 4500, duration: '4 hours' }
+            { id: 'my_city',     city: 'Kuala Lumpur',      name: 'KL City Tour + Batu Caves', desc: 'Petronas view + Batu Caves', price: 3000, duration: '5 hours' },
+            { id: 'my_sunway',   city: 'Kuala Lumpur',      name: 'Sunway Lagoon Theme Park', desc: 'Water + theme park', price: 4500, duration: 'Full day' },
+            { id: 'my_firefly',  city: 'Kuala Lumpur',      name: 'Firefly Tour', desc: 'Magical night river cruise', price: 4500, duration: '4 hours' },
+            { id: 'my_genting',  city: 'Genting Highlands', name: 'Genting Highlands Day Trip', desc: 'Cable car + theme park', price: 5500, duration: 'Full day' },
+            { id: 'my_skybridge',city: 'Langkawi',          name: 'Langkawi Sky Bridge & Cable Car', desc: 'Panorama Mt. Mat Cincang', price: 4500, duration: '5 hours' },
+            { id: 'my_island',   city: 'Langkawi',          name: 'Island Hopping by Speedboat', desc: 'Pregnant Maiden + Eagle feeding', price: 4000, duration: 'Full day' },
+            { id: 'my_george',   city: 'Penang',            name: 'George Town Heritage Walk', desc: 'Street art + colonial sights', price: 2800, duration: '4 hours' },
+            { id: 'my_keklokSi', city: 'Penang',            name: 'Kek Lok Si Temple + Penang Hill', desc: 'Iconic temple + funicular', price: 3500, duration: '5 hours' }
         ],
         cities: [
             { name: 'Kuala Lumpur',      days: 3 },
@@ -2334,11 +2344,11 @@ const destinations = {
             'Airport ↔ Hotel': 8000
         },
         cityTours: [
-            { id: 'sg_uss', name: 'Universal Studios Singapore', desc: 'Full day theme park', price: 9000, duration: 'Full day' },
-            { id: 'sg_gardens', name: 'Gardens by the Bay', desc: 'Supertree + 2 domes', price: 4500, duration: '4 hours' },
-            { id: 'sg_sentosa', name: 'Sentosa Island Day Pass', desc: 'Cable car + attractions', price: 5500, duration: 'Full day' },
-            { id: 'sg_zoo', name: 'Singapore Zoo + Night Safari', desc: 'Day zoo + night', price: 7500, duration: '8 hours' },
-            { id: 'sg_city', name: 'Singapore City Tour', desc: 'Merlion + Marina Bay', price: 3000, duration: '4 hours' }
+            { id: 'sg_uss',     city: 'Singapore', name: 'Universal Studios Singapore', desc: 'Full day theme park', price: 9000, duration: 'Full day' },
+            { id: 'sg_gardens', city: 'Singapore', name: 'Gardens by the Bay', desc: 'Supertree + 2 domes', price: 4500, duration: '4 hours' },
+            { id: 'sg_sentosa', city: 'Singapore', name: 'Sentosa Island Day Pass', desc: 'Cable car + attractions', price: 5500, duration: 'Full day' },
+            { id: 'sg_zoo',     city: 'Singapore', name: 'Singapore Zoo + Night Safari', desc: 'Day zoo + night', price: 7500, duration: '8 hours' },
+            { id: 'sg_city',    city: 'Singapore', name: 'Singapore City Tour', desc: 'Merlion + Marina Bay', price: 3000, duration: '4 hours' }
         ],
         cities: [
             { name: 'Singapore', days: 4 }
@@ -2361,11 +2371,13 @@ const destinations = {
             'Seminyak ↔ Ubud': 7000
         },
         cityTours: [
-            { id: 'id_ubud', name: 'Ubud Full Day Tour', desc: 'Rice terraces + Monkey forest', price: 4000, duration: 'Full day' },
-            { id: 'id_temple', name: 'Tanah Lot + Uluwatu Sunset', desc: '2 iconic temples', price: 4500, duration: 'Full day' },
-            { id: 'id_nusa', name: 'Nusa Penida Day Trip', desc: 'Kelingking beach', price: 6500, duration: 'Full day' },
-            { id: 'id_swing', name: 'Bali Swing Experience', desc: 'Jungle swing', price: 3500, duration: '3 hours' },
-            { id: 'id_rafting', name: 'Ayung River Rafting', desc: 'White water adventure', price: 5000, duration: '4 hours' }
+            { id: 'id_ubud',    city: 'Ubud',        name: 'Ubud Full Day Tour', desc: 'Rice terraces + Monkey forest', price: 4000, duration: 'Full day' },
+            { id: 'id_swing',   city: 'Ubud',        name: 'Bali Swing Experience', desc: 'Jungle swing', price: 3500, duration: '3 hours' },
+            { id: 'id_rafting', city: 'Ubud',        name: 'Ayung River Rafting', desc: 'White water adventure', price: 5000, duration: '4 hours' },
+            { id: 'id_temple',  city: 'Seminyak',    name: 'Tanah Lot + Uluwatu Sunset', desc: '2 iconic temples', price: 4500, duration: 'Full day' },
+            { id: 'id_beach',   city: 'Seminyak',    name: 'Seminyak Beach Club Day', desc: 'Potato Head / Ku De Ta sunset', price: 4000, duration: '6 hours' },
+            { id: 'id_nusa',    city: 'Nusa Penida', name: 'Nusa Penida Day Trip', desc: 'Kelingking + Broken Beach', price: 6500, duration: 'Full day' },
+            { id: 'id_jakarta', city: 'Jakarta',     name: 'Jakarta City Tour', desc: 'Monas + Old Town + Istiqlal', price: 3500, duration: '6 hours' }
         ],
         cities: [
             { name: 'Seminyak',    days: 3 },
@@ -2390,12 +2402,12 @@ const destinations = {
             'Airport ↔ Hotel': 8000
         },
         cityTours: [
-            { id: 'ae_burj', name: 'Burj Khalifa At The Top', desc: '124th floor observation', price: 6000, duration: '2 hours' },
-            { id: 'ae_safari', name: 'Desert Safari + BBQ Dinner', desc: 'Dune bashing + camel + show', price: 5500, duration: '6 hours' },
-            { id: 'ae_city', name: 'Dubai City Tour', desc: 'Old & New Dubai', price: 3500, duration: '5 hours' },
-            { id: 'ae_abudhabi', name: 'Abu Dhabi Day Trip', desc: 'Grand Mosque + Emirates Palace', price: 6000, duration: 'Full day' },
-            { id: 'ae_aqua', name: 'Aquaventure Waterpark', desc: 'Atlantis waterpark', price: 7000, duration: 'Full day' },
-            { id: 'ae_cruise', name: 'Dhow Cruise Dinner', desc: 'Marina dinner cruise', price: 4500, duration: '2 hours' }
+            { id: 'ae_burj',     city: 'Dubai',     name: 'Burj Khalifa At The Top', desc: '124th floor observation', price: 6000, duration: '2 hours' },
+            { id: 'ae_safari',   city: 'Dubai',     name: 'Desert Safari + BBQ Dinner', desc: 'Dune bashing + camel + show', price: 5500, duration: '6 hours' },
+            { id: 'ae_city',     city: 'Dubai',     name: 'Dubai City Tour', desc: 'Old & New Dubai', price: 3500, duration: '5 hours' },
+            { id: 'ae_aqua',     city: 'Dubai',     name: 'Aquaventure Waterpark', desc: 'Atlantis waterpark', price: 7000, duration: 'Full day' },
+            { id: 'ae_cruise',   city: 'Dubai',     name: 'Dhow Cruise Dinner', desc: 'Marina dinner cruise', price: 4500, duration: '2 hours' },
+            { id: 'ae_abudhabi', city: 'Abu Dhabi', name: 'Abu Dhabi Day Trip', desc: 'Grand Mosque + Emirates Palace', price: 6000, duration: 'Full day' }
         ],
         cities: [
             { name: 'Dubai',     days: 3 },
@@ -2418,11 +2430,11 @@ const destinations = {
             'Airport ↔ Resort (Speedboat)': 15000
         },
         cityTours: [
-            { id: 'mv_snorkel', name: 'Snorkeling Trip', desc: '3 spots + equipment', price: 5000, duration: '4 hours' },
-            { id: 'mv_dolphin', name: 'Dolphin Cruise', desc: 'Sunset dolphin watching', price: 6000, duration: '2 hours' },
-            { id: 'mv_diving', name: 'Scuba Diving (2 dives)', desc: 'Certified instructor', price: 18000, duration: '4 hours' },
-            { id: 'mv_sandbank', name: 'Sandbank Picnic', desc: 'Private sandbank + lunch', price: 8000, duration: '4 hours' },
-            { id: 'mv_romantic', name: 'Romantic Beach Dinner', desc: 'Private candlelit dinner', price: 15000, duration: '2 hours' }
+            { id: 'mv_snorkel',  city: 'Maldives Resort', name: 'Snorkeling Trip', desc: '3 spots + equipment', price: 5000, duration: '4 hours' },
+            { id: 'mv_dolphin',  city: 'Maldives Resort', name: 'Dolphin Cruise', desc: 'Sunset dolphin watching', price: 6000, duration: '2 hours' },
+            { id: 'mv_diving',   city: 'Maldives Resort', name: 'Scuba Diving (2 dives)', desc: 'Certified instructor', price: 18000, duration: '4 hours' },
+            { id: 'mv_sandbank', city: 'Maldives Resort', name: 'Sandbank Picnic', desc: 'Private sandbank + lunch', price: 8000, duration: '4 hours' },
+            { id: 'mv_romantic', city: 'Maldives Resort', name: 'Romantic Beach Dinner', desc: 'Private candlelit dinner', price: 15000, duration: '2 hours' }
         ],
         cities: [
             { name: 'Maldives Resort', days: 4 }
@@ -2444,10 +2456,14 @@ const destinations = {
             'Airport ↔ Hotel': 4000
         },
         cityTours: [
-            { id: 'vn_hanoi', name: 'Hanoi City Tour', desc: 'Old Quarter + Ho Chi Minh', price: 3000, duration: '5 hours' },
-            { id: 'vn_halong', name: 'Ha Long Bay Day Cruise', desc: 'Cruise + caves + kayaking', price: 8000, duration: 'Full day' },
-            { id: 'vn_ninh', name: 'Ninh Binh Day Trip', desc: 'Tam Coc + Mua Cave', price: 5000, duration: 'Full day' },
-            { id: 'vn_street', name: 'Street Food Tour', desc: '3-hour walking food tour', price: 2500, duration: '3 hours' }
+            { id: 'vn_hanoi',  city: 'Hanoi',            name: 'Hanoi City Tour', desc: 'Old Quarter + Ho Chi Minh', price: 3000, duration: '5 hours' },
+            { id: 'vn_ninh',   city: 'Hanoi',            name: 'Ninh Binh Day Trip', desc: 'Tam Coc + Mua Cave', price: 5000, duration: 'Full day' },
+            { id: 'vn_street', city: 'Hanoi',            name: 'Street Food Tour', desc: '3-hour walking food tour', price: 2500, duration: '3 hours' },
+            { id: 'vn_halong', city: 'Ha Long Bay',      name: 'Ha Long Bay Day Cruise', desc: 'Cruise + caves + kayaking', price: 8000, duration: 'Full day' },
+            { id: 'vn_cuchi',  city: 'Ho Chi Minh City', name: 'Cu Chi Tunnels + War Museum', desc: 'History day tour', price: 3500, duration: 'Full day' },
+            { id: 'vn_mekong', city: 'Ho Chi Minh City', name: 'Mekong Delta Day Trip', desc: 'Sampan + village + tasting', price: 4500, duration: 'Full day' },
+            { id: 'vn_danang', city: 'Da Nang',          name: 'Hoi An Ancient Town + Marble Mountains', desc: 'UNESCO heritage walk', price: 4000, duration: 'Full day' },
+            { id: 'vn_golden', city: 'Da Nang',          name: 'Ba Na Hills + Golden Bridge', desc: 'Cable car + iconic bridge', price: 5500, duration: 'Full day' }
         ],
         cities: [
             { name: 'Hanoi',             days: 3 },
@@ -2473,11 +2489,12 @@ const destinations = {
             'Kathmandu ↔ Pokhara (Bus)': 5000
         },
         cityTours: [
-            { id: 'np_ktm', name: 'Kathmandu Valley Sightseeing', desc: 'Pashupatinath + Boudhanath', price: 3500, duration: 'Full day' },
-            { id: 'np_nagarkot', name: 'Nagarkot Sunrise Tour', desc: 'Himalayan sunrise', price: 3000, duration: '5 hours' },
-            { id: 'np_pokhara', name: 'Pokhara Sightseeing', desc: 'Phewa Lake + caves', price: 3000, duration: 'Full day' },
-            { id: 'np_everest', name: 'Everest Scenic Flight', desc: '1-hour mountain flight', price: 22000, duration: '1 hour' },
-            { id: 'np_paragliding', name: 'Paragliding Pokhara', desc: '30-min tandem flight', price: 8000, duration: '2 hours' }
+            { id: 'np_ktm',         city: 'Kathmandu', name: 'Kathmandu Valley Sightseeing', desc: 'Pashupatinath + Boudhanath', price: 3500, duration: 'Full day' },
+            { id: 'np_everest',     city: 'Kathmandu', name: 'Everest Scenic Flight', desc: '1-hour mountain flight', price: 22000, duration: '1 hour' },
+            { id: 'np_pokhara',     city: 'Pokhara',   name: 'Pokhara Sightseeing', desc: 'Phewa Lake + caves', price: 3000, duration: 'Full day' },
+            { id: 'np_paragliding', city: 'Pokhara',   name: 'Paragliding Pokhara', desc: '30-min tandem flight', price: 8000, duration: '2 hours' },
+            { id: 'np_nagarkot',    city: 'Nagarkot',  name: 'Nagarkot Sunrise Tour', desc: 'Himalayan sunrise', price: 3000, duration: '5 hours' },
+            { id: 'np_chitwan',     city: 'Chitwan',   name: 'Chitwan Jungle Safari', desc: 'Elephant + jeep safari', price: 6500, duration: 'Full day' }
         ],
         cities: [
             { name: 'Kathmandu', days: 3 },
@@ -2503,11 +2520,13 @@ const destinations = {
             'Colombo ↔ Kandy': 16000
         },
         cityTours: [
-            { id: 'lk_colombo', name: 'Colombo City Tour', desc: 'Gangaramaya + Galle Face', price: 2500, duration: '4 hours' },
-            { id: 'lk_kandy', name: 'Kandy Temple + Cultural Show', desc: 'Temple of Tooth + dance', price: 3500, duration: '5 hours' },
-            { id: 'lk_sigiriya', name: 'Sigiriya Rock Fortress', desc: 'Lion Rock + Dambulla', price: 5000, duration: 'Full day' },
-            { id: 'lk_whale', name: 'Whale Watching Mirissa', desc: 'Blue whale spotting', price: 8000, duration: '5 hours' },
-            { id: 'lk_safari', name: 'Yala Safari', desc: 'Leopard spotting', price: 12000, duration: 'Full day' }
+            { id: 'lk_colombo',  city: 'Colombo',      name: 'Colombo City Tour', desc: 'Gangaramaya + Galle Face', price: 2500, duration: '4 hours' },
+            { id: 'lk_kandy',    city: 'Kandy',        name: 'Kandy Temple + Cultural Show', desc: 'Temple of Tooth + dance', price: 3500, duration: '5 hours' },
+            { id: 'lk_sigiriya', city: 'Kandy',        name: 'Sigiriya Rock Fortress (day trip)', desc: 'Lion Rock + Dambulla', price: 5000, duration: 'Full day' },
+            { id: 'lk_tea',      city: 'Nuwara Eliya', name: 'Tea Plantation & Factory Tour', desc: 'Gregory Lake + tea tasting', price: 3000, duration: '5 hours' },
+            { id: 'lk_ella',     city: 'Ella',         name: 'Nine Arches Bridge + Little Adam\'s Peak', desc: 'Hike + train ride', price: 3000, duration: 'Full day' },
+            { id: 'lk_galle',    city: 'Galle',        name: 'Galle Fort + Unawatuna Beach', desc: 'Dutch fort + beach time', price: 3500, duration: '6 hours' },
+            { id: 'lk_whale',    city: 'Galle',        name: 'Mirissa Whale Watching', desc: 'Blue whale spotting', price: 8000, duration: '5 hours' }
         ],
         cities: [
             { name: 'Colombo',      days: 2 },
@@ -2533,10 +2552,13 @@ const destinations = {
             'Airport ↔ Hotel': 5000
         },
         cityTours: [
-            { id: 'ph_manila', name: 'Manila City Tour', desc: 'Intramuros + Rizal Park', price: 3000, duration: '5 hours' },
-            { id: 'ph_island', name: 'Boracay Island Hopping', desc: '3 islands + snorkeling', price: 4000, duration: 'Full day' },
-            { id: 'ph_underground', name: 'Underground River Tour', desc: 'UNESCO World Heritage', price: 6500, duration: 'Full day' },
-            { id: 'ph_sunset', name: 'Sunset Paraw Sailing', desc: 'Traditional boat cruise', price: 2500, duration: '2 hours' }
+            { id: 'ph_manila',   city: 'Manila',   name: 'Manila City Tour', desc: 'Intramuros + Rizal Park', price: 3000, duration: '5 hours' },
+            { id: 'ph_binondo',  city: 'Manila',   name: 'Binondo Chinatown Food Walk', desc: 'World\'s oldest Chinatown', price: 2500, duration: '3 hours' },
+            { id: 'ph_tagaytay', city: 'Tagaytay', name: 'Taal Volcano & Tagaytay Day Trip', desc: 'Lake view + sky ranch', price: 4500, duration: 'Full day' },
+            { id: 'ph_cebu',     city: 'Cebu',     name: 'Cebu City + Kawasan Falls', desc: 'Magellan\'s Cross + waterfalls', price: 5500, duration: 'Full day' },
+            { id: 'ph_whale',    city: 'Cebu',     name: 'Whale Shark Watching (Oslob)', desc: 'Swim with whale sharks', price: 6500, duration: 'Full day' },
+            { id: 'ph_island',   city: 'Boracay',  name: 'Boracay Island Hopping', desc: '3 islands + snorkeling', price: 4000, duration: 'Full day' },
+            { id: 'ph_sunset',   city: 'Boracay',  name: 'Sunset Paraw Sailing', desc: 'Traditional boat cruise', price: 2500, duration: '2 hours' }
         ],
         cities: [
             { name: 'Manila',   days: 3 },
@@ -3258,19 +3280,42 @@ function checkPeakSeason2026() {
 }
 
 // ==================== ADD-ONS ====================
+function getChosenCitiesByCountry() {
+    // Read the live distribution so add-ons only ever show tours for cities
+    // the planner has actually chosen for the user's trip duration.
+    const duration = parseInt(document.getElementById('duration')?.value) || 7;
+    const distribution = calculateCityDistribution(duration);
+    const map = {};
+    distribution.forEach(d => {
+        map[d.country] = (d.cityDetails || []).map(c => c.name);
+    });
+    return map;
+}
+
 function renderAddons() {
     const grid = document.getElementById('addonsGrid');
     const tours = [];
-    
+    const chosenByCountry = getChosenCitiesByCountry();
+
     selectedDestinations.forEach(destName => {
         const dest = destinations[destName];
+        const chosenCities = chosenByCountry[destName] || [];
         if (dest.cityTours) {
             dest.cityTours.forEach(tour => {
-                tours.push({ ...tour, country: destName, flag: dest.flag });
+                // Show the tour if it has no city tag (legacy) OR if its
+                // city is one of the user's chosen cities for this trip.
+                if (!tour.city || chosenCities.length === 0 || chosenCities.includes(tour.city)) {
+                    tours.push({ ...tour, country: destName, flag: dest.flag });
+                }
             });
         }
     });
-    
+
+    // Drop any previously-selected add-ons that no longer match the available list
+    // (e.g. user shortened the trip and lost a city).
+    const availableIds = new Set(tours.map(t => t.id));
+    selectedAddons = selectedAddons.filter(id => availableIds.has(id));
+
     if (tours.length === 0) {
         grid.innerHTML = '<p style="color: var(--gray-500); grid-column: 1/-1;">No city tours available.</p>';
         return;
