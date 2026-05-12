@@ -2184,34 +2184,42 @@ function getTravelTime(from, to) {
 
 // ==================== MINIMUM DAYS PER COUNTRY (NEW!) ====================
 const minDaysPerCountry = {
-    'Thailand': 4,
-    'Malaysia': 4,
+    'Thailand': 3,
+    'Malaysia': 3,
     'Singapore': 3,
-    'Indonesia': 5,  // Bali internal travel takes time
+    'Indonesia': 4,
     'Maldives': 3,
     'Dubai': 4,
-    'Vietnam': 5,
-    'Nepal': 5,
-    'Sri Lanka': 5,
-    'Philippines': 5
+    'Vietnam': 4,
+    'Nepal': 3,
+    'Sri Lanka': 3,
+    'Philippines': 3
 };
 
 // ==================== CITY HIGHLIGHTS (NEW!) ====================
 const cityHighlights = {
     'Thailand': {
         'Bangkok': ['Grand Palace', 'Wat Pho', 'Chatuchak Market', 'Khao San Road'],
-        'Pattaya': ['Coral Island', 'Walking Street', 'Nong Nooch Garden', 'Alcazar Show']
+        'Pattaya': ['Coral Island', 'Walking Street', 'Nong Nooch Garden', 'Alcazar Show'],
+        'Phuket': ['Patong Beach', 'Phi Phi Islands', 'James Bond Island', 'Big Buddha'],
+        'Krabi': ['Railay Beach', '4 Islands Tour', 'Tiger Cave Temple', 'Hot Springs'],
+        'Chiang Mai': ['Old City Temples', 'Elephant Sanctuary', 'Night Bazaar', 'Doi Suthep'],
+        'Koh Samui': ['Chaweng Beach', 'Big Buddha', 'Angthong Marine Park', 'Fisherman\'s Village']
     },
     'Malaysia': {
         'Kuala Lumpur': ['Petronas Towers', 'Batu Caves', 'KL Tower', 'Jalan Alor'],
-        'Genting Highlands': ['Theme Park', 'Casino', 'Skyway Cable Car']
+        'Langkawi': ['Sky Bridge', 'Cable Car', 'Pantai Cenang', 'Island Hopping'],
+        'Penang': ['George Town heritage', 'Street Art', 'Kek Lok Si Temple', 'Penang Hill'],
+        'Genting Highlands': ['Theme Park', 'Skyway Cable Car', 'Awana Mountain']
     },
     'Singapore': {
         'Singapore': ['Marina Bay Sands', 'Gardens by the Bay', 'Sentosa', 'Orchard Road', 'Universal Studios']
     },
     'Indonesia': {
-        'Seminyak': ['Beach Club', 'Sunset', 'Shopping', 'Tanah Lot Temple'],
-        'Ubud': ['Rice Terraces', 'Monkey Forest', 'Art Markets', 'Tirta Empul']
+        'Seminyak': ['Beach Club', 'Sunset at Tanah Lot', 'Shopping', 'Spa'],
+        'Ubud': ['Rice Terraces', 'Monkey Forest', 'Art Markets', 'Tirta Empul'],
+        'Nusa Penida': ['Kelingking Beach', 'Angel\'s Billabong', 'Broken Beach', 'Crystal Bay'],
+        'Jakarta': ['Monas', 'Old Town', 'Istiqlal Mosque', 'Ancol']
     },
     'Dubai': {
         'Dubai': ['Burj Khalifa', 'Dubai Mall', 'Palm Jumeirah', 'Desert Safari'],
@@ -2222,19 +2230,28 @@ const cityHighlights = {
     },
     'Vietnam': {
         'Hanoi': ['Old Quarter', 'Ho Chi Minh Mausoleum', 'Temple of Literature'],
-        'Ha Long Bay': ['Cruise', 'Caves', 'Kayaking', 'Floating Villages']
+        'Ha Long Bay': ['Cruise', 'Caves', 'Kayaking', 'Floating Villages'],
+        'Ho Chi Minh City': ['War Remnants Museum', 'Cu Chi Tunnels', 'Notre Dame', 'Street Food'],
+        'Da Nang': ['My Khe Beach', 'Golden Bridge', 'Marble Mountains', 'Hoi An Ancient Town']
     },
     'Nepal': {
         'Kathmandu': ['Pashupatinath', 'Boudhanath', 'Swayambhunath', 'Durbar Square'],
-        'Pokhara': ['Phewa Lake', 'Sarangkot Sunrise', 'Peace Pagoda']
+        'Pokhara': ['Phewa Lake', 'Sarangkot Sunrise', 'Peace Pagoda', 'Davis Falls'],
+        'Nagarkot': ['Himalayan Sunrise', 'Hiking Trails', 'Mountain Views'],
+        'Chitwan': ['Jungle Safari', 'Elephant Bathing', 'Tharu Cultural Show']
     },
     'Sri Lanka': {
         'Colombo': ['Gangaramaya Temple', 'Galle Face', 'Pettah Market'],
-        'Kandy': ['Temple of Tooth', 'Kandy Lake', 'Cultural Show']
+        'Kandy': ['Temple of Tooth', 'Kandy Lake', 'Cultural Show'],
+        'Nuwara Eliya': ['Tea Plantations', 'Gregory Lake', 'Hakgala Garden'],
+        'Ella': ['Nine Arches Bridge', 'Little Adam\'s Peak', 'Ravana Falls'],
+        'Galle': ['Dutch Fort', 'Lighthouse', 'Unawatuna Beach']
     },
     'Philippines': {
-        'Manila': ['Intramuros', 'Rizal Park', 'Fort Santiago'],
-        'Boracay': ['White Beach', 'Island Hopping', 'Ariel\'s Point']
+        'Manila': ['Intramuros', 'Rizal Park', 'Fort Santiago', 'Binondo Chinatown'],
+        'Tagaytay': ['Taal Volcano view', 'Sky Ranch', 'Picnic Grove', 'Pink Sisters'],
+        'Cebu': ['Magellan\'s Cross', 'Kawasan Falls', 'Whale Shark watching', 'Island Hopping'],
+        'Boracay': ['White Beach', 'Island Hopping', 'Sunset Sailing', 'Ariel\'s Point']
     }
 };
 
@@ -2248,7 +2265,7 @@ const destinations = {
         coordinates: [13.7563, 100.5018],
         visaGuideUrl: 'https://goflybd.com/thailand-visa-from-bangladesh/',
         visaType: 'Tourist Visa (95% success)',
-        minDays: 4,
+        minDays: 3,
         hotelBudget: 5000,
         hotelStandard: 9500,
         hotelLuxury: 18000,
@@ -2265,8 +2282,12 @@ const destinations = {
             { id: 'th_cruise', name: 'Chao Phraya Dinner Cruise', desc: 'Buffet dinner on river', price: 4000, duration: '2.5 hours' }
         ],
         cities: [
-            { name: 'Bangkok', days: 3 },
-            { name: 'Pattaya', days: 2 }
+            { name: 'Bangkok',    days: 2, minTrip: 3 },
+            { name: 'Pattaya',    days: 2, minTrip: 4 },
+            { name: 'Phuket',     days: 3, minTrip: 5 },
+            { name: 'Krabi',      days: 2, minTrip: 7 },
+            { name: 'Chiang Mai', days: 2, minTrip: 7 },
+            { name: 'Koh Samui',  days: 2, minTrip: 9 }
         ]
     },
     'Malaysia': {
@@ -2277,7 +2298,7 @@ const destinations = {
         coordinates: [3.139, 101.6869],
         visaGuideUrl: 'https://goflybd.com/malaysia-visa-from-bangladesh/',
         visaType: 'eVisa (98% success)',
-        minDays: 4,
+        minDays: 3,
         hotelBudget: 6000,
         hotelStandard: 11000,
         hotelLuxury: 22000,
@@ -2291,8 +2312,10 @@ const destinations = {
             { id: 'my_firefly', name: 'Firefly Tour', desc: 'Magical night river cruise', price: 4500, duration: '4 hours' }
         ],
         cities: [
-            { name: 'Kuala Lumpur', days: 3 },
-            { name: 'Genting Highlands', days: 1 }
+            { name: 'Kuala Lumpur',      days: 2, minTrip: 3 },
+            { name: 'Genting Highlands', days: 1, minTrip: 4 },
+            { name: 'Langkawi',          days: 2, minTrip: 5 },
+            { name: 'Penang',            days: 2, minTrip: 6 }
         ]
     },
     'Singapore': {
@@ -2318,7 +2341,7 @@ const destinations = {
             { id: 'sg_city', name: 'Singapore City Tour', desc: 'Merlion + Marina Bay', price: 3000, duration: '4 hours' }
         ],
         cities: [
-            { name: 'Singapore', days: 4 }
+            { name: 'Singapore', days: 4, minTrip: 3 }
         ]
     },
     'Indonesia': {
@@ -2329,7 +2352,7 @@ const destinations = {
         coordinates: [-8.4095, 115.1889],
         visaGuideUrl: 'https://goflybd.com/indonesia-visa-for-bangladeshi/',
         visaType: 'Visa on Arrival',
-        minDays: 5,
+        minDays: 4,
         hotelBudget: 4500,
         hotelStandard: 10000,
         hotelLuxury: 20000,
@@ -2345,8 +2368,10 @@ const destinations = {
             { id: 'id_rafting', name: 'Ayung River Rafting', desc: 'White water adventure', price: 5000, duration: '4 hours' }
         ],
         cities: [
-            { name: 'Seminyak', days: 3 },
-            { name: 'Ubud', days: 3 }
+            { name: 'Seminyak',    days: 2, minTrip: 3 },
+            { name: 'Ubud',        days: 2, minTrip: 4 },
+            { name: 'Nusa Penida', days: 1, minTrip: 6 },
+            { name: 'Jakarta',     days: 2, minTrip: 8 }
         ]
     },
     'Dubai': {
@@ -2373,8 +2398,8 @@ const destinations = {
             { id: 'ae_cruise', name: 'Dhow Cruise Dinner', desc: 'Marina dinner cruise', price: 4500, duration: '2 hours' }
         ],
         cities: [
-            { name: 'Dubai', days: 4 },
-            { name: 'Abu Dhabi', days: 1 }
+            { name: 'Dubai',     days: 3, minTrip: 3 },
+            { name: 'Abu Dhabi', days: 1, minTrip: 5 }
         ]
     },
     'Maldives': {
@@ -2400,7 +2425,7 @@ const destinations = {
             { id: 'mv_romantic', name: 'Romantic Beach Dinner', desc: 'Private candlelit dinner', price: 15000, duration: '2 hours' }
         ],
         cities: [
-            { name: 'Maldives Resort', days: 4 }
+            { name: 'Maldives Resort', days: 4, minTrip: 3 }
         ]
     },
     'Vietnam': {
@@ -2411,7 +2436,7 @@ const destinations = {
         coordinates: [21.0285, 105.8542],
         visaGuideUrl: 'https://goflybd.com/vietnam-visa-from-bangladesh/',
         visaType: 'eVisa Online',
-        minDays: 5,
+        minDays: 4,
         hotelBudget: 4000,
         hotelStandard: 8500,
         hotelLuxury: 17000,
@@ -2425,9 +2450,10 @@ const destinations = {
             { id: 'vn_street', name: 'Street Food Tour', desc: '3-hour walking food tour', price: 2500, duration: '3 hours' }
         ],
         cities: [
-            { name: 'Hanoi', days: 2 },
-            { name: 'Ha Long Bay', days: 2 },
-            { name: 'Ho Chi Minh City', days: 2 }
+            { name: 'Hanoi',             days: 2, minTrip: 3 },
+            { name: 'Ha Long Bay',       days: 1, minTrip: 4 },
+            { name: 'Ho Chi Minh City',  days: 2, minTrip: 5 },
+            { name: 'Da Nang',           days: 2, minTrip: 7 }
         ]
     },
     'Nepal': {
@@ -2438,7 +2464,7 @@ const destinations = {
         coordinates: [27.7172, 85.324],
         visaGuideUrl: 'https://goflybd.com/nepal-visa-from-bangladesh/',
         visaType: 'Online eVisa',
-        minDays: 5,
+        minDays: 3,
         hotelBudget: 4000,
         hotelStandard: 8000,
         hotelLuxury: 15000,
@@ -2454,8 +2480,10 @@ const destinations = {
             { id: 'np_paragliding', name: 'Paragliding Pokhara', desc: '30-min tandem flight', price: 8000, duration: '2 hours' }
         ],
         cities: [
-            { name: 'Kathmandu', days: 2 },
-            { name: 'Pokhara', days: 3 }
+            { name: 'Kathmandu', days: 2, minTrip: 3 },
+            { name: 'Nagarkot',  days: 1, minTrip: 4 },
+            { name: 'Pokhara',   days: 2, minTrip: 5 },
+            { name: 'Chitwan',   days: 2, minTrip: 7 }
         ]
     },
     'Sri Lanka': {
@@ -2466,7 +2494,7 @@ const destinations = {
         coordinates: [6.9271, 79.8612],
         visaGuideUrl: 'https://goflybd.com/sri-lanka-visa-from-bangladesh/',
         visaType: 'eTA Online',
-        minDays: 5,
+        minDays: 3,
         hotelBudget: 5000,
         hotelStandard: 10000,
         hotelLuxury: 20000,
@@ -2482,9 +2510,11 @@ const destinations = {
             { id: 'lk_safari', name: 'Yala Safari', desc: 'Leopard spotting', price: 12000, duration: 'Full day' }
         ],
         cities: [
-            { name: 'Colombo', days: 1 },
-            { name: 'Kandy', days: 2 },
-            { name: 'Ella', days: 2 }
+            { name: 'Colombo',      days: 1, minTrip: 3 },
+            { name: 'Kandy',        days: 2, minTrip: 4 },
+            { name: 'Nuwara Eliya', days: 2, minTrip: 5 },
+            { name: 'Ella',         days: 1, minTrip: 6 },
+            { name: 'Galle',        days: 1, minTrip: 7 }
         ]
     },
     'Philippines': {
@@ -2495,7 +2525,7 @@ const destinations = {
         coordinates: [14.5995, 120.9842],
         visaGuideUrl: 'https://goflybd.com/philippines-visa-from-bangladesh/',
         visaType: 'Tourist Visa',
-        minDays: 5,
+        minDays: 3,
         hotelBudget: 4500,
         hotelStandard: 9500,
         hotelLuxury: 18000,
@@ -2509,8 +2539,10 @@ const destinations = {
             { id: 'ph_sunset', name: 'Sunset Paraw Sailing', desc: 'Traditional boat cruise', price: 2500, duration: '2 hours' }
         ],
         cities: [
-            { name: 'Manila', days: 1 },
-            { name: 'Boracay', days: 4 }
+            { name: 'Manila',   days: 2, minTrip: 3 },
+            { name: 'Tagaytay', days: 1, minTrip: 4 },
+            { name: 'Cebu',     days: 2, minTrip: 5 },
+            { name: 'Boracay',  days: 2, minTrip: 7 }
         ]
     }
 };
@@ -3111,37 +3143,55 @@ function updateDurationNote() {
 function calculateCityDistribution(totalDays) {
     const distribution = [];
     const numCountries = selectedDestinations.length;
-    
-    // Calculate travel days
+
+    // Travel days between countries (full-day flights)
     let travelDays = 0;
     for (let i = 0; i < numCountries - 1; i++) {
         const time = getTravelTime(selectedDestinations[i], selectedDestinations[i + 1]);
         if (time.fullDay) travelDays++;
     }
-    
-    const sightseeingDays = totalDays - travelDays;
+
+    const sightseeingDays = Math.max(numCountries, totalDays - travelDays);
     const baseDaysPerCountry = Math.floor(sightseeingDays / numCountries);
     let extraDays = sightseeingDays % numCountries;
-    
+
     selectedDestinations.forEach((country) => {
-        let countryDays = baseDaysPerCountry + (extraDays > 0 ? 1 : 0);
+        const countryDays = baseDaysPerCountry + (extraDays > 0 ? 1 : 0);
         if (extraDays > 0) extraDays--;
-        
-        let cityList = [];
-        const allCities = destinations[country].cities;
-        
-        allCities.forEach(city => {
-            const days = Math.max(1, Math.round((city.days / allCities.reduce((s, c) => s + c.days, 0)) * countryDays));
-            cityList.push(`${city.name} (${days}d)`);
-        });
-        
+
+        const allCities = destinations[country].cities || [];
+
+        // Pick cities whose minTrip threshold fits the allocated country days.
+        // Cities without minTrip (legacy) are always included.
+        let chosen = allCities.filter(c => (c.minTrip == null) || (countryDays >= c.minTrip));
+        if (chosen.length === 0 && allCities.length) chosen = [allCities[0]]; // safety fallback
+
+        // Proportional days based on each city's ideal `days`, scaled to countryDays.
+        const totalIdeal = chosen.reduce((s, c) => s + c.days, 0) || 1;
+        const allocated = chosen.map(c => Math.max(1, Math.round(c.days / totalIdeal * countryDays)));
+
+        // Fix rounding drift so the per-city sum equals countryDays exactly.
+        let drift = countryDays - allocated.reduce((s, n) => s + n, 0);
+        for (let i = 0; drift !== 0; i = (i + 1) % allocated.length) {
+            if (drift > 0) { allocated[i]++; drift--; }
+            else if (allocated[i] > 1) { allocated[i]--; drift++; }
+            if (i === allocated.length - 1 && drift > 0 && allocated.every(a => a >= 1)) {
+                // last lap: avoid infinite loop on degenerate inputs
+                allocated[0] += drift; drift = 0;
+            }
+        }
+
+        const cityList = chosen.map((c, i) => `${c.name} (${allocated[i]}d)`);
+        const cityDetails = chosen.map((c, i) => ({ name: c.name, days: allocated[i] }));
+
         distribution.push({
             country,
             cities: cityList,
+            cityDetails,
             totalDays: countryDays
         });
     });
-    
+
     return distribution;
 }
 
