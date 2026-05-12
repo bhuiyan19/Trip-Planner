@@ -3200,6 +3200,31 @@ function calculateCityDistribution(totalDays) {
     return distribution;
 }
 
+// Scale a {name,days}[] cityDetails list down to a flat name-per-day
+// sequence whose length is exactly `daysNeeded`. Used by the day-by-day
+// itinerary so it never picks a city that wasn't chosen for this trip.
+function expandCitySequence(cityDetails, daysNeeded) {
+    if (!Array.isArray(cityDetails) || cityDetails.length === 0 || daysNeeded <= 0) return [];
+    const totalIdeal = cityDetails.reduce((s, c) => s + c.days, 0) || 1;
+    const allocated = cityDetails.map(c => Math.max(0, Math.round(c.days / totalIdeal * daysNeeded)));
+    if (allocated.every(a => a === 0)) allocated[0] = daysNeeded;
+
+    let drift = daysNeeded - allocated.reduce((s, n) => s + n, 0);
+    let guard = 0;
+    while (drift !== 0 && guard++ < 50) {
+        for (let i = 0; i < allocated.length && drift !== 0; i++) {
+            if (drift > 0) { allocated[i]++; drift--; }
+            else if (allocated[i] > 0) { allocated[i]--; drift++; }
+        }
+    }
+
+    const sequence = [];
+    cityDetails.forEach((c, i) => {
+        for (let n = 0; n < allocated[i]; n++) sequence.push(c.name);
+    });
+    return sequence;
+}
+
 // ==================== BUDGET & DATE ====================
 function selectBudget(budget, element) {
     selectedBudget = budget;
@@ -3684,10 +3709,13 @@ function generateDynamicItinerary() {
         
         // SIGHTSEEING DAYS
         const sightseeingDays = countryInfo.totalDays - 1 - (isLast ? 1 : 0);
-        
+        const chosenCityDetails = countryInfo.cityDetails && countryInfo.cityDetails.length
+            ? countryInfo.cityDetails
+            : (dest.cities || []).slice(0, 1).map(c => ({ name: c.name, days: 1 }));
+        const citySeq = expandCitySequence(chosenCityDetails, sightseeingDays);
+
         for (let d = 0; d < sightseeingDays; d++) {
-            const cityIdx = d % dest.cities.length;
-            const cityName = dest.cities[cityIdx]?.name || destKey;
+            const cityName = citySeq[d] || chosenCityDetails[0]?.name || destKey;
             const cityAttractions = highlights[cityName] || ['Explore', 'Sightseeing'];
             
             itinerary.push({
