@@ -3248,15 +3248,16 @@ function calculateCityDistribution(totalDays) {
 
         const allCities = destinations[country].cities || [];
 
-        // Cities are listed in priority order in each destination. The
-        // number of cities scales with the country's day budget — about
-        // 1 city per 3 days, matching how real goFLY tour packages stack:
-        //   3 days  → 1 city  (e.g. Bangkok Blitz)
-        //   4-6 d   → 2 cities (e.g. Phuket + Bangkok)
-        //   7-9 d   → 3 cities (e.g. Phuket + Krabi + Bangkok)
-        //   10-12 d → 4 cities (Thailand Grand Circle)
-        //   13+ d   → 5+ cities
-        const maxCities = Math.max(1, Math.ceil(countryDays / 3));
+        // Cities are listed in priority order in each destination. We pick
+        // about one city per 3 days, but require each city to have enough
+        // real time (transit + at least one full sightseeing day). The
+        // resulting counts mirror how real goFLY packages stack:
+        //   3-4 days  → 1 city  (e.g. Bangkok Blitz)
+        //   5-6 days  → 2 cities (e.g. Phuket + Bangkok)
+        //   7-8 days  → 2-3 cities
+        //   9-11 days → 3 cities (Thailand Grand Circle)
+        //   12+ days  → 4+ cities
+        const maxCities = Math.max(1, Math.floor((countryDays + 1) / 3));
         const chosen = allCities.slice(0, Math.min(maxCities, allCities.length));
 
         // Proportional days based on each city's ideal `days`, scaled to countryDays.
@@ -3832,6 +3833,13 @@ function generateDynamicItinerary() {
         // The user arrives in the first chosen city of this country, so day 0's
         // "previous city" is the arrival city — no transit needed on day 0.
         let prevCity = chosenCityDetails[0]?.name || null;
+        const cityDayCount = {};               // tracks the n-th day in each city
+        const cityDayThemes = ['Highlights', 'Local Experience', 'Leisure & Free Time', 'Cultural Day'];
+        const fillerActivities = [
+            'Local market visit', 'Street food crawl', 'Riverside walk',
+            'Free time / shopping', 'Spa & wellness', 'Cafe-hopping',
+            'Sunset viewpoint', 'Mall shopping', 'Hotel pool time'
+        ];
 
         for (let d = 0; d < sightseeingDays; d++) {
             const cityName = citySeq[d] || chosenCityDetails[0]?.name || destKey;
@@ -3857,19 +3865,48 @@ function generateDynamicItinerary() {
                     ]
                 });
             } else {
+                cityDayCount[cityName] = (cityDayCount[cityName] || 0) + 1;
+                const dayInCity = cityDayCount[cityName];
+                const theme = cityDayThemes[Math.min(dayInCity - 1, cityDayThemes.length - 1)];
+                const cityLabel = dayInCity === 1
+                    ? `${destKey} – ${cityName}`
+                    : `${destKey} – ${cityName} (Day ${dayInCity})`;
+
+                // Day 1 of a city: top 3 attractions ("Highlights").
+                // Day 2: next attraction + 2 fillers ("Local Experience").
+                // Day 3+: mostly fillers ("Leisure & Free Time").
+                let todayActs;
+                if (dayInCity === 1) {
+                    todayActs = [
+                        cityAttractions[0] || 'Morning Activity',
+                        cityAttractions[1] || 'Afternoon Activity',
+                        cityAttractions[2] || 'Evening Activity'
+                    ];
+                } else if (dayInCity === 2) {
+                    const extra = cityAttractions[3] || cityAttractions[0] || 'City exploration';
+                    const f1 = fillerActivities[(currentDay) % fillerActivities.length];
+                    const f2 = fillerActivities[(currentDay + 3) % fillerActivities.length];
+                    todayActs = [extra, f1, f2];
+                } else {
+                    const f1 = fillerActivities[(currentDay) % fillerActivities.length];
+                    const f2 = fillerActivities[(currentDay + 2) % fillerActivities.length];
+                    const f3 = fillerActivities[(currentDay + 5) % fillerActivities.length];
+                    todayActs = [f1, f2, f3];
+                }
+
                 itinerary.push({
                     day: currentDay,
-                    location: `${destKey} - ${cityName}`,
+                    location: cityLabel,
                     isTravelDay: false,
                     country: destKey,
-                    highlights: cityAttractions.slice(0, 3),
+                    highlights: [theme, ...cityAttractions.slice(0, 2)].slice(0, 3),
                     activities: [
-                        { time: 'Morning',  name: '🍳 Breakfast',                            desc: 'Hotel buffet breakfast (Included)' },
-                        { time: '09:30 AM', name: '🎯 ' + (cityAttractions[0] || 'Morning Activity'),  desc: 'Full morning exploration' },
-                        { time: '01:00 PM', name: '🍱 Lunch',                                desc: 'Local cuisine (own expense)' },
-                        { time: '03:00 PM', name: '🎨 ' + (cityAttractions[1] || 'Afternoon Activity'), desc: 'Afternoon sightseeing' },
-                        { time: '06:00 PM', name: '🌅 ' + (cityAttractions[2] || 'Evening'),             desc: 'Sunset views or shopping' },
-                        { time: '08:00 PM', name: '🍽️ Dinner',                              desc: 'Restaurant or street food (own expense)' }
+                        { time: 'Morning',  name: '🍳 Breakfast',                desc: 'Hotel buffet breakfast (Included)' },
+                        { time: '09:30 AM', name: '🎯 ' + todayActs[0],          desc: `${cityName} – ${theme.toLowerCase()}` },
+                        { time: '01:00 PM', name: '🍱 Lunch',                   desc: 'Local cuisine (own expense)' },
+                        { time: '03:00 PM', name: '🎨 ' + todayActs[1],          desc: 'Afternoon experience' },
+                        { time: '06:00 PM', name: '🌅 ' + todayActs[2],          desc: 'Sunset views or local time' },
+                        { time: '08:00 PM', name: '🍽️ Dinner',                   desc: 'Restaurant or street food (own expense)' }
                     ]
                 });
             }
